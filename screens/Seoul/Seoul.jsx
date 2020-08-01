@@ -38,10 +38,11 @@ class Seoul extends React.Component {
             style={{alignItems:'center',justifyContent:'center',backgroundColor:'white',borderWidth : 1, padding : 10,}}
          />  
         <ScrollView >
-          {console.log(Gu)}
+          
           {Gu.map((i) => {
               return (
-                <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} prev = {i} onPressAction={(e) => alert(i)}width='80%' deepBlue impact />
+                <GradientButton key={i}  style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} 
+                prev = {i} onPressAction={() => this.props.navigation.navigate('Sijang',{name : '서울광역시 ' + i} )}width='80%' deepBlue impact />
               )
           })}
           
