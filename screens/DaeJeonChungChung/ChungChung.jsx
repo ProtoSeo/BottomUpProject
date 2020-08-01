@@ -5,11 +5,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import GradientButton from 'react-native-gradient-buttons';
 
 const Gu = 
-['계양구','남동구','동구','미추홀구','부평구','서구','연수구','중구',
-  '강화군','옹진군']
+['세종시','과천시','제천시','청주시','충주시','계룡시','공주시','논산시','당진시','보령시','서산시','아산시','천안시',
+'괴산군','단양군','보은군','영동군','옥천군','음성군','증평군','진천군','금산군','부여군','서천군','예산군','청양군','태안군','홍성군'
+]
 
 
-class InCheon extends React.Component {
+class ChungChung extends React.Component {
   state = {
     searchString: '시장을 검색하세요',
     name : Gu, 
@@ -39,11 +40,12 @@ class InCheon extends React.Component {
             style={{alignItems:'center',justifyContent:'center',backgroundColor:'white',borderWidth : 1, padding : 10,}}
          />  
         <ScrollView >
-         
+        <GradientButton key={'대전광역시'} style={{ marginVertical: 8 ,marginLeft : 30}} text = "대전광역시" 
+        onPressAction={() => this.props.navigation.navigate('대전광역시')}width='80%' deepBlue impact />
           {Gu.map((i) => {
               return (
-                <GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} 
-                onPressAction={() => this.props.navigation.navigate('Sijang',{name : '인천광역시 ' + i} )} width='80%' deepBlue impact />
+                <GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} prev = {i} 
+                onPressAction={() => this.props.navigation.navigate('Sijang',{name : i})}width='80%' deepBlue impact />
               )
           })}
           
@@ -102,4 +104,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default InCheon;
+export default ChungChung;

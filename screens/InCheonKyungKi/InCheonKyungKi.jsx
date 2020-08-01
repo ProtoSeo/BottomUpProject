@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import GradientButton from 'react-native-gradient-buttons';
 
 const Gu = 
-['인천광역시','고양시','과천시','광명시','광주시','구리시',
+['고양시','과천시','광명시','광주시','구리시',
 '군포시','김포시','남양주시','동두천시','부천시',
 '성남시','수원시','시흥시','안산시','안성시',
 '안양시','양주시','여주시','오산시','용인시',
@@ -43,10 +43,12 @@ class InCheonKyungKi extends React.Component {
             style={{alignItems:'center',justifyContent:'center',backgroundColor:'white',borderWidth : 1, padding : 10,}}
          />  
         <ScrollView >
-          {console.log(this.props.prev)}
+        <GradientButton key={'인천광역시'} style={{ marginVertical: 8 ,marginLeft : 30}} text = '인천광역시'
+        onPressAction={() => this.props.navigation.navigate('인천광역시',{name : i})}width='80%' deepBlue impact />  
           {Gu.map((i) => {
               return (
-                <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} prev = {i} onPressAction={() => this.props.navigation.navigate(i,{name : i})}width='80%' deepBlue impact />
+                <GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} 
+                onPressAction={() => this.props.navigation.navigate('Sijang',{name : i})}width='80%' deepBlue impact />
               )
           })}
           
