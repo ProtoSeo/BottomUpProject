@@ -44,7 +44,7 @@ class InCheonKyungKi extends React.Component {
          />  
         <ScrollView >
         <GradientButton key={'인천광역시'} style={{ marginVertical: 8 ,marginLeft : 30}} text = '인천광역시'
-        onPressAction={() => this.props.navigation.navigate('인천광역시',{name : i})}width='80%' deepBlue impact />  
+        onPressAction={() => this.props.navigation.navigate('인천광역시')}width='80%' deepBlue impact />  
           {Gu.map((i) => {
               return (
                 <GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} 
