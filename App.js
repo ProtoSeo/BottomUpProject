@@ -18,8 +18,42 @@ import Busan from './screens/BusanKyeonNam/Busan';
 import KyeongNam from './screens/BusanKyeonNam/KyeongNam';
 import JeJu from './screens/JeJu/JeJu';
 import Sijang from './screens/SiJang';
+import * as firebase from "firebase";
+
+// Optionally import the services that you want to use
+import "firebase/auth";
+import "firebase/database";
+import "firebase/firestore";
+import "firebase/functions";
+import "firebase/storage";
+
+// Initialize Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
+  authDomain: "bottom-up-project.firebaseapp.com",
+  databaseURL: "https://bottom-up-project.firebaseio.com",
+  projectId: "bottom-up-project",
+  storageBucket: "bottom-up-project.appspot.com",
+  messagingSenderId: "109120495683",
+  appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
+};
+
+firebase.initializeApp(firebaseConfig);
+
+// Get a reference to the database service
+var database = firebase.database();
+
+function writeUserData(userId, name, email, imageUrl) {
+  firebase.database().ref('users/' + userId).set({
+    username: name,
+    email: email,
+    profile_picture : imageUrl
+  });
+}
 class First extends React.Component {
   render() {
+    console.log("test")
+    writeUserData("test","test","test","test")
     return (
       <View style={styles.container}>
         <StatusBar Constants = {Constants} />
@@ -133,7 +167,6 @@ const AppContainer = createAppContainer(App);
 export default () => (
   <AppContainer />
 );
-
 
 
 const styles = StyleSheet.create({
