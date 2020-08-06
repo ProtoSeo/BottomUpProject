@@ -46,7 +46,7 @@ class Jeonna extends React.Component {
           {Gu.map((i) => {
               return (
                 <GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} prev = {i}
-                 onPressAction={() => this.props.navigation.navigate('Sijang',{name : i})}width='80%' deepBlue impact />
+                 onPressAction={() => this.props.navigation.navigate('Market',{name : i})}width='80%' deepBlue impact />
               )
           })}
           

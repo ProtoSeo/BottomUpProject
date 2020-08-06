@@ -42,7 +42,7 @@ class Seoul extends React.Component {
           {Gu.map((i) => {
               return (
                 <GradientButton key={i}  style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} 
-                prev = {i} onPressAction={() => this.props.navigation.navigate('Sijang',{name : '서울광역시 ' + i} )}width='80%' deepBlue impact />
+                prev = {i} onPressAction={() => this.props.navigation.navigate('Market',{name : '서울광역시 ' + i} )}width='80%' deepBlue impact />
               )
           })}
           

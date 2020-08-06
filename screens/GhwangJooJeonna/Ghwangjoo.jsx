@@ -42,7 +42,7 @@ class Ghwangjoo extends React.Component {
           {Gu.map((i) => {
               return (
                 <GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} 
-                onPressAction={() => this.props.navigation.navigate('Sijang',{name : '광주광역시 ' + i} )}width='80%' deepBlue impact />
+                onPressAction={() => this.props.navigation.navigate('Market',{name : '광주광역시 ' + i} )}width='80%' deepBlue impact />
               )
           })}
           

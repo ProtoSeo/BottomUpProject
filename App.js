@@ -18,6 +18,9 @@ import Busan from './screens/BusanKyeonNam/Busan';
 import KyeongNam from './screens/BusanKyeonNam/KyeongNam';
 import JeJu from './screens/JeJu/JeJu';
 import Sijang from './screens/SiJang';
+import Login from './screens/Login';
+import SignUp from './screens/SignUp';
+import Market from './screens/Market';
 class First extends React.Component {
   render() {
     return (
@@ -122,6 +125,24 @@ const App = createStackNavigator(
         headerShown: false
       }
     },
+    Login: {
+      screen: Login,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    SignUp: {
+      screen: SignUp,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    Market : {
+      screen: Market,
+      navigationOptions: {
+        headerShown: false
+      }
+    }
   },
   {
     initialRouteName: 'Home' // 처음 보여 줄 화면을 설정합니다.

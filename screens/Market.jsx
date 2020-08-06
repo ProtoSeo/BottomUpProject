@@ -17,36 +17,38 @@ import Dialog, {
   ScaleAnimation,
 } from 'react-native-popup-dialog';
 
-const DATA = [
-  {
-    name: '닭갈비',
-    subname: '춘천365닭갈비, 오늘은 닭, 마인하우스',
-    icon: './icon/chicken.png'
-  },
-  {
-    name: '칼국수',
-    subname: '오씨네 칼국수, 국수',
-    icon: '.icon/soup'
-  },
-  {
-    name: '고등어 백반',
-    subname: '학생회관',
-    icon: './icon/rice.png'
-  },
-  {
-    name: '통닭',
-    subname: '충남통닭, 깻잎치킨',
-    icon: './icon/chicken.png'
-  },
-  {
-    name: '회덮밥',
-    subname: '마루, 배재원',
-    icon: './icon/rice.png'
-  }
-]
 
-const Item = ({ name, subname, icon ,func}) => (
-  <TouchableOpacity style={styles.item_view} onPress={func}> 
+const DATA = [
+    {
+      name: '중리시장',
+      subname: '춘천365닭갈비, 오늘은 닭, 마인하우스',
+      icon: './icon/chicken.png',
+      number : 1,
+    },
+    {
+      name: '중앙시장',
+      subname: '오씨네 칼국수, 국수',
+      icon: '.icon/soup'
+    },
+    {
+      name: '유성시장',
+      subname: '학생회관',
+      icon: './icon/rice.png'
+    },
+    {
+      name: '태평전통시장',
+      subname: '충남통닭, 깻잎치킨',
+      icon: './icon/chicken.png'
+    },
+    {
+      name: '내 시장',
+      subname: '마루, 배재원',
+      icon: './icon/rice.png'
+    }
+  ]
+
+const Item = ({ name, subname, func }) => (
+  <TouchableOpacity style={styles.item_view} onPress={func}>
     <View style={{flex: 7, flexDirection: 'row'}}>
       <Image style={styles.item_icon} source={require('./icon/rice.png')}/>
       <Text style={styles.item_title}>{name}</Text>
@@ -57,16 +59,15 @@ const Item = ({ name, subname, icon ,func}) => (
   </TouchableOpacity>
 )
 
-class Sijang extends Component {
+class Market extends Component {
 
   state = {
     search: '',
     menuDialog: false,
     LoginDialog : false,
   };
-  
- 
-  updateSearch = ( search) => {
+
+  updateSearch = (search) => {
     this.setState({ search });
   };
   
@@ -84,12 +85,14 @@ class Sijang extends Component {
     
   }
 
+  
+
   render() {
 
     const { search } = this.state;
 
     const renderItem = ({ item }) => (
-      <Item name={item.name} subname={item.subname} icon={item.icon} func = {this.goList} />
+      <Item name={item.name} subname={item.subname} icon={item.icon} func = {() => this.props.navigation.navigate('Sijang',{name:item.name})} />
     )
     
     return (
@@ -192,7 +195,6 @@ class Sijang extends Component {
             data={DATA}
             renderItem={renderItem}
             keyExtractor={item => item.name}
-            
           />
         </View>
 
@@ -305,4 +307,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default Sijang;
+export default Market;
