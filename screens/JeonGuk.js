@@ -18,7 +18,6 @@ import Dialog, {
 
 class JeonGuk extends React.Component {
   state = {
-    searchString: '시장을 검색하세요',
     search: '',
     menuDialog: false
   };
@@ -109,9 +108,6 @@ class JeonGuk extends React.Component {
         </View>
           
         <View style={{flex: 2}}>
-          {/* <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-            <AntDesign name="back" size={15} color="white" />
-          </TouchableOpacity> */}
         </View>
 
         </View>
@@ -120,16 +116,17 @@ class JeonGuk extends React.Component {
         
         <View style={styles.view}>
         <ScrollView >
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="서울특별시" onPressAction={() => this.props.navigation.navigate('Seoul')}width='80%' violetPink impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="인천/경기" onPressAction={() => this.props.navigation.navigate('InCheonKyungKi')} prev = {'인천/경기'} width='80%' violetPink impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="대전/충청" onPressAction={() => this.props.navigation.navigate('ChungChung')} width='80%' violetPink impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="광주/전라" onPressAction={() => this.props.navigation.navigate('Jeonna')} width='80%' violetPink impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="대구/경북" onPressAction={() => this.props.navigation.navigate('KyeongBook')}width='80%' violetPink impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="부산/경남" onPressAction={() => this.props.navigation.navigate('KyeongNam')}width='80%' violetPink impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="강원도" onPressAction={() => this.props.navigation.navigate('KwangWon')}width='80%' violetPink impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="제주특별자치시" onPressAction={() => this.props.navigation.navigate('JeJu')}width='80%' violetPink impact />
+          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="서울특별시" onPressAction={() => this.props.navigation.navigate('Seoul')}width='80%' deepBlue impact />
+          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="인천/경기" onPressAction={() => this.props.navigation.navigate('InCheonKyungKi')} prev = {'인천/경기'} width='80%' deepBlue impact />
+          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="대전/충청" onPressAction={() => this.props.navigation.navigate('ChungChung')} width='80%' deepBlue impact />
+          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="광주/전라" onPressAction={() => this.props.navigation.navigate('Jeonna')} width='80%' deepBlue impact />
+          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="대구/경북" onPressAction={() => this.props.navigation.navigate('KyeongBook')}width='80%' deepBlue impact />
+          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="부산/경남" onPressAction={() => this.props.navigation.navigate('KyeongNam')}width='80%' deepBlue impact />
+          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="강원도" onPressAction={() => this.props.navigation.navigate('KwangWon')}width='80%' deepBlue impact />
+          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="제주특별자치시" onPressAction={() => this.props.navigation.navigate('JeJu')}width='80%' deepBlue impact />
         </ScrollView>
         </View>
+
         <View style={styles.SearchSpace}>
           <SearchBar
             showCancel
@@ -217,7 +214,6 @@ const styles = StyleSheet.create({
   SearchSpace: {
     height: 100,
     justifyContent: 'center',
-    marginHorizontal: '5%'
   },
 
   one : {

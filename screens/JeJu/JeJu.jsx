@@ -1,40 +1,129 @@
 import React from 'react'
-import { StyleSheet, Text, ScrollView,TouchableOpacity,TextInput,View, KeyboardAvoidingView, } from 'react-native';
-import { Icon } from 'react-native-elements'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { AntDesign } from '@expo/vector-icons';
+import { 
+  StyleSheet, 
+  Text, 
+  ScrollView,
+  TouchableOpacity,
+  View, 
+  KeyboardAvoidingView, } from 'react-native';
+import { SearchBar } from 'react-native-elements'
 import GradientButton from 'react-native-gradient-buttons';
+import Dialog, {
+  DialogTitle,
+  DialogContent,
+  DialogButton,
+  ScaleAnimation,
+} from 'react-native-popup-dialog';
 
 const Gu = ['제주시','서귀포시']
 
 class JeJu extends React.Component {
   state = {
-    searchString: '시장을 검색하세요',
-    name : Gu, 
+    search: '',
+    menuDialog: false
   }
+  
+  updateSearch = (search) => {
+    this.setState({ search });
+  };
+
   test = (e) => {
     this.props.navigation.goBack();
   }
-    
 
   render () {
+
+    const { search } = this.state;
+
     return(
 
-      <View>
         <View style={styles.one}>
-          <Text style={styles.title}>우리 시소</Text>
-        </View>
-        <View>
-        <TouchableOpacity onPress={this.test} value="서울/경기">
-              <Text>뒤로가기</Text>
+        <View style={styles.TopBar}>
+
+          <View style={{flex: 2}}>
+            <TouchableOpacity style={styles.TopButton} onPress={() => {
+              this.setState({
+                menuDialog: true
+              });
+            }}>
+              <AntDesign name="bars" size={15} color="white" />
             </TouchableOpacity>
+
+          <Dialog
+            onTouchOutside={() => {
+              this.setState({ menuDialog: false });
+            }}
+            width={0.9}
+            visible={this.state.menuDialog}
+            dialogAnimation={new ScaleAnimation()}
+            onHardwareBackPress={() => {
+              console.log('onHardwareBackPress');
+              this.setState({ menuDialog: false });
+              return true;
+            }}
+            dialogTitle={
+              <DialogTitle
+                title="Menu"
+                hasTitleBar={true}
+                style={{color: '#6A6F75', fontSize:24}}
+              />
+            }
+            actions={[
+              <DialogButton
+                text="DISMISS"
+                onPress={() => {
+                  this.setState({ menuDialog: false });
+                }}
+                key="button-1"
+              />,
+            ]}
+            >
+            <DialogContent>
+              <View>
+                <View style={{flexDirection: 'row'}}>
+                  <TouchableOpacity style={styles.dialog_Button} onPress={this.onPress}>
+                    <AntDesign name="home" size={20} color="white" />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.dialog_Button} onPress={this.onPress}>
+                    <AntDesign name="user" size={20} color="white" />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.dialog_Button} onPress={this.onPress}>
+                    <AntDesign name="setting" size={20} color="white" />
+                  </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity
+                  style={{alignItems: 'center'}}
+                  onPress={() => {
+                    this.setState({ menuDialog: false });
+                  }}>
+                  <Text style={{fontSize:20, color:"#81888F"}}>CLOSE</Text>    
+                </TouchableOpacity>
+              </View>
+            </DialogContent>
+          </Dialog>
+        </View>
+          
+        <View style={{flex: 3, alignItems: 'center'}}>
+          <Text style={styles.TopBarText}>
+            우리의 시소
+          </Text>
+        </View>
+          
+        <View style={{flex: 2}}>
+          <TouchableOpacity style={styles.TopButton} onPress={this.test}>
+            <AntDesign name="back" size={15} color="white" />
+          </TouchableOpacity>
+        </View>
+
         </View>
         <KeyboardAvoidingView behavior={'height'}> 
        
         <View style={styles.view}>
-        <TextInput
-            placeholder="Email"
-            style={{alignItems:'center',justifyContent:'center',backgroundColor:'white',borderWidth : 1, padding : 10,}}
-         />  
+        
         <ScrollView >
           
           {Gu.map((i) => {
@@ -46,20 +135,18 @@ class JeJu extends React.Component {
           
         </ScrollView> 
         </View>
-        <View style={{flexDirection:'row', flex : 1, marginTop:'10%',}}>
-        <View>
-      <TextInput
-        placeholder="Email"
-        style={{alignItems:'center',justifyContent:'center',backgroundColor:'white',marginLeft : '50%',borderWidth : 1, padding : 10,}}
         
-      />
-  </View>
-          <TouchableOpacity style={{alignItems:'center',justifyContent:'center'}} underlayColor = 'transparent'>
-            <View>
-              <Icon name="search" size = {20} color = "#4285F4" />
-            </View>
-          </TouchableOpacity>
+        <View style={styles.SearchSpace}>
+          <SearchBar
+            showCancel
+            round
+            lightTheme
+            placeholder="검색하세요"
+            onChangeText={this.updateSearch}
+            value={search}
+          />
         </View>
+
         </KeyboardAvoidingView>
       </View>
     
@@ -68,31 +155,77 @@ class JeJu extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  TopBar: {
+    height: '14%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#81888F',
+    flexDirection: 'row'
+  },
+
+  TopBarText: {
+    fontSize: 25, 
+    marginTop: '25%',
+    color: 'white'
+  },
+
+  TopButton: {
+    alignItems: 'center',
+    backgroundColor: '#6A6F75',
+    padding: '8%',
+    marginHorizontal: '32%',
+    marginTop: '38%',
+  },
+
+  menu_dialogContentView: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+
+  menu_dialog_button: {
+    width: '40%',
+    height: 30,
+  },
+
+  dialog_Button: {
+    alignItems: 'center',
+    backgroundColor: '#6A6F75',
+    padding: 10,
+    marginVertical: 20,
+    marginHorizontal: 20,
+    flex: 1
+  },
+
   title : {
     marginTop : 22,
     textAlign : 'center',
     fontSize :24,
   },
+
   text : {
     marginTop : '15%',
     width : 35,
     marginLeft : 65,
   },
+
   image : {
     flex : 1,
   },
+
   view : {
-    width : '80%',
-    height: '75%',
-    borderColor : 'black',
-    backgroundColor: 'skyblue',
+    height: '77%',
     textAlign : 'center',
-    marginTop : '10%',
-    marginLeft : '10%',
-    borderWidth : 1,
-    borderColor : 'black',
+    marginTop : '5%',
+    marginHorizontal : '5%',
   
   },
+
+  SearchSpace: {
+    height: 100,
+    justifyContent: 'center',
+  },
+
   one : {
     flex : 1,
    
