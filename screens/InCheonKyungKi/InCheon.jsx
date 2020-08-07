@@ -43,7 +43,7 @@ class InCheon extends React.Component {
           {Gu.map((i) => {
               return (
                 <GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} 
-                onPressAction={() => this.props.navigation.navigate('Sijang',{name : '인천광역시 ' + i} )} width='80%' deepBlue impact />
+                onPressAction={() => this.props.navigation.navigate('Market',{name : '인천광역시 ' + i} )} width='80%' deepBlue impact />
               )
           })}
           

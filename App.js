@@ -18,6 +18,7 @@ import Busan from './screens/BusanKyeonNam/Busan';
 import KyeongNam from './screens/BusanKyeonNam/KyeongNam';
 import JeJu from './screens/JeJu/JeJu';
 import Sijang from './screens/SiJang';
+<<<<<<< HEAD
 import * as firebase from "firebase";
 
 // Optionally import the services that you want to use
@@ -50,6 +51,11 @@ function writeUserData(userId, name, email, imageUrl) {
     profile_picture : imageUrl
   });
 }
+=======
+import Login from './screens/Login';
+import SignUp from './screens/SignUp';
+import Market from './screens/Market';
+>>>>>>> 8799b5be49d2b9f28e89d5482403df4a0d0fea1d
 class First extends React.Component {
   render() {
     console.log("test")
@@ -156,6 +162,24 @@ const App = createStackNavigator(
         headerShown: false
       }
     },
+    Login: {
+      screen: Login,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    SignUp: {
+      screen: SignUp,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    Market : {
+      screen: Market,
+      navigationOptions: {
+        headerShown: false
+      }
+    }
   },
   {
     initialRouteName: 'Home' // 처음 보여 줄 화면을 설정합니다.
