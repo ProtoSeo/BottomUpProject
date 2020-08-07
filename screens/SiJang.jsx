@@ -58,14 +58,12 @@ const Item = ({ name, subname, icon ,func}) => (
 )
 
 class Sijang extends Component {
-
   state = {
     search: '',
     menuDialog: false,
     LoginDialog : false,
   };
   
- 
   updateSearch = ( search) => {
     this.setState({ search });
   };
@@ -81,13 +79,10 @@ class Sijang extends Component {
 
   changeState2 = () => {
     this.setState({menuDialog : false});
-    
   }
 
   render() {
-
     const { search } = this.state;
-
     const renderItem = ({ item }) => (
       <Item name={item.name} subname={item.subname} icon={item.icon} func = {this.goList} />
     )

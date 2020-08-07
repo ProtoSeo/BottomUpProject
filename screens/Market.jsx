@@ -60,7 +60,6 @@ const Item = ({ name, subname, func }) => (
 )
 
 class Market extends Component {
-
   state = {
     search: '',
     menuDialog: false,
@@ -82,15 +81,11 @@ class Market extends Component {
 
   changeState2 = () => {
     this.setState({menuDialog : false});
-    
   }
 
-  
 
   render() {
-
     const { search } = this.state;
-
     const renderItem = ({ item }) => (
       <Item name={item.name} subname={item.subname} icon={item.icon} func = {() => this.props.navigation.navigate('Sijang',{name:item.name})} />
     )

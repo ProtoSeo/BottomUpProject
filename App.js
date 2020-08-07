@@ -18,7 +18,10 @@ import Busan from './screens/BusanKyeonNam/Busan';
 import KyeongNam from './screens/BusanKyeonNam/KyeongNam';
 import JeJu from './screens/JeJu/JeJu';
 import Sijang from './screens/SiJang';
-<<<<<<< HEAD
+import Login from './screens/Login';
+import SignUp from './screens/SignUp';
+import Market from './screens/Market';
+import City from './screens/City'
 import * as firebase from "firebase";
 
 // Optionally import the services that you want to use
@@ -39,27 +42,25 @@ const firebaseConfig = {
   appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
 };
 
-firebase.initializeApp(firebaseConfig);
-
-// Get a reference to the database service
-var database = firebase.database();
-
-function writeUserData(userId, name, email, imageUrl) {
-  firebase.database().ref('users/' + userId).set({
-    username: name,
-    email: email,
-    profile_picture : imageUrl
-  });
+if(!firebase.apps.length){
+  firebase.initializeApp(firebaseConfig);
 }
-=======
-import Login from './screens/Login';
-import SignUp from './screens/SignUp';
-import Market from './screens/Market';
->>>>>>> 8799b5be49d2b9f28e89d5482403df4a0d0fea1d
+// Get a reference to the database service
+
+
+// 회원가입할때 필요할것
+// function writeUserData(userId, name, email, imageUrl) {    
+//   firebase.database().ref('users/' + userId).set({
+//     username: name,
+//     email: email,
+//     profile_picture : imageUrl
+//   });
+// }
+
 class First extends React.Component {
   render() {
-    console.log("test")
-    writeUserData("test","test","test","test")
+
+
     return (
       <View style={styles.container}>
         <StatusBar Constants = {Constants} />
@@ -69,83 +70,16 @@ class First extends React.Component {
   }
 }
 
-
 const App = createStackNavigator(
   {
+    City:{
+      screen : City,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
     Seoul: {
       screen: Seoul,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
-    Jeonna: {
-      screen: Jeonna,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
-    광주광역시: {
-      screen: Ghwangjoo,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
-    InCheonKyungKi: {
-      screen: InCheonKyungKi,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
-    대구광역시: {
-      screen: DaeGu,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
-    KyeongBook: {
-      screen: KyeongBook,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
-    인천광역시: {
-      screen: InCheon,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
-    대전광역시: {
-      screen: DaeJeon,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
-    ChungChung: {
-      screen: ChungChung,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
-    KwangWon: {
-      screen: KwangWon,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
-    KyeongNam: {
-      screen: KyeongNam,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
-    부산광역시: {
-      screen: Busan,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
-    JeJu: {
-      screen: JeJu,
       navigationOptions: {
         headerShown: false
       }

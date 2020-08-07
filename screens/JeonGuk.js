@@ -3,27 +3,27 @@ import { StyleSheet, Text, ScrollView,TouchableOpacity,TextInput,View, KeyboardA
 import { Icon } from 'react-native-elements'
 import GradientButton from 'react-native-gradient-buttons';
 
+const List =["서울","경기","대전","부산","강원","경북","경남","광주","충북","울산","충남","전남","전북","제주","인천","세종"].sort()
+
 class JeonGuk extends React.Component {
   state = {
     searchString: '시장을 검색하세요',
   }
   
-
   render () {
     return(
-
       <View>
         <View style={styles.one}>
           <Text style={styles.title}>우리 시소</Text>
         </View>
         <KeyboardAvoidingView behavior={'height'}> 
-        
         <View style={styles.view}>
         <TextInput
             placeholder="Email"
             style={{alignItems:'center',justifyContent:'center',backgroundColor:'white',borderWidth : 1, padding : 10,}}
          />  
         <ScrollView >
+          {List.map((region,i)=><GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30} }  text={`${region}`}  onPressAction={() => this.props.navigation.navigate('City')}width='80%' deepBlue impact/>)}
           <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="서울특별시" onPressAction={() => this.props.navigation.navigate('Seoul')}width='80%' deepBlue impact />
           <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="인천/경기" onPressAction={() => this.props.navigation.navigate('InCheonKyungKi')} prev = {'인천/경기'} width='80%' deepBlue impact />
           <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="대전/충청" onPressAction={() => this.props.navigation.navigate('ChungChung')} width='80%' deepBlue impact />
@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
   },
   one : {
     flex : 1,
-   
   }
 });
 
