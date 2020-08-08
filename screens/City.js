@@ -41,20 +41,14 @@ class City extends React.Component {
       var key = childSnapshot.key;
       var childData =childSnapshot.child("시군구").val()
       regionList.push(childData);
-    }
-    )
+    })
     Promise.all(regionList);
     let resultList = new Set([...regionList])
-    // console.log( [...resultList])
     return [...resultList]
   }
-  componentDidMount() {
-    this.getData()
-    .then((data) => {
-      this.setState({
-        dataList:data,
-      })  
-    })
+  async componentDidMount() {
+    let data = await this.getData();
+    this.setState({dataList:data})  
   }
   render () {
     console.log(this.props.navigation.getParam('name'))
@@ -79,13 +73,12 @@ class City extends React.Component {
             style={{alignItems:'center',justifyContent:'center',backgroundColor:'white',borderWidth : 1, padding : 10,}}
          />  
         <ScrollView >
-          {dataList.map((i) => {
+          {dataList.map((region,i) => {
               return (
-                <GradientButton key={i}  style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} 
-                prev = {i} onPressAction={() => this.props.navigation.navigate('Market',{name : '서울광역시 ' + i} )}width='80%' deepBlue impact />
+                <GradientButton key={i}  style={{ marginVertical: 8 ,marginLeft : 30}} text = {region} 
+                prev = {region} onPressAction={() => this.props.navigation.navigate('Market',{name :regionName+ " " + region} )} width='80%' deepBlue impact />
               )
           })}
-
         </ScrollView>
 
         </View>

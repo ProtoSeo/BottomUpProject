@@ -76,12 +76,6 @@ const App = createStackNavigator(
         headerShown: false
       }
     },
-    Seoul: {
-      screen: Seoul,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
     Sijang : {
       screen: Sijang,
       navigationOptions: {
