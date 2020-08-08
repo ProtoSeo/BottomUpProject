@@ -6,7 +6,7 @@ import GradientButton from 'react-native-gradient-buttons';
 import * as firebase from "firebase";
 
 import "firebase/database";
-
+    
 const firebaseConfig = {
   apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
   authDomain: "bottom-up-project.firebaseapp.com",
@@ -21,6 +21,7 @@ if(!firebase.apps.length){
   firebase.initializeApp(firebaseConfig);
 }
 var database = firebase.database()
+
 const Gu = ['강남구','강동구','강북구',
 '강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구']
 
@@ -28,28 +29,45 @@ class City extends React.Component {
   state = {
     searchString: '시장을 검색하세요',
     name : Gu, 
+    dataList :[]
   }
   test = (e) => {
     this.props.navigation.goBack();
   }
-  
+  getData = async() =>{
+    var regionList = [];
+    const snapshot = await database.ref(`Data/${this.props.navigation.getParam('name')}`).once('value')
+      snapshot.forEach(childSnapshot=>{
+      var key = childSnapshot.key;
+      var childData =childSnapshot.child("시군구").val()
+      regionList.push(childData);
+    }
+    )
+    Promise.all(regionList);
+    let resultList = new Set([...regionList])
+    // console.log( [...resultList])
+    return [...resultList]
+  }
+  componentDidMount() {
+    this.getData()
+    .then((data) => {
+      this.setState({
+        dataList:data,
+      })  
+    })
+  }
   render () {
     console.log(this.props.navigation.getParam('name'))
-    var data = ""
-    database.ref().child("Data").child(`${this.props.navigation.getParam('name')}`).once('value').then(function(snapshot) {
-      // console.log(snapshot.toJSON());
-      data = JSON.stringify(snapshot)
-    });
-    console.log(data)
-    // const data = database.ref('Data').child(`${this.props.navigation.getParam('name')}`).once('value');
-    // console.log(data)
+    const regionName = this.props.navigation.getParam('name')
+    const {dataList} = this.state; 
+    console.log("data",dataList)
     return(
       <View>
         <View style={styles.one}>
           <Text style={styles.title}>우리 시소</Text>
         </View>
         <View>
-        <TouchableOpacity onPress={this.test} value="서울/경기">
+        <TouchableOpacity onPress={this.test} value={regionName}>
               <Text>뒤로가기</Text>
             </TouchableOpacity>
         </View>
@@ -61,13 +79,13 @@ class City extends React.Component {
             style={{alignItems:'center',justifyContent:'center',backgroundColor:'white',borderWidth : 1, padding : 10,}}
          />  
         <ScrollView >
-          {Gu.map((i) => {
+          {dataList.map((i) => {
               return (
                 <GradientButton key={i}  style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} 
                 prev = {i} onPressAction={() => this.props.navigation.navigate('Market',{name : '서울광역시 ' + i} )}width='80%' deepBlue impact />
               )
           })}
-          
+
         </ScrollView>
 
         </View>
