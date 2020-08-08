@@ -7,7 +7,6 @@ import GradientButton from 'react-native-gradient-buttons';
 const Gu = ['강남구','강동구','강북구',
 '강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구']
 
-
 class Seoul extends React.Component {
   state = {
     searchString: '시장을 검색하세요',
@@ -20,7 +19,6 @@ class Seoul extends React.Component {
 
   render () {
     return(
-
       <View>
         <View style={styles.one}>
           <Text style={styles.title}>우리 시소</Text>
@@ -44,8 +42,7 @@ class Seoul extends React.Component {
                 <GradientButton key={i}  style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} 
                 prev = {i} onPressAction={() => this.props.navigation.navigate('Market',{name : '서울광역시 ' + i} )}width='80%' deepBlue impact />
               )
-          })}
-          
+          })}          
         </ScrollView> 
         </View>
         <View style={{flexDirection:'row', flex : 1, marginTop:'10%',}}>

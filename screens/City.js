@@ -4,6 +4,7 @@ import { Icon } from 'react-native-elements'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import GradientButton from 'react-native-gradient-buttons';
 import * as firebase from "firebase";
+
 import "firebase/database";
 
 const firebaseConfig = {
@@ -19,6 +20,10 @@ const firebaseConfig = {
 if(!firebase.apps.length){
   firebase.initializeApp(firebaseConfig);
 }
+var database = firebase.database()
+const Gu = ['강남구','강동구','강북구',
+'강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구']
+
 class City extends React.Component {
   state = {
     searchString: '시장을 검색하세요',
@@ -27,11 +32,18 @@ class City extends React.Component {
   test = (e) => {
     this.props.navigation.goBack();
   }
-    
-
+  
   render () {
+    console.log(this.props.navigation.getParam('name'))
+    var data = ""
+    database.ref().child("Data").child(`${this.props.navigation.getParam('name')}`).once('value').then(function(snapshot) {
+      // console.log(snapshot.toJSON());
+      data = JSON.stringify(snapshot)
+    });
+    console.log(data)
+    // const data = database.ref('Data').child(`${this.props.navigation.getParam('name')}`).once('value');
+    // console.log(data)
     return(
-
       <View>
         <View style={styles.one}>
           <Text style={styles.title}>우리 시소</Text>
@@ -48,15 +60,14 @@ class City extends React.Component {
             placeholder="Email"
             style={{alignItems:'center',justifyContent:'center',backgroundColor:'white',borderWidth : 1, padding : 10,}}
          />  
-
         <ScrollView >
-          
           {Gu.map((i) => {
               return (
                 <GradientButton key={i}  style={{ marginVertical: 8 ,marginLeft : 30}} text = {i} 
                 prev = {i} onPressAction={() => this.props.navigation.navigate('Market',{name : '서울광역시 ' + i} )}width='80%' deepBlue impact />
               )
           })}
+          
         </ScrollView>
 
         </View>

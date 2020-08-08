@@ -11,9 +11,25 @@ import {
 
 } from 'react-native';
 import { Button } from 'react-native-elements'
+import * as firebase from "firebase";
+import "firebase/database";
 
-class Sijang extends Component {
+const firebaseConfig = {
+  apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
+  authDomain: "bottom-up-project.firebaseapp.com",
+  databaseURL: "https://bottom-up-project.firebaseio.com",
+  projectId: "bottom-up-project",
+  storageBucket: "bottom-up-project.appspot.com",
+  messagingSenderId: "109120495683",
+  appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
+};
 
+if(!firebase.apps.length){
+  firebase.initializeApp(firebaseConfig);
+}
+var database = firebase.database()
+
+class Login extends Component {
   state = {
     search: '',
     menuDialog: false,
@@ -34,7 +50,6 @@ class Sijang extends Component {
 
 
   render() {
-
     const { search } = this.state;
 
     const renderItem = ({ item }) => (
@@ -59,7 +74,6 @@ class Sijang extends Component {
               <AntDesign name="back" size={30} color="white" />
             </TouchableOpacity>
           </View>
-          
         </View>
         
         <View style={styles.MainSpace}>
@@ -211,4 +225,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default Sijang;
+export default Login;

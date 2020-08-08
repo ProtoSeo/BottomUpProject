@@ -47,7 +47,6 @@ if(!firebase.apps.length){
 }
 // Get a reference to the database service
 
-
 // 회원가입할때 필요할것
 // function writeUserData(userId, name, email, imageUrl) {    
 //   firebase.database().ref('users/' + userId).set({
@@ -59,7 +58,6 @@ if(!firebase.apps.length){
 
 class First extends React.Component {
   render() {
-
 
     return (
       <View style={styles.container}>
