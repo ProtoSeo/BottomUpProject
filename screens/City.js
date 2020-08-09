@@ -22,39 +22,34 @@ if(!firebase.apps.length){
 }
 var database = firebase.database()
 
-const Gu = ['강남구','강동구','강북구',
-'강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구']
-
 class City extends React.Component {
   state = {
     searchString: '시장을 검색하세요',
-    name : Gu, 
     dataList :[]
   }
   test = (e) => {
     this.props.navigation.goBack();
   }
-  getData = async() =>{
-    var regionList = [];
-    const snapshot = await database.ref(`Data/${this.props.navigation.getParam('name')}`).once('value')
-      snapshot.forEach(childSnapshot=>{
-      var key = childSnapshot.key;
-      var childData =childSnapshot.child("시군구").val()
-      regionList.push(childData);
-    })
-    Promise.all(regionList);
-    let resultList = new Set([...regionList])
-    return [...resultList]
-  }
-  async componentDidMount() {
-    let data = await this.getData();
-    this.setState({dataList:data})  
-  }
+  // getData = async() =>{
+  //   var regionList = [];
+  //   const snapshot = await database.ref(`Data/${this.props.navigation.getParam('name')}`).once('value')
+  //     snapshot.forEach(childSnapshot=>{
+  //     var key = childSnapshot.key;
+  //     var childData =childSnapshot.child("시군구").val()
+  //     regionList.push(childData);
+  //   })
+  //   Promise.all(regionList);
+  //   let resultList = new Set([...regionList])
+  //   return [...resultList]
+  // }
+  // async componentDidMount() {
+  //   let data = await this.getData();
+  //   this.setState({dataList:data})  
+  // }
   render () {
     console.log(this.props.navigation.getParam('name'))
     const regionName = this.props.navigation.getParam('name')
-    const {dataList} = this.state; 
-    console.log("data",dataList)
+    const regionList = this.props.navigation.getParam("regionList")
     return(
       <View>
         <View style={styles.one}>
@@ -73,7 +68,7 @@ class City extends React.Component {
             style={{alignItems:'center',justifyContent:'center',backgroundColor:'white',borderWidth : 1, padding : 10,}}
          />  
         <ScrollView >
-          {dataList.map((region,i) => {
+          {regionList.map((region,i) => {
               return (
                 <GradientButton key={i}  style={{ marginVertical: 8 ,marginLeft : 30}} text = {region} 
                 prev = {region} onPressAction={() => this.props.navigation.navigate('Market',{name :regionName+ " " + region} )} width='80%' deepBlue impact />

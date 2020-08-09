@@ -2,6 +2,24 @@ import React from 'react'
 import { StyleSheet, Text, ScrollView,TouchableOpacity,TextInput,View, KeyboardAvoidingView, } from 'react-native';
 import { Icon } from 'react-native-elements'
 import GradientButton from 'react-native-gradient-buttons';
+import * as firebase from "firebase";
+
+import "firebase/database";
+    
+const firebaseConfig = {
+  apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
+  authDomain: "bottom-up-project.firebaseapp.com",
+  databaseURL: "https://bottom-up-project.firebaseio.com",
+  projectId: "bottom-up-project",
+  storageBucket: "bottom-up-project.appspot.com",
+  messagingSenderId: "109120495683",
+  appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
+};
+
+if(!firebase.apps.length){
+  firebase.initializeApp(firebaseConfig);
+}
+var database = firebase.database()
 
 const List =["서울","경기","대전","부산","강원","경북","경남","광주","충북","울산","충남","전남","전북","제주","인천","세종"].sort()
 
@@ -22,7 +40,21 @@ class JeonGuk extends React.Component {
             style={{alignItems:'center',justifyContent:'center',backgroundColor:'white',borderWidth : 1, padding : 10,}}
          />  
         <ScrollView >
-          {List.map((region,i)=><GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30} } text={`${region}`}  onPressAction={() => this.props.navigation.navigate('City',{name :`${region}`})} width='80%' deepBlue impact/>)}
+          {List.map((region,i)=><GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30} } text={`${region}`}  
+          onPressAction={
+            async () => 
+            {
+              var regionList = [];
+              const snapshot = await database.ref(`Data/${region}`).once('value')
+              snapshot.forEach(childSnapshot=>{
+              var key = childSnapshot.key;
+              var childData = childSnapshot.child("시군구").val()
+              regionList.push(childData);})
+            await Promise.all(regionList);
+            let resultList = new Set([...regionList])
+            this.props.navigation.navigate('City',{name :`${region}`, regionList :[...resultList]})
+            }
+          } width='80%' deepBlue impact/>)}
         </ScrollView>
         </View>
         <View style={{flexDirection:'row', flex : 1, marginTop:'10%',}}>
