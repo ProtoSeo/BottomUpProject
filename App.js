@@ -20,7 +20,10 @@ import JeJu from './screens/JeJu/JeJu';
 import Sijang from './screens/SiJang';
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
+import FindID from './screens/FindID';
 import Market from './screens/Market';
+import SelectFind from './screens/SelectFind';
+import FindPass from './screens/FindPass';
 class First extends React.Component {
   render() {
     return (
@@ -137,6 +140,33 @@ const App = createStackNavigator(
         headerShown: false
       }
     },
+    SelectFind: {
+      screen: SelectFind,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    FindID: {
+      screen: FindID,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+
+    FindID: {
+      screen: FindID,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+
+    FindPass : {
+      screen : FindPass,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+  
     Market : {
       screen: Market,
       navigationOptions: {
@@ -145,7 +175,7 @@ const App = createStackNavigator(
     }
   },
   {
-    initialRouteName: 'Home' // 처음 보여 줄 화면을 설정합니다.
+    initialRouteName: 'Login' // 처음 보여 줄 화면을 설정합니다.
   },
 );
 

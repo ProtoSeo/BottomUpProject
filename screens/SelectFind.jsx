@@ -4,10 +4,11 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity
 } from 'react-native';
 import { Button } from 'react-native-elements'
-
-class Sijang extends Component {
+import { AntDesign } from '@expo/vector-icons';
+class SelectFind extends Component {
 
   state = {
     search: '',
@@ -39,47 +40,40 @@ class Sijang extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.TopBar}>
+        <View style={{flex: 2}}>
+            </View>
           <View style={{flex: 3, alignItems: 'center'}}>
             <Text style={styles.TopBarText}>
               우리시소
             </Text>
+            
+          </View>
+          <View style={{flex: 2}}>
+            <TouchableOpacity style={styles.TopButton} onPress={this.test}>
+              <AntDesign name="back" size={30} color="white" />
+            </TouchableOpacity>
           </View>
         </View>
         
         <View style={styles.MainSpace}>
-        <Text style={{textAlign : 'center',marginBottom : '10%',fontSize:25,}}>
-              로그인
-        </Text>
-          <View>
-          <SearchBar
-            showCancel
-            round
-            lightTheme
-            placeholder="아이디"
-            containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
-            onChangeText={this.updateId}
-            value={this.state.ID}
-          />
-          <SearchBar
-            showCancel
-            round
-            lightTheme
-            placeholder="비밀번호"
-            containerStyle={{width:'85%',marginLeft:'7.5%',}}
-            onChangeText={this.updatepas}
-            value={this.state.Password}
-          />
-          </View>
-
-          <View style={{flexDirection : 'row',marginLeft:'8%',marginTop:'10%'}}>
-          <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
-          buttonStyle={{backgroundColor: "gray",height: '50%',}} title='로그인' onPress = {() => {this.props.navigation.navigate('Home')}} />
-          <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
-          buttonStyle={{backgroundColor: "gray",height: '50%'}} title='회원가입'
-          onPress = {() => {this.props.navigation.navigate('SignUp')}} />
-          <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
-          buttonStyle={{width : '100%',backgroundColor: "gray",height: '50%'}} title={`아이디/${'\n'}비밀번호찾기`} 
-          onPress = {() =>{this.props.navigation.navigate('SelectFind')}}/>
+      
+        <View style={{flex:1,flexDirection:'row',marginTop:'25%'}}>
+            <View style={{flex:1,alignItems : 'center',marginTop : 
+            '25%',}}>
+              <TouchableOpacity onPress={() => {this.props.navigation.navigate('FindID')}} >
+              <Text style={{fontSize:25}}>
+              아이디 찾기
+              </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{flex:1,alignItems : 'center',marginTop : 
+            '25%',}}>
+            <TouchableOpacity onPress={() => {this.props.navigation.navigate('FindPass')}}>
+              <Text style={{alignContent : 'center',fontSize:25}} onChange={this.notequal2}>
+              비밀번호 찾기
+              </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -199,4 +193,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default Sijang;
+export default SelectFind;

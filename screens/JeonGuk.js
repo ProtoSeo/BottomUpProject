@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, ScrollView,TouchableOpacity,TextInput,View, KeyboardAvoidingView, } from 'react-native';
+import { StyleSheet, Text, ScrollView,TouchableOpacity,TextInput,View, KeyboardAvoidingView, Alert} from 'react-native';
 import { Icon } from 'react-native-elements'
 import GradientButton from 'react-native-gradient-buttons';
 
@@ -7,8 +7,18 @@ class JeonGuk extends React.Component {
   state = {
     searchString: '시장을 검색하세요',
   }
-  
-
+  test = () => {
+    
+    Alert.alert(
+      '로그아웃',
+      '로그아웃 하시겠습니까?',
+      [
+        {text: 'Yes', onPress: () => this.props.navigation.navigate('Login'), style : 'cancle'},
+        {text: 'NO', onPress: () => {}, style: 'cancel'},
+        
+      ]
+    );
+  }
   render () {
     return(
 
@@ -16,6 +26,9 @@ class JeonGuk extends React.Component {
         <View style={styles.one}>
           <Text style={styles.title}>우리 시소</Text>
         </View>
+        <TouchableOpacity onPress={this.test} value="서울/경기">
+              <Text>로그 아웃</Text>
+            </TouchableOpacity>
         <KeyboardAvoidingView behavior={'height'}> 
         
         <View style={styles.view}>

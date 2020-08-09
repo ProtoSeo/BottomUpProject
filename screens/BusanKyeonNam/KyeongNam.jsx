@@ -23,7 +23,7 @@ class KyeongNam extends React.Component {
   render () {
     return(
 
-      <View>
+      <View style={{marginTop:15}}>
         <View style={styles.one}>
           <Text style={styles.title}>우리 시소</Text>
         </View>

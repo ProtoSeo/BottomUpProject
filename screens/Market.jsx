@@ -142,7 +142,7 @@ class Market extends Component {
                       <AntDesign name="home" size={20} color="white" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.dialog_Button} onPress={() => {this.props.navigation.navigate('Login'); this.setState({menuDialog : false})}}>
+                    <TouchableOpacity style={styles.dialog_Button} onPress={() => { this.setState({menuDialog : false})}}>
                       <AntDesign name="user" size={20} color="white" />
                     </TouchableOpacity>
 
