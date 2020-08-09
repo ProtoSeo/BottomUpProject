@@ -26,6 +26,8 @@ class SignUp extends Component {
     menuDialog: false,
     ID : '',
     Password : '',
+    Tele : '',
+    name : '',
     initialFood : Food,
     SecondFood : [],
     SemiFinalFood : [],
@@ -40,6 +42,12 @@ class SignUp extends Component {
   }
   updatepas = (pas) => {
     this.setState({Password : pas})
+  }
+  updateTele = (tele) => {
+    this.setState({Tele : tele})
+  }
+  updateName = (name) => {
+    this.setState({name: name})
   }
   test = () => {
     this.props.navigation.goBack();
@@ -228,8 +236,26 @@ class SignUp extends Component {
             round
             lightTheme
             placeholder="비밀번호"
-            containerStyle={{width:'85%',marginLeft:'7.5%',}}
+            containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
             onChangeText={this.updatepas}
+            value={this.state.Password}
+          />
+           <SearchBar
+            showCancel
+            round
+            lightTheme
+            placeholder="이름을 입력하세요"
+            containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
+            onChangeText={this.updateName}
+            value={this.state.Password}
+          />
+          <SearchBar
+            showCancel
+            round
+            lightTheme
+            placeholder="전화번호를 입력하세요"
+            containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
+            onChangeText={this.updateTele}
             value={this.state.Password}
           />
           </View>
@@ -237,23 +263,25 @@ class SignUp extends Component {
             음식 이상형월드컵
           </Text>
           <View style={{flex:1,flexDirection:'row'}}>
-            <View style={{flex:1,alignItems : 'center',marginTop : 80,}}>
+            <View style={{flex:1,alignItems : 'center',marginTop : 
+            '25%',}}>
               <TouchableOpacity onPress={this.ChooseFood1} >
               <Text style={{fontSize:25}}>
               {this.state.selectedchooseFood1}
               </Text>
               </TouchableOpacity>
             </View>
-            <View style={{flex:1,alignItems : 'center'}}>
+            <View style={{flex:1,alignItems : 'center',marginTop : 
+            '25%',}}>
             <TouchableOpacity onPress={this.ChooseFood2}>
-              <Text style={{alignContent : 'center',marginTop : 80,fontSize:25}} onChange={this.notequal2}>
+              <Text style={{alignContent : 'center',fontSize:25}} onChange={this.notequal2}>
               {this.state.selectedchooseFood2 }
               </Text>
               </TouchableOpacity>
             </View>
           </View>
-          <Button style={{width:75,alignContents:'center',marginTop : 80,marginLeft:150}} titleStyle={{color: "white",fontSize: 15,}} 
-          buttonStyle={{backgroundColor: "gray",height: 30}} title={`가입하기`} onPress={this.submit} /> 
+          <Button style={{width:'30%',alignContents:'center',marginTop : '25%',marginLeft:'35%',marginBottom:'10%'}} titleStyle={{color: "white",fontSize: 15, padding :'5%'}} 
+          buttonStyle={{backgroundColor: "gray",height: '45%'}} title={`가입하기`} onPress={this.submit} /> 
           </ScrollView>
         </View>
         <View style={{height: 20}}></View>
@@ -266,6 +294,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    marginTop : '17%'
   },
   submit:{
     width:"80%",

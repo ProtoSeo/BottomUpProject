@@ -4,27 +4,12 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity
 } from 'react-native';
 import { Button } from 'react-native-elements'
-import * as firebase from "firebase";
-import "firebase/database";
+import { AntDesign } from '@expo/vector-icons';
+class SelectFind extends Component {
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
-  authDomain: "bottom-up-project.firebaseapp.com",
-  databaseURL: "https://bottom-up-project.firebaseio.com",
-  projectId: "bottom-up-project",
-  storageBucket: "bottom-up-project.appspot.com",
-  messagingSenderId: "109120495683",
-  appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
-};
-
-if(!firebase.apps.length){
-  firebase.initializeApp(firebaseConfig);
-}
-var database = firebase.database()
-
-class Login extends Component {
   state = {
     search: '',
     menuDialog: false,
@@ -45,6 +30,7 @@ class Login extends Component {
 
 
   render() {
+
     const { search } = this.state;
 
     const renderItem = ({ item }) => (
@@ -54,56 +40,40 @@ class Login extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.TopBar}>
+        <View style={{flex: 2}}>
+            </View>
           <View style={{flex: 3, alignItems: 'center'}}>
             <Text style={styles.TopBarText}>
               우리시소
             </Text>
-          </View>
-<<<<<<< HEAD
             
+          </View>
           <View style={{flex: 2}}>
             <TouchableOpacity style={styles.TopButton} onPress={this.test}>
               <AntDesign name="back" size={30} color="white" />
             </TouchableOpacity>
           </View>
-=======
->>>>>>> c0e693ea7e91486f15de3b680e578a6b11da6350
         </View>
         
         <View style={styles.MainSpace}>
-        <Text style={{textAlign : 'center',marginBottom : '10%',fontSize:25,}}>
-              로그인
-        </Text>
-          <View>
-          <SearchBar
-            showCancel
-            round
-            lightTheme
-            placeholder="아이디"
-            containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
-            onChangeText={this.updateId}
-            value={this.state.ID}
-          />
-          <SearchBar
-            showCancel
-            round
-            lightTheme
-            placeholder="비밀번호"
-            containerStyle={{width:'85%',marginLeft:'7.5%',}}
-            onChangeText={this.updatepas}
-            value={this.state.Password}
-          />
-          </View>
-
-          <View style={{flexDirection : 'row',marginLeft:'8%',marginTop:'10%'}}>
-          <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
-          buttonStyle={{backgroundColor: "gray",height: '50%',}} title='로그인' onPress = {() => {this.props.navigation.navigate('Home')}} />
-          <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
-          buttonStyle={{backgroundColor: "gray",height: '50%'}} title='회원가입'
-          onPress = {() => {this.props.navigation.navigate('SignUp')}} />
-          <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
-          buttonStyle={{width : '100%',backgroundColor: "gray",height: '50%'}} title={`아이디/${'\n'}비밀번호찾기`} 
-          onPress = {() =>{this.props.navigation.navigate('SelectFind')}}/>
+      
+        <View style={{flex:1,flexDirection:'row',marginTop:'25%'}}>
+            <View style={{flex:1,alignItems : 'center',marginTop : 
+            '25%',}}>
+              <TouchableOpacity onPress={() => {this.props.navigation.navigate('FindID')}} >
+              <Text style={{fontSize:25}}>
+              아이디 찾기
+              </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{flex:1,alignItems : 'center',marginTop : 
+            '25%',}}>
+            <TouchableOpacity onPress={() => {this.props.navigation.navigate('FindPass')}}>
+              <Text style={{alignContent : 'center',fontSize:25}} onChange={this.notequal2}>
+              비밀번호 찾기
+              </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -223,4 +193,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default Login;
+export default SelectFind;

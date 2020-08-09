@@ -16,32 +16,39 @@ import Dialog, {
   DialogButton,
   ScaleAnimation,
 } from 'react-native-popup-dialog';
+import StarRating from 'react-native-star-rating';
 
+var MarketName1;
 const DATA = [
   {
     name: '닭갈비',
     subname: '춘천365닭갈비, 오늘은 닭, 마인하우스',
-    icon: './icon/chicken.png'
+    icon: './icon/chicken.png',
+    Star: 3.5,
   },
   {
     name: '칼국수',
     subname: '오씨네 칼국수, 국수',
-    icon: '.icon/soup'
+    icon: '.icon/soup',
+    Star: 1,
   },
   {
     name: '고등어 백반',
     subname: '학생회관',
-    icon: './icon/rice.png'
+    icon: './icon/rice.png',
+    Star: 2,
   },
   {
     name: '통닭',
     subname: '충남통닭, 깻잎치킨',
-    icon: './icon/chicken.png'
+    icon: './icon/chicken.png',
+    Star: 5,
   },
   {
     name: '회덮밥',
     subname: '마루, 배재원',
-    icon: './icon/rice.png'
+    icon: './icon/rice.png',
+    Star: 4,
   }
 ]
 
@@ -62,8 +69,16 @@ class Sijang extends Component {
     search: '',
     menuDialog: false,
     LoginDialog : false,
+    market : false,
+    starCount: 3.5,
+    MarketName : '',
+    SubName : '',
   };
   
+<<<<<<< HEAD
+=======
+
+>>>>>>> c0e693ea7e91486f15de3b680e578a6b11da6350
   updateSearch = ( search) => {
     this.setState({ search });
   };
@@ -78,13 +93,36 @@ class Sijang extends Component {
   }
 
   changeState2 = () => {
+<<<<<<< HEAD
     this.setState({menuDialog : false});
+=======
+    this.setState({menuDialog : false}); 
   }
 
+  onStarRatingPress(rating) {
+    this.setState({
+      starCount: rating
+    });
+>>>>>>> c0e693ea7e91486f15de3b680e578a6b11da6350
+  }
+ 
+  openmodal =  () =>{
+    this.setState({
+      market : true,
+    })
+
+  }
   render() {
     const { search } = this.state;
     const renderItem = ({ item }) => (
-      <Item name={item.name} subname={item.subname} icon={item.icon} func = {this.goList} />
+      
+      <Item name={item.name} subname={item.subname} 
+      icon={item.icon} 
+      func = {() => {this.setState({
+        market:true, 
+        MarketName : item.name, 
+        starCount : item.Star,
+        SubName : item.subname})}} />
     )
     
     return (
@@ -112,7 +150,7 @@ class Sijang extends Component {
               }}
               dialogTitle={
                 <DialogTitle
-                  title="Menu"
+                  title= 'Menu'
                   hasTitleBar={true}
                   style={{color: '#6A6F75', fontSize:24}}
                 />
@@ -153,7 +191,69 @@ class Sijang extends Component {
                 </View>
               </DialogContent>
               </Dialog>
-             
+              <Dialog
+              onTouchOutside={() => {
+                this.setState({ market: false });
+              }}
+              width={0.9}
+              visible={this.state.market}
+              dialogAnimation={new ScaleAnimation()}
+              onHardwareBackPress={() => {
+                console.log('onHardwareBackPress');
+                this.setState({ market: false });
+                return true;
+              }}
+              dialogTitle={
+                <DialogTitle
+                  title={this.state.MarketName}
+                  hasTitleBar={true}
+                  style={{color: '#6A6F75', fontSize:24}}
+                />
+              }
+              actions={[
+                <DialogButton
+                  text="DISMISS"
+                  onPress={() => {
+                    this.setState({ market: false });
+                  }}
+                  key="button-1"
+                />,
+              ]}
+              >
+              <DialogContent>
+                <View style={{height : '50%'}}>
+                <View style = {{marginTop : '50%',marginBottom : '25%'}}>
+                
+                <StarRating
+                  disabled={false}
+                  emptyStar={require('./images/starEmpty.png')}
+                  fullStar={require('./images/starFilled.png')}
+                  halfStar={require('./images/starHalf.png')}
+                  iconSet={'Ionicons'}
+                  maxStars={5}
+                  
+                  rating={this.state.starCount}
+                  selectedStar={(rating) => this.onStarRatingPress(rating)}/>
+                </View>
+                <Text>
+                  {this.state.starCount}
+                  </Text>
+                  <Text>
+                  {this.state.MarketName}
+                </Text>
+                <Text>
+                  {this.state.SubName}
+                </Text>
+                <TouchableOpacity
+                    style={{alignItems: 'center'}}
+                    onPress={() => {
+                      this.setState({ market: false });
+                    }}>
+                    <Text style={{fontSize:20, color:"#81888F"}}>CLOSE</Text>    
+                  </TouchableOpacity>
+                </View>
+              </DialogContent>
+              </Dialog>
             
           </View>
             
@@ -204,7 +304,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-
+  myStarStyle: {
+    color: 'yellow',
+    backgroundColor: 'transparent',
+    textShadowColor: 'black',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
+    height : 300,
+ 
+  },
+  myEmptyStarStyle: {
+    color: 'white',
+  },
   TopBar: {
     height: 140,
     justifyContent: 'center',
