@@ -59,15 +59,6 @@ class Login extends Component {
               우리시소
             </Text>
           </View>
-<<<<<<< HEAD
-            
-          <View style={{flex: 2}}>
-            <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-              <AntDesign name="back" size={30} color="white" />
-            </TouchableOpacity>
-          </View>
-=======
->>>>>>> c0e693ea7e91486f15de3b680e578a6b11da6350
         </View>
         
         <View style={styles.MainSpace}>

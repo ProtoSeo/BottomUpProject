@@ -75,10 +75,6 @@ class Sijang extends Component {
     SubName : '',
   };
   
-<<<<<<< HEAD
-=======
-
->>>>>>> c0e693ea7e91486f15de3b680e578a6b11da6350
   updateSearch = ( search) => {
     this.setState({ search });
   };
@@ -93,9 +89,6 @@ class Sijang extends Component {
   }
 
   changeState2 = () => {
-<<<<<<< HEAD
-    this.setState({menuDialog : false});
-=======
     this.setState({menuDialog : false}); 
   }
 
@@ -103,7 +96,6 @@ class Sijang extends Component {
     this.setState({
       starCount: rating
     });
->>>>>>> c0e693ea7e91486f15de3b680e578a6b11da6350
   }
  
   openmodal =  () =>{

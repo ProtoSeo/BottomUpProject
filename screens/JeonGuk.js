@@ -27,8 +27,6 @@ class JeonGuk extends React.Component {
   state = {
     searchString: '시장을 검색하세요',
   }
-<<<<<<< HEAD
-=======
   test = () => {
     
     Alert.alert(
@@ -41,7 +39,6 @@ class JeonGuk extends React.Component {
       ]
     );
   }
->>>>>>> c0e693ea7e91486f15de3b680e578a6b11da6350
   render () {
     return(
       <View>
