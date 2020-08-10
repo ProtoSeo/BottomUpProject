@@ -7,8 +7,26 @@ import {
   Text,
   View,
   ScrollView,
+  Alert,
 } from 'react-native';              
 import { Button } from 'react-native-elements'
+import * as firebase from "firebase";
+import "firebase/database";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
+  authDomain: "bottom-up-project.firebaseapp.com",
+  databaseURL: "https://bottom-up-project.firebaseio.com",
+  projectId: "bottom-up-project",
+  storageBucket: "bottom-up-project.appspot.com",
+  messagingSenderId: "109120495683",
+  appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
+};
+
+if(!firebase.apps.length){
+  firebase.initializeApp(firebaseConfig);
+}
+var database = firebase.database()
 
 var Food = ['피자','치킨','떡볶이','족발','회',
 '국밥','와플','고기구운거',
@@ -26,8 +44,8 @@ class SignUp extends Component {
     menuDialog: false,
     ID : '',
     Password : '',
-    Tele : '',
-    name : '',
+    Phone : '',
+    Name : '',
     initialFood : Food,
     SecondFood : [],
     SemiFinalFood : [],
@@ -43,21 +61,16 @@ class SignUp extends Component {
   updatepas = (pas) => {
     this.setState({Password : pas})
   }
-  updateTele = (tele) => {
-    this.setState({Tele : tele})
+  updatePhone = (phone) => {
+    this.setState({Phone : phone})
   }
   updateName = (name) => {
-    this.setState({name: name})
+    this.setState({Name: name})
   }
   test = () => {
     this.props.navigation.goBack();
   }
 
-  submit = () =>{
-    if(this.state.ID == ''){
-      alert('아이디를 입력하세요!!!');
-    }
-  }
   ChooseFood1 = () =>{
     if (this.state.i == 0){
       this.state.SecondFood.push(this.state.initialFood[0]);
@@ -199,7 +212,8 @@ class SignUp extends Component {
   }
   
   render() {
-    console.log(Food)
+    // console.log(Food)
+    const { search, ID ,Name,Phone,Password } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.TopBar}>
@@ -231,6 +245,13 @@ class SignUp extends Component {
             onChangeText={this.updateId}
             value={this.state.ID}
           />
+          {/* <TouchableOpacity style={styles.TopButton} onPress={
+            async () ={
+
+            }
+          }>
+              <AntDesign name="Hello" size={10} color="white" />
+            </TouchableOpacity> */}
           <SearchBar
             showCancel
             round
@@ -247,7 +268,7 @@ class SignUp extends Component {
             placeholder="이름을 입력하세요"
             containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
             onChangeText={this.updateName}
-            value={this.state.Password}
+            value={this.state.Name}
           />
           <SearchBar
             showCancel
@@ -255,8 +276,8 @@ class SignUp extends Component {
             lightTheme
             placeholder="전화번호를 입력하세요"
             containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
-            onChangeText={this.updateTele}
-            value={this.state.Password}
+            onChangeText={this.updatePhone}
+            value={this.state.Phone}
           />
           </View>
           <Text style={{flex:1,textAlign : 'center',marginTop : 35,fontSize:25}}>
@@ -281,7 +302,39 @@ class SignUp extends Component {
             </View>
           </View>
           <Button style={{width:'30%',alignContents:'center',marginTop : '25%',marginLeft:'35%',marginBottom:'10%'}} titleStyle={{color: "white",fontSize: 15, padding :'5%'}} 
-          buttonStyle={{backgroundColor: "gray",height: '45%'}} title={`가입하기`} onPress={this.submit} /> 
+          buttonStyle={{backgroundColor: "gray",height: '45%'}} title={`가입하기`} onPress={
+            async () =>{ 
+              const snapshot = await firebase.database().ref('Users/UserCount').once('value')
+              var userCount = snapshot.val()
+              console.log("SingUp")
+              if(ID == ''){
+                Alert.alert("No ID")
+                return ;
+              }
+              if(Password == ''){
+                Alert.alert("No Password")
+                return ;
+              }
+              if(Phone == ''){
+                Alert.alert("No Phone")
+                return ;
+              }
+              if(Name == ''){
+                Alert.alert("No Name")
+                return ;
+              }
+              await firebase.database().ref(`Users/UserInfo/${userCount}`).set({
+                name:Name,
+                password :Password,
+                id:ID,
+                phone:Phone,
+                taste:[]
+              });
+              await firebase.database().ref(`Users/UserCount`).set(++userCount);
+              Alert.alert("회원가입이 완료되었습니다.")
+              this.props.navigation.navigate('Login')
+            }
+          } /> 
           </ScrollView>
         </View>
         <View style={{height: 20}}></View>
@@ -294,7 +347,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    marginTop : '17%'
   },
   submit:{
     width:"80%",

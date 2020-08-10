@@ -8,31 +8,46 @@ import {
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Button } from 'react-native-elements'
+import * as firebase from "firebase";
+import "firebase/database";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
+  authDomain: "bottom-up-project.firebaseapp.com",
+  databaseURL: "https://bottom-up-project.firebaseio.com",
+  projectId: "bottom-up-project",
+  storageBucket: "bottom-up-project.appspot.com",
+  messagingSenderId: "109120495683",
+  appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
+};
+
+if(!firebase.apps.length){
+  firebase.initializeApp(firebaseConfig);
+}
+var database = firebase.database()
 class FindID extends Component {
 
   state = {
     search: '',
     menuDialog: false,
     ID : '',
-    Password : ''
+    Name : ''
   };
 
   updateId = (id) => {
     this.setState({ID : id})
   }
-  updatepas = (pas) => {
-    this.setState({Password : pas})
+  updateName = (name) => {
+    this.setState({Name : name})
   }
   
   test = () => {
     this.props.navigation.goBack();
   }
 
-
   render() {
 
-    const { search } = this.state;
+    const { search, ID ,Name} = this.state;
 
     const renderItem = ({ item }) => (
       <Item name={item.name} subname={item.subname} icon={item.icon} />
@@ -73,12 +88,39 @@ class FindID extends Component {
             lightTheme
             placeholder="이름을 입력하세요"
             containerStyle={{width:'85%',marginLeft:'7.5%',}}
-            onChangeText={this.updatepas}
-            value={this.state.Password}
+            onChangeText={this.updateName}
+            value={this.state.Name}
           />
           </View>
           <Button style={{width:'30%',alignContents:'center',marginTop : '25%',marginLeft:'35%',marginBottom:'10%'}} titleStyle={{color: "white",fontSize: 15, padding :'5%'}} 
-          buttonStyle={{backgroundColor: "gray",height: '50%'}} title={`비밀번호 찾기`} onPress={() => {alert('비밀번호는 이것입니다.'); this.props.navigation.navigate('Login')}} /> 
+          buttonStyle={{backgroundColor: "gray",height: '50%'}} title={`비밀번호 찾기`} onPress=
+          {
+            async () => 
+            {
+              // alert('비밀번호는 이것입니다.'); this.props.navigation.navigate('Login')
+              console.log("FindPass")
+              const snapshot = await database.ref('Users/UserInfo').once('value')
+              var loginKey = 0;
+              var findPassword = false;
+              var PasswordValue = "";
+              snapshot.forEach(childSnapshot=>{
+                const child = childSnapshot.val();
+                if(child.id === ID&&child.name === Name){
+                  findPassword = true;
+                  PasswordValue = child.password;
+                  loginKey = childSnapshot.key;
+                }
+              })
+              if(findPassword==true){
+                console.log(snapshot.val()[loginKey])
+                alert('회원님의 비밀번호는 \n'+ PasswordValue +'\n 이것입니다.');
+                this.props.navigation.navigate('Login')
+              }else{
+                alert('회원님의 비밀번호를 찾을 수 없습니다.');
+              }
+             
+            }
+          } /> 
         </View>
 
         <View style={{height: 20}}></View>

@@ -59,14 +59,15 @@ class JeonGuk extends React.Component {
           onPressAction={
             async () => 
             {
-              var regionList = [];
+              var tempList = [];
               const snapshot = await database.ref(`Data/${region}`).once('value')
               snapshot.forEach(childSnapshot=>{
               var key = childSnapshot.key;
-              var childData = childSnapshot.child("시군구").val()
-              regionList.push(childData);})
-            await Promise.all(regionList);
-            let resultList = new Set([...regionList])
+              var regionData = childSnapshot.child("시군구").val()
+              var marketData = childSnapshot.child("시장명").val()
+              tempList.push(regionData+"/"+marketData);})
+            await Promise.all(tempList);
+            let resultList = new Set([...tempList])
             this.props.navigation.navigate('City',{name :`${region}`, regionList :[...resultList]})
             }
           } width='80%' deepBlue impact/>)}

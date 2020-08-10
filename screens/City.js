@@ -30,22 +30,7 @@ class City extends React.Component {
   test = (e) => {
     this.props.navigation.goBack();
   }
-  // getData = async() =>{
-  //   var regionList = [];
-  //   const snapshot = await database.ref(`Data/${this.props.navigation.getParam('name')}`).once('value')
-  //     snapshot.forEach(childSnapshot=>{
-  //     var key = childSnapshot.key;
-  //     var childData =childSnapshot.child("시군구").val()
-  //     regionList.push(childData);
-  //   })
-  //   Promise.all(regionList);
-  //   let resultList = new Set([...regionList])
-  //   return [...resultList]
-  // }
-  // async componentDidMount() {
-  //   let data = await this.getData();
-  //   this.setState({dataList:data})  
-  // }
+
   render () {
     console.log(this.props.navigation.getParam('name'))
     const regionName = this.props.navigation.getParam('name')
@@ -71,7 +56,31 @@ class City extends React.Component {
           {regionList.map((region,i) => {
               return (
                 <GradientButton key={i}  style={{ marginVertical: 8 ,marginLeft : 30}} text = {region} 
-                prev = {region} onPressAction={() => this.props.navigation.navigate('Market',{name :regionName+ " " + region} )} width='80%' deepBlue impact />
+                prev = {region} onPressAction={
+                  // async () => this.props.navigation.navigate('Market',{name :regionName+ " " + region} )
+                  async () => {
+                    const prevData = region.split('/');
+                    var marketList = [];
+                    const snapshot = await database.ref(`Data/${regionName}`).once('value')
+                    snapshot.forEach(childSnapshot=>{
+                      var regionData = childSnapshot.child("시군구").val();
+                      var marketData = childSnapshot.child("시장명").val();
+                      if(regionData == prevData[0] && marketData == prevData[1]){
+                        var marketDict = {}  
+                        marketDict["상가이름"] = childSnapshot.child("상가이름").val();
+                        marketDict["음식"] = childSnapshot.child("음식").val();
+                        marketDict["음식태그"] = childSnapshot.child("음식태그").val();
+                        marketDict["주소도로명"] = childSnapshot.child("주소도로명").val();
+                        marketDict["평점"] = childSnapshot.child("평점").val();
+                        marketDict["우선순위"] = 4; //TODO:
+                        marketList.push(marketDict);
+                      }
+                    })
+                  await Promise.all(marketList);
+                  // console.log(marketList)
+                  this.props.navigation.navigate('Sijang',{name :`${prevData[1]}`, marketList : marketList})
+                  }
+                } width='80%' deepBlue impact />
               )
           })}
         </ScrollView>

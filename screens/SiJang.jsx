@@ -88,10 +88,6 @@ class Sijang extends Component {
     this.setState({menuDialog : false});
   }
 
-  changeState2 = () => {
-    this.setState({menuDialog : false}); 
-  }
-
   onStarRatingPress(rating) {
     this.setState({
       starCount: rating
@@ -106,15 +102,18 @@ class Sijang extends Component {
   }
   render() {
     const { search } = this.state;
+    const marketName = this.props.navigation.getParam('name');
+    const marketList = this.props.navigation.getParam("marketList");
+    console.log("Sijang")
     const renderItem = ({ item }) => (
       
-      <Item name={item.name} subname={item.subname} 
-      icon={item.icon} 
+      <Item name={item["상가이름"]} subname={item["음식"]} 
+      // icon={item.icon} 
       func = {() => {this.setState({
         market:true, 
-        MarketName : item.name, 
-        starCount : item.Star,
-        SubName : item.subname})}} />
+        MarketName : item["상가이름"], 
+        starCount : item["평점"],
+        SubName : item["음식"]})}} />
     )
     
     return (
@@ -276,9 +275,9 @@ class Sijang extends Component {
         
         <View style={styles.MainSpace}>
           <FlatList
-            data={DATA}
+            data={marketList}
             renderItem={renderItem}
-            keyExtractor={item => item.name}
+            keyExtractor={item => item["상가이름"]}
             
           />
         </View>

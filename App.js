@@ -8,7 +8,6 @@ import Sijang from './screens/SiJang';
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
 import FindID from './screens/FindID';
-import Market from './screens/Market';
 import SelectFind from './screens/SelectFind';
 import FindPass from './screens/FindPass';
 import City from './screens/City'
@@ -101,27 +100,12 @@ const App = createStackNavigator(
         headerShown: false
       }
     },
-
-    FindID: {
-      screen: FindID,
-      navigationOptions: {
-        headerShown: false
-      }
-    },
-
     FindPass : {
       screen : FindPass,
       navigationOptions: {
         headerShown: false
       }
     },
-  
-    Market : {
-      screen: Market,
-      navigationOptions: {
-        headerShown: false
-      }
-    }
   },
   {
     initialRouteName: 'Login' // 처음 보여 줄 화면을 설정합니다.

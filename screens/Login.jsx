@@ -38,14 +38,13 @@ class Login extends Component {
   updatepas = (pas) => {
     this.setState({Password : pas})
   }
-  
   test = () => {
     this.props.navigation.goBack();
   }
 
 
   render() {
-    const { search } = this.state;
+    const { search,ID,Password } = this.state;
 
     const renderItem = ({ item }) => (
       <Item name={item.name} subname={item.subname} icon={item.icon} />
@@ -88,7 +87,28 @@ class Login extends Component {
 
           <View style={{flexDirection : 'row',marginLeft:'8%',marginTop:'10%'}}>
           <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
-          buttonStyle={{backgroundColor: "gray",height: '50%',}} title='로그인' onPress = {() => {this.props.navigation.navigate('Home')}} />
+          buttonStyle={{backgroundColor: "gray",height: '50%',}} title='로그인' onPress = {
+            // () => {this.props.navigation.navigate('Home')}
+            async () =>{ 
+              console.log("login")
+              const snapshot = await database.ref('Users/UserInfo').once('value')
+              var loginCheck = false;
+              var loginKey = 0;
+              snapshot.forEach(childSnapshot=>{
+                const child = childSnapshot.val();
+                if(child.id === ID&&child.password === Password){
+                  loginKey = childSnapshot.key;
+                  loginCheck = true;    
+                }
+              })
+              if(loginCheck===true){
+                console.log(snapshot.val()[loginKey])
+                this.props.navigation.navigate('Home')
+              }else{
+                console.log("아이디Xor비밀번호x")
+              }
+            }
+          } />
           <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
           buttonStyle={{backgroundColor: "gray",height: '50%'}} title='회원가입'
           onPress = {() => {this.props.navigation.navigate('SignUp')}} />
