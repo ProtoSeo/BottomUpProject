@@ -13,6 +13,7 @@ import SelectFind from './screens/SelectFind';
 import FindPass from './screens/FindPass';
 import City from './screens/City'
 import * as firebase from "firebase";
+import UserInfo from './screens/UserInfo';
 // Optionally import the services that you want to use
 import "firebase/auth";
 import "firebase/database";
@@ -118,6 +119,13 @@ const App = createStackNavigator(
   
     Market : {
       screen: Market,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+
+    UserInfo : {
+      screen : UserInfo,
       navigationOptions: {
         headerShown: false
       }

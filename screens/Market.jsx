@@ -79,11 +79,6 @@ class Market extends Component {
     this.setState({menuDialog : false});
   }
 
-  changeState2 = () => {
-    this.setState({menuDialog : false});
-  }
-
-
   render() {
     const { search } = this.state;
     const renderItem = ({ item }) => (
@@ -137,7 +132,7 @@ class Market extends Component {
                       <AntDesign name="home" size={20} color="white" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.dialog_Button} onPress={() => { this.setState({menuDialog : false})}}>
+                    <TouchableOpacity style={styles.dialog_Button} onPress={() => { this.setState({menuDialog : false}); this.props.navigation.navigate('UserInfo')}}>
                       <AntDesign name="user" size={20} color="white" />
                     </TouchableOpacity>
 

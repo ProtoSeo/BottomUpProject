@@ -73,6 +73,7 @@ class Sijang extends Component {
     starCount: 3.5,
     MarketName : '',
     SubName : '',
+    heart : 0,
   };
   
   updateSearch = ( search) => {
@@ -164,7 +165,7 @@ class Sijang extends Component {
                       <AntDesign name="home" size={20} color="white" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.dialog_Button} onPress={() => {this.props.navigation.navigate('Login'); this.setState({menuDialog : false})}}>
+                    <TouchableOpacity style={styles.dialog_Button} onPress={() => {this.props.navigation.navigate('UserInfo'); this.setState({menuDialog : false})}}>
                       <AntDesign name="user" size={20} color="white" />
                     </TouchableOpacity>
 
@@ -236,12 +237,16 @@ class Sijang extends Component {
                 <Text>
                   {this.state.SubName}
                 </Text>
+                <TouchableOpacity onPress={() => {this.state.heart == 1 ? this.setState({heart : 0}) : this.setState({heart : 1})}}>
+                    {this.state.heart == 1 ? <AntDesign name="heart" size={50} color="black" />  :  <AntDesign name="hearto" size={50}  />}  
+                </TouchableOpacity>
                 <TouchableOpacity
                     style={{alignItems: 'center'}}
                     onPress={() => {
                       this.setState({ market: false });
                     }}>
-                    <Text style={{fontSize:20, color:"#81888F"}}>CLOSE</Text>    
+                    <Text style={{fontSize:20, color:"#81888F"}}>CLOSE</Text>  
+                    
                   </TouchableOpacity>
                 </View>
               </DialogContent>

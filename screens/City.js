@@ -51,6 +51,7 @@ class City extends React.Component {
     const regionName = this.props.navigation.getParam('name')
     const regionList = this.props.navigation.getParam("regionList")
     return(
+      <KeyboardAvoidingView behavior={'height'}> 
       <View>
         <View style={styles.one}>
           <Text style={styles.title}>우리 시소</Text>
@@ -60,7 +61,7 @@ class City extends React.Component {
               <Text>뒤로가기</Text>
             </TouchableOpacity>
         </View>
-        <KeyboardAvoidingView behavior={'height'}> 
+        
        
         <View style={styles.view}>
         <TextInput
@@ -91,9 +92,9 @@ class City extends React.Component {
             </View>
           </TouchableOpacity>
         </View>
-        </KeyboardAvoidingView>
+        
       </View>
-    
+      </KeyboardAvoidingView>
     )
   }
 }

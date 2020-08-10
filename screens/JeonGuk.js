@@ -48,7 +48,7 @@ class JeonGuk extends React.Component {
         <TouchableOpacity onPress={this.test} value="서울/경기">
               <Text>로그 아웃</Text>
             </TouchableOpacity>
-        <KeyboardAvoidingView behavior={'height'}> 
+        <KeyboardAvoidingView behavior={'padding'}> 
         <View style={styles.view}>
         <TextInput
             placeholder="Email"
