@@ -4,6 +4,12 @@ import {
   StyleSheet,
   Text,
   View,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+  SafeAreaView,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 import { Button } from 'react-native-elements'
 import * as firebase from "firebase";
@@ -18,6 +24,15 @@ const firebaseConfig = {
   messagingSenderId: "109120495683",
   appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
 };
+
+// 회원가입할때 필요할것
+// function writeUserData(userId, name, email, imageUrl) {    
+//   firebase.database().ref('users/' + userId).set({
+//     username: name,
+//     email: email,
+//     profile_picture : imageUrl
+//   });
+// }
 
 if(!firebase.apps.length){
   firebase.initializeApp(firebaseConfig);
@@ -51,6 +66,13 @@ class Login extends Component {
     )
     
     return (
+      <KeyboardAvoidingView 
+      behavior= {(Platform.OS === 'ios')? "height" : 'height'}
+      keyboardVerticalOffset = {20}
+      style={{ flex: 1 }}
+      > 
+      <SafeAreaView style={{flex : 1}}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.TopBar}>
           <View style={{flex: 3, alignItems: 'center'}}>
@@ -60,10 +82,15 @@ class Login extends Component {
           </View>
         </View>
         
+      <ScrollView>
+     
         <View style={styles.MainSpace}>
         <Text style={{textAlign : 'center',marginBottom : '10%',fontSize:25,}}>
               로그인
+              
         </Text>
+       
+         <View>
           <View>
           <SearchBar
             showCancel
@@ -84,7 +111,7 @@ class Login extends Component {
             value={this.state.Password}
           />
           </View>
-
+          
           <View style={{flexDirection : 'row',marginLeft:'8%',marginTop:'10%'}}>
           <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
           buttonStyle={{backgroundColor: "gray",height: '50%',}} title='로그인' onPress = {
@@ -116,12 +143,17 @@ class Login extends Component {
           buttonStyle={{width : '100%',backgroundColor: "gray",height: '50%'}} title={`아이디/${'\n'}비밀번호찾기`} 
           onPress = {() =>{this.props.navigation.navigate('SelectFind')}}/>
           </View>
+          </View>
         </View>
-
         <View style={{height: 20}}></View>
-
+        
+        </ScrollView>
        
       </View>
+      </TouchableWithoutFeedback>
+      </SafeAreaView>
+      </KeyboardAvoidingView>
+    
     )
   }
 }

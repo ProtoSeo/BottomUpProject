@@ -53,6 +53,7 @@ class SignUp extends Component {
     RealFinalFood : '',
     selectedchooseFood1 : Food[0],
     selectedchooseFood2 : Food[1],
+    notSelected : [],
     i : 0,
  }
   updateId = (id) => {
@@ -71,9 +72,31 @@ class SignUp extends Component {
     this.props.navigation.goBack();
   }
 
+  componentWillUnmount(){
+    deepCopy = JSON.parse(JSON.stringify(FoodCopy))
+    Food = deepCopy;
+    this.setState({
+      search: '',
+    menuDialog: false,
+    ID : '',
+    Password : '',
+    Tele : '',
+    name : '',
+    initialFood : Food,
+    SecondFood : [],
+    SemiFinalFood : [],
+    FinalFood : [],
+    RealFinalFood : '',
+    selectedchooseFood1 : Food[0],
+    selectedchooseFood2 : Food[1],
+    notSelected : [],
+    i : 0,
+    })
+  }
   ChooseFood1 = () =>{
     if (this.state.i == 0){
       this.state.SecondFood.push(this.state.initialFood[0]);
+      this.state.notSelected.push(this.state.initialFood[1]);
       this.state.initialFood.splice(0,2)
       console.log(this.state.SecondFood.length);
       this.setState({
@@ -92,6 +115,7 @@ class SignUp extends Component {
       }
       else if(this.state.i == 1){
         this.state.SemiFinalFood.push(this.state.SecondFood[0]);
+        this.state.notSelected.push(this.state.SecondFood[1]);
         this.state.SecondFood.splice(0,2)
         console.log(this.state.SemiFinalFood.length);
         this.setState({
@@ -110,6 +134,7 @@ class SignUp extends Component {
       }
       else if(this.state.i == 2){
         this.state.FinalFood.push(this.state.SemiFinalFood[0]);
+        this.state.notSelected.push(this.state.SemiFinalFood[1]);
         this.state.SemiFinalFood.splice(0,2)
         console.log(this.state.FinalFood.length);
         this.setState({
@@ -128,7 +153,7 @@ class SignUp extends Component {
       }
       else if(this.state.i == 3){
         this.state.RealFinalFood = this.state.FinalFood[0]
-    
+        this.state.notSelected.push(this.state.FinalFood[1]);
         this.state.FinalFood.splice(0,2)
         console.log(this.state.FinalFood.length);
         this.setState({
@@ -143,7 +168,8 @@ class SignUp extends Component {
   
   ChooseFood2 = () =>{
     if (this.state.i == 0){
-    this.state.SecondFood.push(this.state.initialFood[1]);
+      this.state.SecondFood.push(this.state.initialFood[1]);
+      this.state.notSelected.push(this.state.initialFood[0]);
     this.state.initialFood.splice(0,2)
     console.log(this.state.SecondFood.length);
     this.setState({
@@ -162,6 +188,7 @@ class SignUp extends Component {
     }
     else if(this.state.i == 1){
       this.state.SemiFinalFood.push(this.state.SecondFood[1]);
+      this.state.notSelected.push(this.state.SecondFood[0]);
       this.state.SecondFood.splice(0,2)
       console.log(this.state.SemiFinalFood.length);
       this.setState({
@@ -180,6 +207,7 @@ class SignUp extends Component {
     }
     else if(this.state.i == 2){
       this.state.FinalFood.push(this.state.SemiFinalFood[1]);
+      this.state.notSelected.push(this.state.SemiFinalFood[0]);
       this.state.SemiFinalFood.splice(0,2)
       console.log(this.state.FinalFood.length);
       this.setState({
@@ -198,7 +226,7 @@ class SignUp extends Component {
     }
     else if(this.state.i == 3){
       this.state.RealFinalFood = this.state.FinalFood[1]
-  
+      this.state.notSelected.push(this.state.FinalFood[0]);
       this.state.FinalFood.splice(0,2)
       console.log(this.state.FinalFood.length);
       this.setState({
