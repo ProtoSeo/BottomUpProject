@@ -71,6 +71,7 @@ class Sijang extends Component {
     const { search } = this.state;
     const marketName = this.props.navigation.getParam('name');
     const marketList = this.props.navigation.getParam("marketList");
+    const uid = this.props.navigation.getParam("uid")
     console.log("Sijang")
     const renderItem = ({ item }) => (
       
@@ -84,6 +85,7 @@ class Sijang extends Component {
     )
     
     return (
+      
       <View style={styles.container}>
         <View style={styles.TopBar}>
           <View style={{flex: 2}}>
@@ -130,7 +132,7 @@ class Sijang extends Component {
                       <AntDesign name="home" size={20} color="white" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.dialog_Button} onPress={() => {this.props.navigation.navigate('UserInfo'); this.setState({menuDialog : false})}}>
+                    <TouchableOpacity style={styles.dialog_Button} onPress={() => {this.props.navigation.navigate('UserInfo',{uid:uid}); this.setState({menuDialog : false})}}>
                       <AntDesign name="user" size={20} color="white" />
                     </TouchableOpacity>
 

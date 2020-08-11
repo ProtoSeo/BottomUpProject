@@ -44,11 +44,12 @@ class JeonGuk extends React.Component {
         
       ]
     );
+    
   }
   render () {
 
     const { search } = this.state;
-
+    const uid = this.props.navigation.getParams('uid');
     return(
 
       <View style={styles.one}>
@@ -153,7 +154,7 @@ class JeonGuk extends React.Component {
               tempList.push(regionData+"/"+marketData);})
             await Promise.all(tempList);
             let resultList = new Set([...tempList])
-            this.props.navigation.navigate('City',{name :`${region}`, regionList :[...resultList]})
+            this.props.navigation.navigate('City',{name :`${region}`, regionList :[...resultList], uid:uid})
             }
           } width='80%' deepBlue impact/>)}
         </ScrollView>

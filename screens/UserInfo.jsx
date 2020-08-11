@@ -10,6 +10,25 @@ import {
   FlatList,
   Image
 } from 'react-native';
+import * as firebase from "firebase";
+
+import "firebase/database";
+    
+const firebaseConfig = {
+  apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
+  authDomain: "bottom-up-project.firebaseapp.com",
+  databaseURL: "https://bottom-up-project.firebaseio.com",
+  projectId: "bottom-up-project",
+  storageBucket: "bottom-up-project.appspot.com",
+  messagingSenderId: "109120495683",
+  appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
+};
+
+if(!firebase.apps.length){
+  firebase.initializeApp(firebaseConfig);
+}
+var database = firebase.database()
+
 const DATA = [
     {
       name: '중리시장',
@@ -69,6 +88,7 @@ class UserInfo extends Component {
     const renderItem = ({ item }) => (
         <Item name={item.name} subname={item.subname} icon={item.icon} func = {() => this.props.navigation.navigate('Sijang',{name:item.name})} />
       )
+    const uid = this.props.navigation.getParam("uid");
     return (
       <View style={styles.container}>
         <View style={styles.TopBar}>

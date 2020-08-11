@@ -35,6 +35,7 @@ class City extends React.Component {
     console.log(this.props.navigation.getParam('name'))
     const regionName = this.props.navigation.getParam('name')
     const regionList = this.props.navigation.getParam("regionList")
+    const uid = this.props.navigation.getParam("uid")
     return(
       <View>
         <View style={styles.one}>
@@ -77,7 +78,7 @@ class City extends React.Component {
                     })
                   await Promise.all(marketList);
                   // console.log(marketList)
-                  this.props.navigation.navigate('Sijang',{name :`${prevData[1]}`, marketList : marketList})
+                  this.props.navigation.navigate('Sijang',{name :`${prevData[1]}`, marketList : marketList, uid:uid})
                   }
                 } width='80%' deepBlue impact />
               )

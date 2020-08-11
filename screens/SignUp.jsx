@@ -37,16 +37,26 @@ Array.prototype.clean = function(deleteValue){
   }
   return this;
 };
+const FoodTagData = 
+{ '한식':['국수','국밥'],
+  '치킨':['후라이드치킨','닭강정'],
+  '간식,분식':['떡볶이','돈까스'],
+  '족발,보쌈,닭발':['족발','보쌈'],
+  '아시안,양식':['스테이크','쌀국수'],
+  '중식':['짜장면','짬뽕'],
+  '고기,곱창':['삼겹살','곱창'],
+  '회,일식,해산물':['회','초밥']
+}
+const ScoreData = [1,1,1,1,1,1,1,1,4,4,4,4,8,8,11,15]
+var Food = ['국수','국밥','후라이드치킨','닭강정','떡볶이',
+'돈까스','족발','보쌈',
+'스테이크','쌀국수','짜장면','짬뽕',
+'삼겹살','곱창','회','초밥'].sort(function(){return 0.5-Math.random()});
 
-var Food = ['피자','치킨','떡볶이','족발','회',
-'국밥','와플','고기구운거',
-'빵','떡','전','칼국수',
-'튀김','햄버거','만두','돈까스'].sort(function(){return 0.5-Math.random()});
-
-const FoodCopy = ['피자','치킨','떡볶이','족발','회',
-'국밥','와플','고기구운거',
-'빵','떡','전','칼국수',
-'튀김','햄버거','만두','돈까스'].sort(function(){return 0.5-Math.random()});
+const FoodCopy = ['국수','국밥','후라이드치킨','닭강정','떡볶이',
+'돈까스','족발','보쌈',
+'스테이크','쌀국수','짜장면','짬뽕',
+'삼겹살','곱창','회','초밥'].sort(function(){return 0.5-Math.random()});
 
 class SignUp extends Component {
   state = {
@@ -102,7 +112,7 @@ class SignUp extends Component {
     i : 0,
     })
   }
-  ChooseFood1 = () =>{
+  ChooseFood1 = () => {
     if (this.state.i == 0){
       this.state.SecondFood.push(this.state.initialFood[0]);
       this.state.notSelected.push(this.state.initialFood[1]);
@@ -176,7 +186,7 @@ class SignUp extends Component {
       }
   }
   
-  ChooseFood2 = () =>{
+  ChooseFood2 = () => {
     if (this.state.i == 0){
       this.state.SecondFood.push(this.state.initialFood[1]);
       this.state.notSelected.push(this.state.initialFood[0]);
@@ -364,21 +374,41 @@ class SignUp extends Component {
                 return ;
               }
               notSelected.clean(undefined);
-              console.log(notSelected)
-              if(notSelected.length != 16){
+              // console.log(notSelected)
+              var taste = { '한식': 0,
+              '치킨':0,
+              '간식,분식':0,
+              '족발,보쌈,닭발':0,
+              '아시안,양식':0,
+              '중식':0,
+              '고기,곱창':0,
+              '회,일식,해산물':0};
+              if(notSelected.length == 16){
+                for(var tmp1 = 15; tmp1>=0; tmp1--){
+                  var foodName = notSelected[tmp1];
+                  for(var key in FoodTagData){                   
+                    for(var tmp2 = 0; tmp2 < 2; tmp2++){  
+                      if(foodName == FoodTagData[key][tmp2]){
+                        taste[key] += ScoreData[tmp1];
+                      }
+                    }
+                  }
+                }
+              }else {
                 Alert.alert("No Food battle")
                 return ;
               }
+              console.log(taste)
               await database.ref(`Users/UserInfo/${userCount}`).set({
                 name:Name,
                 password :Password,
                 id:ID,
                 phone:Phone,
-                taste:notSelected
+                taste:taste
               });
               await database.ref(`Users/UserCount`).set(++userCount);
-              Alert.alert("회원가입이 완료되었습니다.")
-              this.props.navigation.navigate('Login')
+              Alert.alert("회원가입이 완료되었습니다.");
+              this.props.navigation.navigate('Login');
             }
           } /> 
           </ScrollView>
