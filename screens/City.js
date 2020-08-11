@@ -57,7 +57,6 @@ class City extends React.Component {
               return (
                 <GradientButton key={i}  style={{ marginVertical: 8 ,marginLeft : 30}} text = {region} 
                 prev = {region} onPressAction={
-                  // async () => this.props.navigation.navigate('Market',{name :regionName+ " " + region} )
                   async () => {
                     const prevData = region.split('/');
                     var marketList = [];

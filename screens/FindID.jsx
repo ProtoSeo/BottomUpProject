@@ -45,12 +45,7 @@ class FindID extends Component {
     this.props.navigation.goBack();
   }
   render() {
-
     const { search,Name,Phone } = this.state;
-
-    const renderItem = ({ item }) => (
-      <Item name={item.name} subname={item.subname} icon={item.icon} />
-    )
     
     return (
       <View style={styles.container}>
@@ -123,7 +118,6 @@ class FindID extends Component {
         
         <View style={{height: 20}}></View>
 
-       
       </View>
     )
   }

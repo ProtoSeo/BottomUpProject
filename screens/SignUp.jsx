@@ -28,6 +28,16 @@ if(!firebase.apps.length){
 }
 var database = firebase.database()
 
+Array.prototype.clean = function(deleteValue){
+  for(var i =0; i<this.length;i++){
+    if(this[i] == deleteValue){
+      this.splice(i,1);
+      i--;
+    }
+  }
+  return this;
+};
+
 var Food = ['피자','치킨','떡볶이','족발','회',
 '국밥','와플','고기구운거',
 '빵','떡','전','칼국수',
@@ -73,14 +83,13 @@ class SignUp extends Component {
   }
 
   componentWillUnmount(){
-    deepCopy = JSON.parse(JSON.stringify(FoodCopy))
-    Food = deepCopy;
+    Food = JSON.parse(JSON.stringify(FoodCopy));
     this.setState({
       search: '',
     menuDialog: false,
     ID : '',
     Password : '',
-    Tele : '',
+    Phone : '',
     name : '',
     initialFood : Food,
     SecondFood : [],
@@ -154,6 +163,7 @@ class SignUp extends Component {
       else if(this.state.i == 3){
         this.state.RealFinalFood = this.state.FinalFood[0]
         this.state.notSelected.push(this.state.FinalFood[1]);
+        this.state.notSelected.push(this.state.RealFinalFood);
         this.state.FinalFood.splice(0,2)
         console.log(this.state.FinalFood.length);
         this.setState({
@@ -189,6 +199,7 @@ class SignUp extends Component {
     else if(this.state.i == 1){
       this.state.SemiFinalFood.push(this.state.SecondFood[1]);
       this.state.notSelected.push(this.state.SecondFood[0]);
+      this.state.notSelected.push(this.state.FinalFood[1]);
       this.state.SecondFood.splice(0,2)
       console.log(this.state.SemiFinalFood.length);
       this.setState({
@@ -227,6 +238,7 @@ class SignUp extends Component {
     else if(this.state.i == 3){
       this.state.RealFinalFood = this.state.FinalFood[1]
       this.state.notSelected.push(this.state.FinalFood[0]);
+      this.state.notSelected.push(this.state.RealFinalFood);
       this.state.FinalFood.splice(0,2)
       console.log(this.state.FinalFood.length);
       this.setState({
@@ -241,7 +253,7 @@ class SignUp extends Component {
   
   render() {
     // console.log(Food)
-    const { search, ID ,Name,Phone,Password } = this.state;
+    const { search, ID ,Name,Phone,Password ,notSelected} = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.TopBar}>
@@ -257,7 +269,6 @@ class SignUp extends Component {
               <AntDesign name="back" size={30} color="white" />
             </TouchableOpacity>
           </View>
-          
         </View>
         
         <View style={styles.MainSpace}>
@@ -307,6 +318,7 @@ class SignUp extends Component {
             onChangeText={this.updatePhone}
             value={this.state.Phone}
           />
+
           </View>
           <Text style={{flex:1,textAlign : 'center',marginTop : 35,fontSize:25}}>
             음식 이상형월드컵
@@ -332,7 +344,7 @@ class SignUp extends Component {
           <Button style={{width:'30%',alignContents:'center',marginTop : '25%',marginLeft:'35%',marginBottom:'10%'}} titleStyle={{color: "white",fontSize: 15, padding :'5%'}} 
           buttonStyle={{backgroundColor: "gray",height: '45%'}} title={`가입하기`} onPress={
             async () =>{ 
-              const snapshot = await firebase.database().ref('Users/UserCount').once('value')
+              const snapshot = await database.ref('Users/UserCount').once('value')
               var userCount = snapshot.val()
               console.log("SingUp")
               if(ID == ''){
@@ -351,14 +363,20 @@ class SignUp extends Component {
                 Alert.alert("No Name")
                 return ;
               }
-              await firebase.database().ref(`Users/UserInfo/${userCount}`).set({
+              notSelected.clean(undefined);
+              console.log(notSelected)
+              if(notSelected.length != 16){
+                Alert.alert("No Food battle")
+                return ;
+              }
+              await database.ref(`Users/UserInfo/${userCount}`).set({
                 name:Name,
                 password :Password,
                 id:ID,
                 phone:Phone,
-                taste:[]
+                taste:notSelected
               });
-              await firebase.database().ref(`Users/UserCount`).set(++userCount);
+              await database.ref(`Users/UserCount`).set(++userCount);
               Alert.alert("회원가입이 완료되었습니다.")
               this.props.navigation.navigate('Login')
             }

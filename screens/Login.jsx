@@ -46,7 +46,6 @@ class Login extends Component {
     ID : '',
     Password : ''
   };
-
   updateId = (id) => {
     this.setState({ID : id})
   }
@@ -115,7 +114,6 @@ class Login extends Component {
           <View style={{flexDirection : 'row',marginLeft:'8%',marginTop:'10%'}}>
           <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
           buttonStyle={{backgroundColor: "gray",height: '50%',}} title='로그인' onPress = {
-            // () => {this.props.navigation.navigate('Home')}
             async () =>{ 
               console.log("login")
               const snapshot = await database.ref('Users/UserInfo').once('value')
@@ -130,6 +128,12 @@ class Login extends Component {
               })
               if(loginCheck===true){
                 console.log(snapshot.val()[loginKey])
+                this.setState({
+                  search: '',
+                  menuDialog: false,
+                  ID : '',
+                  Password : ''
+                })
                 this.props.navigation.navigate('Home')
               }else{
                 console.log("아이디Xor비밀번호x")
@@ -138,10 +142,26 @@ class Login extends Component {
           } />
           <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
           buttonStyle={{backgroundColor: "gray",height: '50%'}} title='회원가입'
-          onPress = {() => {this.props.navigation.navigate('SignUp')}} />
+          onPress = {() => {
+            this.setState({
+              search: '',
+              menuDialog: false,
+              ID : '',
+              Password : ''
+            })
+            this.props.navigation.navigate('SignUp')}
+          } />
           <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
           buttonStyle={{width : '100%',backgroundColor: "gray",height: '50%'}} title={`아이디/${'\n'}비밀번호찾기`} 
-          onPress = {() =>{this.props.navigation.navigate('SelectFind')}}/>
+          onPress = {() =>{
+            this.setState({
+              search: '',
+              menuDialog: false,
+              ID : '',
+              Password : ''
+            })
+            this.props.navigation.navigate('SelectFind')}
+          }/>
           </View>
           </View>
         </View>

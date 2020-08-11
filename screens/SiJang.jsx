@@ -16,41 +16,7 @@ import Dialog, {
   DialogButton,
   ScaleAnimation,
 } from 'react-native-popup-dialog';
-import StarRating from 'react-native-star-rating';
-
-var MarketName1;
-const DATA = [
-  {
-    name: '닭갈비',
-    subname: '춘천365닭갈비, 오늘은 닭, 마인하우스',
-    icon: './icon/chicken.png',
-    Star: 3.5,
-  },
-  {
-    name: '칼국수',
-    subname: '오씨네 칼국수, 국수',
-    icon: '.icon/soup',
-    Star: 1,
-  },
-  {
-    name: '고등어 백반',
-    subname: '학생회관',
-    icon: './icon/rice.png',
-    Star: 2,
-  },
-  {
-    name: '통닭',
-    subname: '충남통닭, 깻잎치킨',
-    icon: './icon/chicken.png',
-    Star: 5,
-  },
-  {
-    name: '회덮밥',
-    subname: '마루, 배재원',
-    icon: './icon/rice.png',
-    Star: 4,
-  }
-]
+import StarRating from 'react-native-star-rating';;
 
 const Item = ({ name, subname, icon ,func}) => (
   <TouchableOpacity style={styles.item_view} onPress={func}> 
@@ -289,7 +255,6 @@ class Sijang extends Component {
 
         <View style={{height: 20}}></View>
 
-       
       </View>
     )
   }
