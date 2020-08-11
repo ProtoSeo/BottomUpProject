@@ -1,31 +1,50 @@
 import React from 'react'
+import { StyleSheet, Text, ScrollView,TouchableOpacity,TextInput,View, KeyboardAvoidingView, Alert} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { 
-  StyleSheet, 
-  Text, 
-  ScrollView,
-  TouchableOpacity,
-  View, 
-  KeyboardAvoidingView, } from 'react-native';
 import { SearchBar } from 'react-native-elements'
 import GradientButton from 'react-native-gradient-buttons';
+import * as firebase from "firebase";
 import Dialog, {
   DialogTitle,
   DialogContent,
   DialogButton,
   ScaleAnimation,
 } from 'react-native-popup-dialog';
+import "firebase/database";
+    
+const firebaseConfig = {
+  apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
+  authDomain: "bottom-up-project.firebaseapp.com",
+  databaseURL: "https://bottom-up-project.firebaseio.com",
+  projectId: "bottom-up-project",
+  storageBucket: "bottom-up-project.appspot.com",
+  messagingSenderId: "109120495683",
+  appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
+};
+
+if(!firebase.apps.length){
+  firebase.initializeApp(firebaseConfig);
+}
+var database = firebase.database()
+
+const List =["서울","경기","대전","부산","강원","경북","경남","광주","충북","울산","충남","전남","전북","제주","인천","세종"].sort()
 
 class JeonGuk extends React.Component {
   state = {
-    search: '',
-    menuDialog: false
-  };
-  
-  updateSearch = (search) => {
-    this.setState({ search });
-  };
-
+    searchString: '시장을 검색하세요',
+  }
+  test = () => {
+    
+    Alert.alert(
+      '로그아웃',
+      '로그아웃 하시겠습니까?',
+      [
+        {text: 'Yes', onPress: () => this.props.navigation.navigate('Login'), style : 'cancle'},
+        {text: 'NO', onPress: () => {}, style: 'cancel'},
+        
+      ]
+    );
+  }
   render () {
 
     const { search } = this.state;
@@ -87,6 +106,11 @@ class JeonGuk extends React.Component {
                   <TouchableOpacity style={styles.dialog_Button} onPress={this.onPress}>
                     <AntDesign name="setting" size={20} color="white" />
                   </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.dialog_Button} onPress={this.test}>
+                    <AntDesign name="back" size={20} color="white" />
+                  </TouchableOpacity>
+
                 </View>
 
                 <TouchableOpacity
@@ -116,14 +140,22 @@ class JeonGuk extends React.Component {
         
         <View style={styles.view}>
         <ScrollView >
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="서울특별시" onPressAction={() => this.props.navigation.navigate('Seoul')}width='80%' deepBlue impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="인천/경기" onPressAction={() => this.props.navigation.navigate('InCheonKyungKi')} prev = {'인천/경기'} width='80%' deepBlue impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="대전/충청" onPressAction={() => this.props.navigation.navigate('ChungChung')} width='80%' deepBlue impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="광주/전라" onPressAction={() => this.props.navigation.navigate('Jeonna')} width='80%' deepBlue impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="대구/경북" onPressAction={() => this.props.navigation.navigate('KyeongBook')}width='80%' deepBlue impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="부산/경남" onPressAction={() => this.props.navigation.navigate('KyeongNam')}width='80%' deepBlue impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="강원도" onPressAction={() => this.props.navigation.navigate('KwangWon')}width='80%' deepBlue impact />
-          <GradientButton style={{ marginVertical: 8 ,marginLeft : 30}} text="제주특별자치시" onPressAction={() => this.props.navigation.navigate('JeJu')}width='80%' deepBlue impact />
+          {List.map((region,i)=><GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30} } text={`${region}`}  
+          onPressAction={
+            async () => 
+            {
+              var tempList = [];
+              const snapshot = await database.ref(`Data/${region}`).once('value')
+              snapshot.forEach(childSnapshot=>{
+              var key = childSnapshot.key;
+              var regionData = childSnapshot.child("시군구").val()
+              var marketData = childSnapshot.child("시장명").val()
+              tempList.push(regionData+"/"+marketData);})
+            await Promise.all(tempList);
+            let resultList = new Set([...tempList])
+            this.props.navigation.navigate('City',{name :`${region}`, regionList :[...resultList]})
+            }
+          } width='80%' deepBlue impact/>)}
         </ScrollView>
         </View>
 
@@ -218,7 +250,6 @@ const styles = StyleSheet.create({
 
   one : {
     flex : 1,
-   
   }
 });
 
