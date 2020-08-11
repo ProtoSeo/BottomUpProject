@@ -13,6 +13,7 @@ import FindPass from './screens/FindPass';
 import City from './screens/City'
 import * as firebase from "firebase";
 import UserInfo from'./screens/UserInfo';
+import Loading from './Loading';
 // Optionally import the services that you want to use
 import "firebase/auth";
 import "firebase/database";
@@ -34,16 +35,6 @@ const firebaseConfig = {
 if(!firebase.apps.length){
   firebase.initializeApp(firebaseConfig);
 }
-// Get a reference to the database service
-
-// 회원가입할때 필요할것
-// function writeUserData(userId, name, email, imageUrl) {    
-//   firebase.database().ref('users/' + userId).set({
-//     username: name,
-//     email: email,
-//     profile_picture : imageUrl
-//   });
-// }
 
 class First extends React.Component {
   render() {
@@ -56,6 +47,7 @@ class First extends React.Component {
     );
   }
 }
+
 
 const App = createStackNavigator(
   {
@@ -106,7 +98,7 @@ const App = createStackNavigator(
       navigationOptions: {
         headerShown: false
       }
-    },    UserInfo : {
+    }, UserInfo : {
       screen : UserInfo,
       navigationOptions: {
         headerShown: false
@@ -120,10 +112,23 @@ const App = createStackNavigator(
 
 const AppContainer = createAppContainer(App);
 
-export default () => (
-  <AppContainer />
-);
-
+export default class extends React.Component {
+  state={
+    isLoading:true
+  }
+  componentDidMount(){
+    setTimeout(() => {
+      this.setState({
+      // state 변경
+        isLoading:false
+      })
+     }, 1000)
+  }
+  render(){
+    const {isLoading} = this.state;
+    return isLoading ? <Loading/> : <AppContainer />
+  }
+}
 
 const styles = StyleSheet.create({
   statusBar: {
