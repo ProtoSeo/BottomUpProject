@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, ScrollView,TouchableOpacity,TextInput,View, KeyboardAvoidingView, Alert} from 'react-native';
+import { StyleSheet, Text, ScrollView,TouchableOpacity, View, KeyboardAvoidingView, Alert} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { SearchBar } from 'react-native-elements'
 import GradientButton from 'react-native-gradient-buttons';
@@ -10,6 +10,7 @@ import Dialog, {
   DialogButton,
   ScaleAnimation,
 } from 'react-native-popup-dialog';
+
 import "firebase/database";
     
 const firebaseConfig = {
@@ -33,18 +34,34 @@ class JeonGuk extends React.Component {
   state = {
     searchString: '시장을 검색하세요',
   }
-  test = () => {
+
+  home = () => {
+    this.setState({ menuDialog: false });
+    this.props.navigation.navigate('Home');
+  }
+
+  mypage = () => {
+    this.setState({ menuDialog: false });
+    this.props.navigation.navigate('UserInfo');
+  }
+
+  logout = () => {
     
     Alert.alert(
       '로그아웃',
       '로그아웃 하시겠습니까?',
       [
-        {text: 'Yes', onPress: () => this.props.navigation.navigate('Login'), style : 'cancle'},
+        {text: 'Yes', style : 'cancel', onPress: () => 
+          {
+            this.setState({ menuDialog: false });
+            this.props.navigation.navigate('Login');
+          }
+        },
         {text: 'NO', onPress: () => {}, style: 'cancel'},
-        
       ]
-    );
+    )
   }
+
   render () {
 
     const { search } = this.state;
@@ -95,20 +112,16 @@ class JeonGuk extends React.Component {
             <DialogContent>
               <View>
                 <View style={{flexDirection: 'row'}}>
-                  <TouchableOpacity style={styles.dialog_Button} onPress={this.onPress}>
+                  <TouchableOpacity style={styles.dialog_Button} onPress={this.home}>
                     <AntDesign name="home" size={20} color="white" />
                   </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.dialog_Button} onPress={this.onPress}>
+                  <TouchableOpacity style={styles.dialog_Button} onPress={this.mypage}>
                     <AntDesign name="user" size={20} color="white" />
                   </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.dialog_Button} onPress={this.onPress}>
-                    <AntDesign name="setting" size={20} color="white" />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity style={styles.dialog_Button} onPress={this.test}>
-                    <AntDesign name="back" size={20} color="white" />
+                  <TouchableOpacity style={styles.dialog_Button} onPress={this.logout}>
+                    <AntDesign name="deleteuser" size={20} color="white" />
                   </TouchableOpacity>
 
                 </View>
@@ -127,7 +140,7 @@ class JeonGuk extends React.Component {
           
         <View style={{flex: 3, alignItems: 'center'}}>
           <Text style={styles.TopBarText}>
-            우리의 시소
+            우리시소
           </Text>
         </View>
           
@@ -139,7 +152,7 @@ class JeonGuk extends React.Component {
         <KeyboardAvoidingView behavior={'height'}> 
         
         <View style={styles.view}>
-        <ScrollView >
+        <ScrollView>
           {List.map((region,i)=><GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30} } text={`${region}`}  
           onPressAction={
             async () => 

@@ -9,7 +9,8 @@ import {
   Platform,
   SafeAreaView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  Alert
 } from 'react-native';
 import { Button } from 'react-native-elements'
 import * as firebase from "firebase";
@@ -134,9 +135,9 @@ class Login extends Component {
                   ID : '',
                   Password : ''
                 })
-                this.props.navigation.navigate('Home')
+                this.props.navigation.navigate('Home',{uid:loginKey})
               }else{
-                console.log("아이디Xor비밀번호x")
+                Alert.alert("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.")
               }
             }
           } />
