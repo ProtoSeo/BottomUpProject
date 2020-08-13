@@ -32,7 +32,7 @@ const List =["서울","경기","대전","부산","강원","경북","경남","광
 
 class JeonGuk extends React.Component {
   state = {
-    searchString: '시장을 검색하세요',
+    searchString: '',
   }
 
   home = () => {
@@ -50,7 +50,11 @@ class JeonGuk extends React.Component {
     this.setState({ menuDialog: false });
     this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID,userPhone:userPhone});
   }
-
+  updateSearch = (text) => {
+    this.setState({
+      searchString : text
+    })
+  }
   logout = () => {
     
     Alert.alert(
@@ -69,7 +73,7 @@ class JeonGuk extends React.Component {
   }
 
   render () {
-    const { search } = this.state;
+    const { searchString } = this.state;
     const uid = this.props.navigation.getParam("uid");
     return(
 
@@ -158,7 +162,7 @@ class JeonGuk extends React.Component {
         
         <View style={styles.view}>
         <ScrollView>
-          {List.map((region,i)=><GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30} } text={`${region}`}  
+          {!List.includes(this.state.searchString) ? List.map((region,i)=><GradientButton key={i} style={{ marginVertical: 8 ,marginLeft : 30} } text={`${region}`}  
           onPressAction={
             async () => 
             {
@@ -172,7 +176,22 @@ class JeonGuk extends React.Component {
             let resultList = new Set([...tempList])
             this.props.navigation.navigate('City',{name :`${region}`, regionList :[...resultList], uid:uid})
             }
-          } width='80%' deepBlue impact/>)}
+          } width='80%' deepBlue impact/>)
+          : <GradientButton key={this.state.searchString} style={{ marginVertical: 8 ,marginLeft : 30} } text={this.state.searchString}  
+          onPressAction={
+            async () => 
+            {
+              var tempList = [];
+              const snapshot = await database.ref(`Data/${this.state.searchString}`).once('value')
+              snapshot.forEach(childSnapshot=>{
+              var regionData = childSnapshot.child("시군구").val()
+              var marketData = childSnapshot.child("시장명").val()
+              tempList.push(regionData+"/"+marketData);})
+            await Promise.all(tempList);
+            let resultList = new Set([...tempList])
+            this.props.navigation.navigate('City',{name :`${this.state.searchString}`, regionList :[...resultList], uid:uid})
+            }
+          } width='80%' deepBlue impact/>}
         </ScrollView>
         </View>
 
@@ -183,7 +202,7 @@ class JeonGuk extends React.Component {
             lightTheme
             placeholder="검색하세요"
             onChangeText={this.updateSearch}
-            value={search}
+            value={searchString}
           />
         </View>
         </KeyboardAvoidingView>
