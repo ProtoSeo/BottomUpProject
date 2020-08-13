@@ -1,15 +1,9 @@
 import React, { Component }  from 'react';
-import { SearchBar } from 'react-native-elements';
 import {
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
-  ScrollView,
-  Platform,
   SafeAreaView,
-  TouchableWithoutFeedback,
-  Keyboard,
   Alert
 } from 'react-native';
 import { Button } from 'react-native-elements'
@@ -83,18 +77,7 @@ class Login extends Component {
               로그인
               
         </Text>
-       
-         {/* <View>
-          <View> */}
-          {/* <SearchBar
-            showCancel
-            round
-            lightTheme
-            placeholder="아이디"
-            containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
-            onChangeText={this.updateId}
-            value={this.state.ID}
-          /> */}
+
           <TextInput
             value={this.state.ID}
             onChangeText={this.updateId}
@@ -109,18 +92,8 @@ class Login extends Component {
             placeholder='password'
             style={styles.input}
           />
-          {/* <SearchBar
-            showCancel
-            round
-            lightTheme
-            placeholder="비밀번호"
-            containerStyle={{width:'85%',marginLeft:'7.5%',}}
-            onChangeText={this.updatepas}
-            value={this.state.Password}
-          /> */}
           
-          
-          <View style={{flexDirection : 'row',marginLeft:'8%',marginTop:'5%'}}>
+          <View style={{flexDirection : 'row',marginLeft:'8%',marginTop:'10%'}}>
           <Button style={{height: 100, width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
           buttonStyle={{backgroundColor: "gray",height: '50%',}} title='로그인' onPress = {
             async () =>{ 
@@ -171,8 +144,7 @@ class Login extends Component {
             })
             this.props.navigation.navigate('SelectFind')}
           }/>
-          {/* </View>
-          </View> */}
+
         </View>
        
       </View>
@@ -220,6 +192,5 @@ const styles = StyleSheet.create({
   },
 
 })
-
 
 export default Login;

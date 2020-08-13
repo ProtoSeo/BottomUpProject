@@ -101,7 +101,7 @@ class Sijang extends Component {
                 menuDialog: true
               });
             }}>
-              <AntDesign name="bars" size={30} color="white" />
+              <AntDesign name="bars" size={15} color="white" />
             </TouchableOpacity>
             <Dialog
               onTouchOutside={() => {
@@ -158,6 +158,7 @@ class Sijang extends Component {
                 </View>
               </DialogContent>
             </Dialog>
+
             <Dialog
               onTouchOutside={() => {
                 this.setState({ market: false });
@@ -235,7 +236,7 @@ class Sijang extends Component {
 
           <View style={{ flex: 2 }}>
             <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-              <AntDesign name="back" size={30} color="white" />
+              <AntDesign name="back" size={15} color="white" />
             </TouchableOpacity>
           </View>
 
@@ -261,7 +262,7 @@ class Sijang extends Component {
 
         <ScrollView style={styles.MainSpace}>
           {marketList.map((marketDict, key) =>
-            <View key = {key} style={{ flexDirection: 'row' }}>
+            <View key = {key} style={{ flexDirection: 'row'}}>
               <TouchableOpacity style={styles.item_view} onPress={
                 () => {this.setState({
                   market:true, 
@@ -311,8 +312,8 @@ class Sijang extends Component {
               }>
                 {
                   marketDict["선호"] ?
-                    <AntDesign name="heart" size={25} color="black" /> :
-                    <AntDesign name="heart" size={25} color="white" />
+                    <AntDesign name="heart" size={30} color="#D62B83" /> :
+                    <AntDesign name="hearto" size={30} color="#D62B83" />
                 }
               </TouchableOpacity>
             </View>
@@ -361,7 +362,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   TopBar: {
-    height: 140,
+    height: '14%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#81888F',
@@ -369,14 +370,15 @@ const styles = StyleSheet.create({
   },
 
   TopBarText: {
-    fontSize: 25,
-    marginTop: 25,
+    fontSize: 25, 
+    marginTop: '25%',
     color: 'white'
   },
 
   MainSpace: {
-    height: 545,
-    backgroundColor: '#E8EAEB'
+    flex: 4,
+    backgroundColor: '#E8EAEB',
+    paddingTop : 30
   },
 
   SearchSpace: {
@@ -389,13 +391,9 @@ const styles = StyleSheet.create({
   TopButton: {
     alignItems: 'center',
     backgroundColor: '#6A6F75',
-    padding: 10,
-    width: 60,
-    height: 50,
-    marginLeft: 20,
-    marginRight: 40,
-    marginTop: 70,
-    marginBottom: 40
+    padding: '8%',
+    marginHorizontal: '32%',
+    marginTop: '38%',
   },
 
   StatusButton: {

@@ -12,6 +12,7 @@ import {
 import { Button } from 'react-native-elements'
 import * as firebase from "firebase";
 import "firebase/database";
+import { TextInput } from 'react-native-gesture-handler';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
@@ -298,7 +299,7 @@ class SignUp extends Component {
           </View>
           <View style={{flex: 2}}>
             <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-              <AntDesign name="back" size={30} color="white" />
+              <AntDesign name="back" size={15} color="white" />
             </TouchableOpacity>
           </View>
         </View>
@@ -307,45 +308,35 @@ class SignUp extends Component {
         <ScrollView>
           <View style={{flex:1}}>
           <View style={{flexDirection:'row'}}>
-            <SearchBar
-             showCancel
-             round
-             lightTheme
+            <TextInput
              placeholder="아이디"
-             containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
              onChangeText={this.updateId}
              value={this.state.ID}
+             style={styles.input}
             />
-            <Button title={'중복확인'} onPress={
-              this.overlap
-            }></Button>
+            <Button 
+              title={'중복확인'} 
+              onPress={this.overlap}
+              style={{flex: 1}}
+            ></Button>
           </View>
-          <SearchBar
-            showCancel
-            round
-            lightTheme
+          <TextInput
             placeholder="비밀번호"
-            containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
             onChangeText={this.updatepas}
             value={this.state.Password}
+            style={styles.input}
           />
-           <SearchBar
-            showCancel
-            round
-            lightTheme
+           <TextInput
             placeholder="이름을 입력하세요"
-            containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
             onChangeText={this.updateName}
             value={this.state.Name}
+            style={styles.input}
           />
-          <SearchBar
-            showCancel
-            round
-            lightTheme
+          <TextInput
             placeholder="전화번호를 입력하세요"
-            containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
             onChangeText={this.updatePhone}
             value={this.state.Phone}
+            style={styles.input}
           />
 
           </View>
@@ -444,6 +435,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
+
   submit:{
     width:"80%",
     backgroundColor:"#fc5185",
@@ -453,6 +445,7 @@ const styles = StyleSheet.create({
     marginTop:20,
     marginLeft : 25
   },
+
   header:{
     fontSize:25,
     fontWeight:"bold",
@@ -461,8 +454,9 @@ const styles = StyleSheet.create({
     marginBottom:20,
     marginLeft : 40,
   },
+
   TopBar: {
-    height: 140,
+    height: '14%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#81888F',
@@ -470,15 +464,21 @@ const styles = StyleSheet.create({
   },
 
   TopBarText: {
-    fontSize: 33, 
-    marginTop: 25,
+    fontSize: 25, 
+    marginTop: '25%',
     color: 'white'
   },
 
   input :{
-    alignItems: 'center',
-    width : 60,
+    width: '80%',
+    height: 50,
+    padding: '2%',
+    borderWidth: 2,
+    borderColor: '#81888F',
+    marginVertical: '5%',
+    marginHorizontal: '10%',
   },
+
   item:{
     width:"80%",
     backgroundColor:"#fff",
@@ -488,32 +488,23 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     marginLeft : 25,
   },
+
   checkBoxTxt:{
     marginLeft:20
   },
+
   MainSpace: {
-    height: 545,
+    flex: 4,
     backgroundColor: '#E8EAEB',
     paddingTop : 30
-  },
-
-  SearchSpace: {
-    height: 100,
-    justifyContent: 'center',
-    marginLeft: 15,
-    marginRight: 15
   },
 
   TopButton: {
     alignItems: 'center',
     backgroundColor: '#6A6F75',
-    padding: 10,
-    width : 50,
-    height : 50,
-    marginLeft: 20,
-    marginRight: 40,
-    marginTop: 70,
-    marginBottom: 40
+    padding: '8%',
+    marginHorizontal: '32%',
+    marginTop: '38%',
   },
 
   StatusButton: {
