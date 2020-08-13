@@ -15,6 +15,7 @@ import {
 import { Button } from 'react-native-elements'
 import * as firebase from "firebase";
 import "firebase/database";
+import { TextInput } from 'react-native-gesture-handler';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
@@ -66,13 +67,8 @@ class Login extends Component {
     )
     
     return (
-      <KeyboardAvoidingView 
-      behavior= {(Platform.OS === 'ios')? "height" : 'height'}
-      keyboardVerticalOffset = {20}
-      style={{ flex: 1 }}
-      > 
+      
       <SafeAreaView style={{flex : 1}}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.TopBar}>
           <View style={{flex: 3, alignItems: 'center'}}>
@@ -81,8 +77,6 @@ class Login extends Component {
             </Text>
           </View>
         </View>
-        
-      <ScrollView>
      
         <View style={styles.MainSpace}>
         <Text style={{textAlign : 'center',marginBottom : '10%',fontSize:25,}}>
@@ -90,9 +84,9 @@ class Login extends Component {
               
         </Text>
        
-         <View>
-          <View>
-          <SearchBar
+         {/* <View>
+          <View> */}
+          {/* <SearchBar
             showCancel
             round
             lightTheme
@@ -100,8 +94,22 @@ class Login extends Component {
             containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
             onChangeText={this.updateId}
             value={this.state.ID}
+          /> */}
+          <TextInput
+            value={this.state.ID}
+            onChangeText={this.updateId}
+            Label='ID'
+            placeholder='ID'
+            style={styles.input}
           />
-          <SearchBar
+          <TextInput
+            value={this.state.Password}
+            onChangeText={this.updatepas}
+            Label='password'
+            placeholder='password'
+            style={styles.input}
+          />
+          {/* <SearchBar
             showCancel
             round
             lightTheme
@@ -109,11 +117,11 @@ class Login extends Component {
             containerStyle={{width:'85%',marginLeft:'7.5%',}}
             onChangeText={this.updatepas}
             value={this.state.Password}
-          />
-          </View>
+          /> */}
           
-          <View style={{flexDirection : 'row',marginLeft:'8%',marginTop:'10%'}}>
-          <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
+          
+          <View style={{flexDirection : 'row',marginLeft:'8%',marginTop:'5%'}}>
+          <Button style={{height: 100, width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
           buttonStyle={{backgroundColor: "gray",height: '50%',}} title='로그인' onPress = {
             async () =>{ 
               console.log("login")
@@ -141,7 +149,7 @@ class Login extends Component {
               }
             }
           } />
-          <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
+          <Button style={{height: 100, width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
           buttonStyle={{backgroundColor: "gray",height: '50%'}} title='회원가입'
           onPress = {() => {
             this.setState({
@@ -152,7 +160,7 @@ class Login extends Component {
             })
             this.props.navigation.navigate('SignUp')}
           } />
-          <Button style={{width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
+          <Button style={{height: 100, width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
           buttonStyle={{width : '100%',backgroundColor: "gray",height: '50%'}} title={`아이디/${'\n'}비밀번호찾기`} 
           onPress = {() =>{
             this.setState({
@@ -163,17 +171,13 @@ class Login extends Component {
             })
             this.props.navigation.navigate('SelectFind')}
           }/>
-          </View>
-          </View>
+          {/* </View>
+          </View> */}
         </View>
-        <View style={{height: 20}}></View>
-        
-        </ScrollView>
        
       </View>
-      </TouchableWithoutFeedback>
+      </View>
       </SafeAreaView>
-      </KeyboardAvoidingView>
     
     )
   }
@@ -183,10 +187,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    
   },
 
   TopBar: {
-    height: 140,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#81888F',
@@ -195,93 +200,23 @@ const styles = StyleSheet.create({
 
   TopBarText: {
     fontSize: 33, 
-    marginTop: 25,
     color: 'white'
   },
 
   input :{
-    alignItems: 'center',
-    width : 60,
+    width: '80%',
+    height: 50,
+    padding: '2%',
+    borderWidth: 2,
+    borderColor: '#81888F',
+    marginVertical: '5%',
+    marginHorizontal: '10%',
   },
 
   MainSpace: {
-    height: 545,
+    flex: 4,
     backgroundColor: '#E8EAEB',
     paddingTop : 50
-  },
-
-  SearchSpace: {
-    height: 100,
-    justifyContent: 'center',
-    marginLeft: 15,
-    marginRight: 15
-  },
-
-  TopButton: {
-    alignItems: 'center',
-    backgroundColor: '#6A6F75',
-    padding: 10,
-    width : 50,
-    height : 50,
-    marginLeft: 20,
-    marginRight: 40,
-    marginTop: 70,
-    marginBottom: 40
-  },
-
-  StatusButton: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 20,
-    width: 30,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 10,
-    marginBottom: 10
-  },
-
-  item_view: {
-    backgroundColor: '#DDDDDD',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    height: 120
-  },
-
-  item_title: {
-    marginTop: 8,
-    fontSize: 24,
-  },
-
-  item_subtitle: {
-    fontSize: 14,
-  },
-
-  item_icon: {
-    height: 20,
-    width: 20,
-    padding: 20,
-    marginRight: 20
-  },
-
-  menu_dialogContentView: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-
-  menu_dialog_button: {
-    width: '40%',
-    height: 30,
-  },
-
-  dialog_Button: {
-    alignItems: 'center',
-    backgroundColor: '#6A6F75',
-    padding: 10,
-    marginVertical: 20,
-    marginHorizontal: 20,
-    flex: 1
   },
 
 })
