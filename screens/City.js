@@ -221,6 +221,16 @@ class City extends React.Component {
                       }
                     }
                   })
+                  const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
+                  favoriteSnapshot.forEach(childSnapshot=>{
+                    var marketData = childSnapshot.child("상가이름").val();
+                    var locData = childSnapshot.child("주소도로명").val();
+                    resultMarketList.forEach(result=>{
+                      if(result["상가이름"]==marketData&&result["주소도로명"]==locData){
+                        result["선호"] = true;
+                      }
+                    })
+                  })
                   // console.log(resultMarketList);
                   this.props.navigation.navigate('Sijang',{name :`${prevData[1]}`, marketList : resultMarketList, uid:uid})  
                 }
