@@ -16,7 +16,24 @@ import Dialog, {
   DialogButton,
   ScaleAnimation,
 } from 'react-native-popup-dialog';
-import StarRating from 'react-native-star-rating';;
+import StarRating from 'react-native-star-rating';
+import * as firebase from "firebase";
+import "firebase/database";
+    
+const firebaseConfig = {
+  apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
+  authDomain: "bottom-up-project.firebaseapp.com",
+  databaseURL: "https://bottom-up-project.firebaseio.com",
+  projectId: "bottom-up-project",
+  storageBucket: "bottom-up-project.appspot.com",
+  messagingSenderId: "109120495683",
+  appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
+};
+
+if(!firebase.apps.length){
+  firebase.initializeApp(firebaseConfig);
+}
+var database = firebase.database();
 
 const Item = ({ name, subname, icon ,func}) => (
   <View style={{flexDirection : 'row'}}>
@@ -70,7 +87,16 @@ class Sijang extends Component {
     this.setState({
       market : true,
     })
+  }
 
+  mypage = async () => {
+    var uid = this.props.navigation.getParam("uid");
+    const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value')
+    var userName = snapshot.val()["name"];
+    var userID = snapshot.val()["id"];
+    var favoriteList = snapshot.val()["favorite"];
+    this.setState({ menuDialog: false });
+    this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID});
   }
   render() {
     const { search } = this.state;
@@ -137,7 +163,7 @@ class Sijang extends Component {
                       <AntDesign name="home" size={20} color="white" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.dialog_Button} onPress={() => {this.props.navigation.navigate('UserInfo',{uid:uid}); this.setState({menuDialog : false})}}>
+                    <TouchableOpacity style={styles.dialog_Button} onPress={this.mypage}>
                       <AntDesign name="user" size={20} color="white" />
                     </TouchableOpacity>
 

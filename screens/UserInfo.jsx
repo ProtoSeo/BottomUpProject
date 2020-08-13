@@ -88,7 +88,8 @@ class UserInfo extends Component {
     const renderItem = ({ item }) => (
         <Item name={item.name} subname={item.subname} icon={item.icon} func = {() => this.props.navigation.navigate('Sijang',{name:item.name})} />
       )
-    const uid = this.props.navigation.getParam("uid");
+    const userName = this.props.navigation.getParam("userName");
+    const userID = this.props.navigation.getParam("userID");
     return (
       <View style={styles.container}>
         <View style={styles.TopBar}>
@@ -106,17 +107,15 @@ class UserInfo extends Component {
           </View>
         </View>
 
-        
-        
         <View style={styles.MainSpace}>
         <View style={{marginTop : '5%',marginLeft:'5%'}}>
          <Text style={{fontSize : 46}}>
-             이름
+             {userName}
          </Text>
         </View>
         <View style={{marginTop : '5%',marginLeft:'5%'}}>
          <Text style={{fontSize : 46}}>
-             아이디
+             {userID}
          </Text>
          </View>
          <View style={{height: '65%'}}>

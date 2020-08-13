@@ -40,9 +40,14 @@ class JeonGuk extends React.Component {
     this.props.navigation.navigate('Home');
   }
 
-  mypage = () => {
-    this.setState({ menuDialog: false });
-    this.props.navigation.navigate('UserInfo');
+  mypage = async () => {
+      var uid = this.props.navigation.getParam("uid");
+      const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value')
+      var userName = snapshot.val()["name"];
+      var userID = snapshot.val()["id"];
+      var favoriteList = snapshot.val()["favorite"];
+      this.setState({ menuDialog: false });
+      this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID});
   }
 
   logout = () => {
@@ -63,9 +68,8 @@ class JeonGuk extends React.Component {
   }
 
   render () {
-
     const { search } = this.state;
-    const uid = this.props.navigation.getParams('uid');
+    const uid = this.props.navigation.getParam("uid");
     return(
 
       <View style={styles.one}>
@@ -160,7 +164,6 @@ class JeonGuk extends React.Component {
               var tempList = [];
               const snapshot = await database.ref(`Data/${region}`).once('value')
               snapshot.forEach(childSnapshot=>{
-              var key = childSnapshot.key;
               var regionData = childSnapshot.child("시군구").val()
               var marketData = childSnapshot.child("시장명").val()
               tempList.push(regionData+"/"+marketData);})

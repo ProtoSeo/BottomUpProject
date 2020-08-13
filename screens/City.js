@@ -43,10 +43,15 @@ class City extends React.Component {
     this.props.navigation.goBack();
   }
 
-  mypage = () => {
+  mypage = async () => {
+    var uid = this.props.navigation.getParam("uid");
+    const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value')
+    var userName = snapshot.val()["name"];
+    var userID = snapshot.val()["id"];
+    var favoriteList = snapshot.val()["favorite"];
     this.setState({ menuDialog: false });
-    this.props.navigation.navigate('UserInfo');
-  }
+    this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID});
+}
 
   logout = () => {
     
