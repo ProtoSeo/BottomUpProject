@@ -60,6 +60,7 @@ const FoodCopy = ['국수','국밥','후라이드치킨','닭강정','떡볶이'
 
 class SignUp extends Component {
   state = {
+    idCheck:false,
     search: '',
     menuDialog: false,
     ID : '',
@@ -260,10 +261,31 @@ class SignUp extends Component {
       Food = deepCopy;
     }
   }
-  
+  overlap = async () =>{
+    var chk = false;
+    if(this.state.ID==''){
+      Alert.alert("ID를 입력해주세요!");
+      this.setState({idCheck:false});
+      return;
+    }
+    const snapshot = await database.ref('Users/UserInfo').once('value');
+    snapshot.forEach(childSnapshot=>{
+      if(childSnapshot.val()["id"]==this.state.ID){
+        chk = true;
+      }
+    })
+    if(chk==true){
+      Alert.alert("사용할 수 없는 ID입니다!")
+      this.setState({idCheck:false});
+    }else{
+      Alert.alert("사용가능한 ID 입니다!")
+      this.setState({idCheck:true});
+    }
+  } 
+
   render() {
     // console.log(Food)
-    const { search, ID ,Name,Phone,Password ,notSelected} = this.state;
+    const { search, idCheck,ID ,Name,Phone,Password ,notSelected} = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.TopBar}>
@@ -284,23 +306,20 @@ class SignUp extends Component {
         <View style={styles.MainSpace}>
         <ScrollView>
           <View style={{flex:1}}>
-
-          <SearchBar
-            showCancel
-            round
-            lightTheme
-            placeholder="아이디"
-            containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
-            onChangeText={this.updateId}
-            value={this.state.ID}
-          />
-          {/* <TouchableOpacity style={styles.TopButton} onPress={
-            async () ={
-
-            }
-          }>
-              <AntDesign name="Hello" size={10} color="white" />
-            </TouchableOpacity> */}
+          <View style={{flexDirection:'row'}}>
+            <SearchBar
+             showCancel
+             round
+             lightTheme
+             placeholder="아이디"
+             containerStyle={{width:'85%',marginLeft:'7.5%',marginBottom :'5%'}}
+             onChangeText={this.updateId}
+             value={this.state.ID}
+            />
+            <Button title={'중복확인'} onPress={
+              this.overlap
+            }></Button>
+          </View>
           <SearchBar
             showCancel
             round
@@ -357,20 +376,19 @@ class SignUp extends Component {
               const snapshot = await database.ref('Users/UserCount').once('value')
               var userCount = snapshot.val()
               console.log("SingUp")
-              if(ID == ''){
-                Alert.alert("No ID")
-                return ;
+              if(idCheck==false){
+                Alert.alert("ID 중복검사를 진행해주세요.")
               }
               if(Password == ''){
-                Alert.alert("No Password")
+                Alert.alert("비밀번호를 입력해주세요.")
                 return ;
               }
               if(Phone == ''){
-                Alert.alert("No Phone")
+                Alert.alert("핸드폰 번호를 입력해주세요.")
                 return ;
               }
               if(Name == ''){
-                Alert.alert("No Name")
+                Alert.alert("이름을 입력해주세요.")
                 return ;
               }
               notSelected.clean(undefined);
