@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { StyleSheet, Text, ScrollView, TouchableOpacity, View, KeyboardAvoidingView, Alert} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { SearchBar } from 'react-native-elements'
@@ -176,8 +176,18 @@ class City extends React.Component {
                 prev = {region} onPressAction={
                   async () => {
                     const prevData = region.split('/');
+                    const userDataSnapshot = await database.ref(`Users/UserInfo/${uid}`).child("taste").once('value');
+                    var userTasteDict = userDataSnapshot.val();
+                    var userTasteList = Object.keys(userTasteDict).map(function(key) {
+                      return [key, userTasteDict[key]];
+                    });
+                    userTasteList.sort(function(first, second) {
+                      return second[1] - first[1];
+                    });
+                    userTasteList = userTasteList.map(function(value,index){return value[0];});
+                    console.log("사용자의 취향 리스트",userTasteList);
                     var marketList = [];
-                    const snapshot = await database.ref(`Data/${regionName}`).once('value')
+                    const snapshot = await database.ref(`Data/${regionName}`).once('value');
                     snapshot.forEach(childSnapshot=>{
                       var regionData = childSnapshot.child("시군구").val();
                       var marketData = childSnapshot.child("시장명").val();
@@ -193,9 +203,26 @@ class City extends React.Component {
                       }
                     })
                   await Promise.all(marketList);
-                  // console.log(marketList)
-                  this.props.navigation.navigate('Sijang',{name :`${prevData[1]}`, marketList : marketList, uid:uid})
-                  }
+                  var resultMarketList = []
+                  userTasteList.forEach(tasteInfo=>{
+                    for(var i = 0;i<marketList.length;i++){
+                      var chk = true;
+                      if(marketList[i]["음식태그"].indexOf(tasteInfo)!==-1){
+                        // resultMarketList를 한 번더 순회해서 만약에 이미 저장되어있는 데이터라면 chk = false
+                        resultMarketList.forEach(result=>{
+                          if(result==marketList[i]){
+                            chk=false;
+                          }
+                        })
+                        if(chk){
+                          resultMarketList.push(marketList[i]);
+                        }
+                      }
+                    }
+                  })
+                  // console.log(resultMarketList);
+                  this.props.navigation.navigate('Sijang',{name :`${prevData[1]}`, marketList : resultMarketList, uid:uid})  
+                }
                 } width='80%' deepBlue impact />
               )
           })}
