@@ -35,7 +35,7 @@ if(!firebase.apps.length){
 }
 var database = firebase.database();
 
-const Item = ({ name, subname, icon ,func}) => (
+const Item = ({ name, subname,check, icon ,func,func2}) => (
   <View style={{flexDirection : 'row'}}>
   <TouchableOpacity style={styles.item_view} onPress={func}> 
     <View style={{flex: 7, flexDirection: 'row'}}>
@@ -46,12 +46,15 @@ const Item = ({ name, subname, icon ,func}) => (
       <Text style={styles.item_subtitle}>{subname}</Text>
     </View>
   </TouchableOpacity>
-  <TouchableOpacity style={styles.item_heart}>
-  <AntDesign name="heart" size={25} color="black" />
+  <TouchableOpacity style={styles.item_heart} onPress={func2}>
+  {
+   check?
+   <AntDesign name="heart" size={25} color="black" />:
+   <AntDesign name="heart" size={25} color="white" />
+  }
   </TouchableOpacity>
   </View>
 )
-
 class Sijang extends Component {
   state = {
     search: '',
@@ -94,28 +97,31 @@ class Sijang extends Component {
     const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value')
     var userName = snapshot.val()["name"];
     var userID = snapshot.val()["id"];
-    //var userPhone = snapshot.val()['phone']
+    var userPhone = snapshot.val()['phone']
     var favoriteList = snapshot.val()["favorite"];
     this.setState({ menuDialog: false });
-    this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID});
-    // this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID,userPhone:userPhone});
-  
+    this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID,userPhone:userPhone});
   }
+
   render() {
     const { search } = this.state;
     const marketName = this.props.navigation.getParam('name');
     const marketList = this.props.navigation.getParam("marketList");
-    const uid = this.props.navigation.getParam("uid")
     console.log("Sijang")
     const renderItem = ({ item }) => (
       
-      <Item name={item["상가이름"]} subname={item["음식"]} 
+      <Item name={item["상가이름"]} subname={item["음식"]} check = {item["선호"]}  
       // icon={item.icon} 
       func = {() => {this.setState({
         market:true, 
         MarketName : item["상가이름"], 
         starCount : item["평점"],
-        SubName : item["음식"]})}} />
+        SubName : item["음식"]
+      })}}
+      func2 = {() => {this.setState({
+        heart : item["선호"]
+      })}}  
+        />
     )
     
     return (

@@ -90,6 +90,8 @@ class UserInfo extends Component {
       )
     const userName = this.props.navigation.getParam("userName");
     const userID = this.props.navigation.getParam("userID");
+    const userPhone = this.props.navigation.getParam("userPhone");
+    
     return (
       <View style={styles.container}>
         <View style={styles.TopBar}>
@@ -110,12 +112,17 @@ class UserInfo extends Component {
         <View style={styles.MainSpace}>
         <View style={{marginTop : '5%',marginLeft:'5%'}}>
          <Text style={{fontSize : 46}}>
-             {userName}
+             ID : {userID}
+         </Text>
+         </View>
+         <View style={{marginTop : '5%',marginLeft:'5%'}}>
+         <Text style={{fontSize : 46}}>
+             이름 : {userName}
          </Text>
         </View>
-        <View style={{marginTop : '5%',marginLeft:'5%'}}>
+         <View style={{marginTop : '5%',marginLeft:'5%'}}>
          <Text style={{fontSize : 46}}>
-             {userID}
+             전화번호 : {userPhone}
          </Text>
          </View>
          <View style={{height: '65%'}}>

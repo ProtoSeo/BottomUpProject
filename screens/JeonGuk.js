@@ -41,13 +41,14 @@ class JeonGuk extends React.Component {
   }
 
   mypage = async () => {
-      var uid = this.props.navigation.getParam("uid");
-      const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value')
-      var userName = snapshot.val()["name"];
-      var userID = snapshot.val()["id"];
-      var favoriteList = snapshot.val()["favorite"];
-      this.setState({ menuDialog: false });
-      this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID});
+    var uid = this.props.navigation.getParam("uid");
+    const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value')
+    var userName = snapshot.val()["name"];
+    var userID = snapshot.val()["id"];
+    var userPhone = snapshot.val()['phone']
+    var favoriteList = snapshot.val()["favorite"];
+    this.setState({ menuDialog: false });
+    this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID,userPhone:userPhone});
   }
 
   logout = () => {

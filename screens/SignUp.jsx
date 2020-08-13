@@ -413,7 +413,7 @@ class SignUp extends Component {
                   }
                 }
               }else {
-                Alert.alert("No Food battle")
+                Alert.alert("음식 이상형월드컵을 진행해주세요.")
                 return ;
               }
               console.log(taste)

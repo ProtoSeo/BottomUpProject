@@ -112,7 +112,7 @@ class FindID extends Component {
               })
               if(findID==true){
                 console.log(snapshot.val()[loginKey])
-                alert('회원님의 아이디는 \n'+ IdValue +'\n 이것입니다.');
+                alert('회원님의 아이디는 \n'+ IdValue +' 입니다.');
                 this.props.navigation.navigate('Login')
               }else{
                 alert('회원님의 아이디를 찾을 수 없습니다.');

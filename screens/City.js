@@ -48,10 +48,11 @@ class City extends React.Component {
     const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value')
     var userName = snapshot.val()["name"];
     var userID = snapshot.val()["id"];
+    var userPhone = snapshot.val()['phone']
     var favoriteList = snapshot.val()["favorite"];
     this.setState({ menuDialog: false });
-    this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID});
-}
+    this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID,userPhone:userPhone});
+  }
 
   logout = () => {
     
@@ -198,7 +199,7 @@ class City extends React.Component {
                         marketDict["음식태그"] = childSnapshot.child("음식태그").val();
                         marketDict["주소도로명"] = childSnapshot.child("주소도로명").val();
                         marketDict["평점"] = childSnapshot.child("평점").val();
-                        marketDict["우선순위"] = 4; //TODO:
+                        marketDict["선호"] = false;
                         marketList.push(marketDict);
                       }
                     })
