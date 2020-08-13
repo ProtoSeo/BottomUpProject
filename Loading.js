@@ -12,13 +12,13 @@ export default function Loading(){
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        justifyContent:"flex-end",
-        paddingHorizontal: 30,
-        paddingVertical:100,
-        backgroundColor:"#FDF6AA"
+        alignItems: 'center',
+        justifyContent:"center",
+        backgroundColor:"#FDF6AA",
     },
     text:{
         color:"#2c2c2c",
-        fontSize:20
+        fontSize:40,
+        marginBottom: '120%'
     }
 })
