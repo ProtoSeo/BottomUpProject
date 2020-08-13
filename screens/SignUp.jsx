@@ -392,7 +392,6 @@ class SignUp extends Component {
                 return ;
               }
               notSelected.clean(undefined);
-              // console.log(notSelected)
               var taste = { '한식': 0,
               '치킨':0,
               '간식,분식':0,
@@ -413,7 +412,7 @@ class SignUp extends Component {
                   }
                 }
               }else {
-                Alert.alert("No Food battle")
+                Alert.alert("음식 이상형월드컵을 진행해주세요.")
                 return ;
               }
               console.log(taste)
@@ -422,7 +421,10 @@ class SignUp extends Component {
                 password :Password,
                 id:ID,
                 phone:Phone,
-                taste:taste
+                taste:taste,
+                favorite:{
+                  count:0
+                }
               });
               await database.ref(`Users/UserCount`).set(++userCount);
               Alert.alert("회원가입이 완료되었습니다.");
