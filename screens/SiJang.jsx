@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import { SearchBar } from 'react-native-elements';
+import Swiper from "react-native-web-swiper";
 import { AntDesign } from '@expo/vector-icons';
 import {
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   View,
   FlatList,
   Image,
-  Button,
+  ScrollView
 } from 'react-native';
 import Dialog, {
   DialogTitle,
@@ -19,6 +19,7 @@ import Dialog, {
 import StarRating from 'react-native-star-rating';;
 
 const Item = ({ name, subname, icon ,func}) => (
+  <View style={{flexDirection : 'row'}}>
   <TouchableOpacity style={styles.item_view} onPress={func}> 
     <View style={{flex: 7, flexDirection: 'row'}}>
       <Image style={styles.item_icon} source={require('./icon/rice.png')}/>
@@ -28,6 +29,10 @@ const Item = ({ name, subname, icon ,func}) => (
       <Text style={styles.item_subtitle}>{subname}</Text>
     </View>
   </TouchableOpacity>
+  <TouchableOpacity style={styles.item_heart}>
+  <AntDesign name="heart" size={25} color="black" />
+  </TouchableOpacity>
+  </View>
 )
 
 class Sijang extends Component {
@@ -204,9 +209,7 @@ class Sijang extends Component {
                 <Text>
                   {this.state.SubName}
                 </Text>
-                <TouchableOpacity onPress={() => {this.state.heart == 1 ? this.setState({heart : 0}) : this.setState({heart : 1})}}>
-                    {this.state.heart == 1 ? <AntDesign name="heart" size={50} color="black" />  :  <AntDesign name="hearto" size={50}  />}  
-                </TouchableOpacity>
+               
                 <TouchableOpacity
                     style={{alignItems: 'center'}}
                     onPress={() => {
@@ -236,14 +239,21 @@ class Sijang extends Component {
         </View>
 
         <View style={styles.SearchSpace}>
-          <SearchBar
-            showCancel
-            round
-            lightTheme
-            placeholder="검색하세요"
-            onChangeText={this.updateSearch}
-            value={search}
-          />
+        <Swiper showsButtons={true} nextButton={false}>
+            <View style={[styles.slideContainer,styles.slide1]}>
+                <Text>봄</Text>
+            </View>
+            <View style={[styles.slideContainer,styles.slide2]}>
+                <Text>여름</Text>
+            </View>
+            <View style={[styles.slideContainer,styles.slide3]}>
+                <Text>가을</Text>
+            </View>
+            <View style={[styles.slideContainer,styles.slide4]}>
+                <Text>겨울</Text>
+            </View>
+        </Swiper>
+        {/* 여기가 Swiper 텍스트 사용가능 터치블 사용가능*/}
         </View>
         
         <View style={styles.MainSpace}>
@@ -276,6 +286,23 @@ const styles = StyleSheet.create({
     height : 300,
  
   },
+  slideContainer: {
+    flex : 1,
+    alignItems: "center",
+    justifyContent: "center"
+},
+  slide1: {
+    backgroundColor: "rgba(20,20,200,0.3)"
+},
+slide2: {
+    backgroundColor: "rgba(20,200,20,0.3)"
+},
+slide3: {
+    backgroundColor: "rgba(215,178,116,0.3)"
+},
+slide4: {
+  backgroundColor: "#50BCDF"
+},
   myEmptyStarStyle: {
     color: 'white',
   },
@@ -299,10 +326,10 @@ const styles = StyleSheet.create({
   },
 
   SearchSpace: {
-    height: 100,
+    backgroundColor: '#E8EAEB',
+    height: 120,
     justifyContent: 'center',
-    marginLeft: 15,
-    marginRight: 15
+    
   },
 
   TopButton: {
@@ -332,8 +359,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDDDDD',
     padding: 20,
     marginVertical: 8,
-    marginHorizontal: 16,
-    height: 120
+    marginLeft :12,
+    height: 120,
+    flex:9
+  },
+
+  item_heart: {
+    backgroundColor: '#E8EAEB',
+    marginVertical: '12%',
+    marginHorizontal : 20,
+    height: 50,
+    flex:1
   },
 
   item_title: {

@@ -6,7 +6,6 @@ import {
   View,
   TouchableOpacity
 } from 'react-native';
-import { Button } from 'react-native-elements'
 import { AntDesign } from '@expo/vector-icons';
 class SelectFind extends Component {
 
@@ -50,7 +49,7 @@ class SelectFind extends Component {
           </View>
           <View style={{flex: 2}}>
             <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-              <AntDesign name="back" size={30} color="white" />
+              <AntDesign name="back" size={15} color="white" />
             </TouchableOpacity>
           </View>
         </View>
@@ -76,10 +75,6 @@ class SelectFind extends Component {
             </View>
           </View>
         </View>
-
-        <View style={{height: 20}}></View>
-
-       
       </View>
     )
   }
@@ -100,8 +95,8 @@ const styles = StyleSheet.create({
   },
 
   TopBarText: {
-    fontSize: 33, 
-    marginTop: 25,
+    fontSize: 25, 
+    marginTop: '25%',
     color: 'white'
   },
 
@@ -111,7 +106,7 @@ const styles = StyleSheet.create({
   },
 
   MainSpace: {
-    height: 545,
+    flex: 1,
     backgroundColor: '#E8EAEB',
     paddingTop : 50
   },
@@ -126,13 +121,9 @@ const styles = StyleSheet.create({
   TopButton: {
     alignItems: 'center',
     backgroundColor: '#6A6F75',
-    padding: 10,
-    width : 50,
-    height : 50,
-    marginLeft: 20,
-    marginRight: 40,
-    marginTop: 70,
-    marginBottom: 40
+    padding: '8%',
+    marginHorizontal: '32%',
+    marginTop: '38%',
   },
 
   StatusButton: {

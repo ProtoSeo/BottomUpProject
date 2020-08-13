@@ -9,7 +9,8 @@ import {
   Platform,
   SafeAreaView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  Alert
 } from 'react-native';
 import { Button } from 'react-native-elements'
 import * as firebase from "firebase";
