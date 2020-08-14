@@ -74,7 +74,19 @@ class JeonGuk extends React.Component {
       ]
     )
   }
-
+  gotoNextView = async(region)=>{
+    const uid = this.props.navigation.getParam("uid");
+    var tempList = [];
+    const snapshot = await database.ref(`Data/${region}`).once('value')
+    snapshot.forEach(childSnapshot => {
+      var regionData = childSnapshot.child("시군구").val()
+      var marketData = childSnapshot.child("시장명").val()
+      tempList.push(regionData + "/" + marketData);
+    })
+    await Promise.all(tempList);
+    let resultList = new Set([...tempList])
+    this.props.navigation.navigate('City', { name: `${region}`, regionList: [...resultList], uid: uid })
+  }
   render() {
     const { searchString } = this.state;
     const uid = this.props.navigation.getParam("uid");
@@ -167,33 +179,11 @@ class JeonGuk extends React.Component {
             <ScrollView>
               {!List.includes(this.state.searchString) ? List.map((region, i) => <GradientButton key={i} style={{ marginVertical: 8, marginLeft: 30 }} text={`${region}`}
                 onPressAction={
-                  async () => {
-                    var tempList = [];
-                    const snapshot = await database.ref(`Data/${region}`).once('value')
-                    snapshot.forEach(childSnapshot => {
-                      var regionData = childSnapshot.child("시군구").val()
-                      var marketData = childSnapshot.child("시장명").val()
-                      tempList.push(regionData + "/" + marketData);
-                    })
-                    await Promise.all(tempList);
-                    let resultList = new Set([...tempList])
-                    this.props.navigation.navigate('City', { name: `${region}`, regionList: [...resultList], uid: uid })
-                  }
+                  ()=> this.gotoNextView(region)
                 } width='80%' deepBlue impact />)
                 : <GradientButton key={this.state.searchString} style={{ marginVertical: 8, marginLeft: 30 }} text={this.state.searchString}
                   onPressAction={
-                    async () => {
-                      var tempList = [];
-                      const snapshot = await database.ref(`Data/${this.state.searchString}`).once('value')
-                      snapshot.forEach(childSnapshot => {
-                        var regionData = childSnapshot.child("시군구").val()
-                        var marketData = childSnapshot.child("시장명").val()
-                        tempList.push(regionData + "/" + marketData);
-                      })
-                      await Promise.all(tempList);
-                      let resultList = new Set([...tempList])
-                      this.props.navigation.navigate('City', { name: `${this.state.searchString}`, regionList: [...resultList], uid: uid })
-                    }
+                      () => this.gotoNextView(region)
                   } width='80%' deepBlue impact />}
             </ScrollView>
           </View>

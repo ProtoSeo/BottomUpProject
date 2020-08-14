@@ -29,13 +29,13 @@ if (!firebase.apps.length) {
 var database = firebase.database()
 
 class City extends React.Component {
+  
   state = {
     searchString: '',
     dataList: [],
     region: [],
     searchreg: [],
   }
-
   componentDidMount() {
     var arr = []
     const reg = this.props.navigation.getParam('regionList');
@@ -71,6 +71,96 @@ class City extends React.Component {
     this.props.navigation.navigate('UserInfo', { uid: uid, userName: userName, userID: userID, userPhone: userPhone, favoriteList: favoriteList });
   }
 
+  gotoNextView = async (region) => {
+    console.log(region)
+    const regionName = this.props.navigation.getParam('name')
+    const uid = this.props.navigation.getParam("uid");
+    const prevData = region.split('/');
+    const userDataSnapshot = await database.ref(`Users/UserInfo/${uid}`).child("taste").once('value');
+    var userTasteDict = userDataSnapshot.val();
+    var userTasteList = Object.keys(userTasteDict).map(function (key) {
+      return [key, userTasteDict[key]];
+    });
+    userTasteList.sort(function (first, second) {
+      return second[1] - first[1];
+    });
+    userTasteList = userTasteList.map(function (value, index) { return value[0]; });
+    console.log("사용자의 취향 리스트", userTasteList);
+    var marketList = [];
+    const snapshot = await database.ref(`Data/${regionName}`).once('value');
+    snapshot.forEach(childSnapshot => {
+      var regionData = childSnapshot.child("시군구").val();
+      var marketData = childSnapshot.child("시장명").val();
+      if (regionData == prevData[0] && marketData == prevData[1]) {
+        var marketDict = {}
+        marketDict["상가이름"] = childSnapshot.child("상가이름").val();
+        marketDict["음식"] = childSnapshot.child("음식").val();
+        marketDict["음식태그"] = childSnapshot.child("음식태그").val();
+        marketDict["주소도로명"] = childSnapshot.child("주소도로명").val();
+        marketDict["평점"] = childSnapshot.child("평점").val();
+        marketDict["특징"] = childSnapshot.child("특징").val();
+        marketDict["uid"] = childSnapshot.child("uid").val();
+        marketDict["선호"] = false;
+        marketList.push(marketDict);
+      }
+    })
+    await Promise.all(marketList);
+    var resultMarketList = []
+    userTasteList.forEach(tasteInfo => {
+      for (var i = 0; i < marketList.length; i++) {
+        var chk = true;
+        if (marketList[i]["음식태그"].indexOf(tasteInfo) !== -1) {
+          // resultMarketList를 한 번더 순회해서 만약에 이미 저장되어있는 데이터라면 chk = false
+          resultMarketList.forEach(result => {
+            if (result == marketList[i]) {
+              chk = false;
+            }
+          })
+          if (chk) {
+            resultMarketList.push(marketList[i]);
+          }
+        }
+      }
+    })
+    const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
+    favoriteSnapshot.forEach(childSnapshot => {
+      var marketData = childSnapshot.child("상가이름").val();
+      var locData = childSnapshot.child("주소도로명").val();
+      resultMarketList.forEach(result => {
+        if (result["상가이름"] == marketData && result["주소도로명"] == locData) {
+          result["선호"] = true;
+        }
+      })
+    })
+    var seasonList = ["봄","여름","가을","겨울","연중"];
+    var specialtyList = [];
+    const marketInfoSnapshot = await database.ref(`Market`).once('value');
+    marketInfoSnapshot.forEach(marketInfo=>{
+      var regionData = marketInfo.child("시군구").val();
+      var marketData = marketInfo.child("시장명").val();
+      if (regionData == prevData[0] && marketData == prevData[1]){
+        specialtyList.push(marketInfo.val()["시장정보"]);
+      } 
+    });
+    const specialtySnapshot = await database.ref(`Specialty`).once('value');
+    console.log(region,prevData[0])
+    specialtySnapshot.forEach(specialtyInfo=>{
+      var regionData = specialtyInfo.child("시도").val();
+      var cityData = specialtyInfo.child("시군구").val();
+      
+      if (regionData == regionName && cityData == prevData[0]){
+        seasonList.forEach(season=>{
+          var seasonData = specialtyInfo.val()[`${season}`];
+          if(seasonData != ''){
+            specialtyList.push(`${season} : ${seasonData}`)
+          }
+        })
+      } 
+    });
+    console.log(specialtyList)
+    
+    this.props.navigation.navigate('Sijang', { name: `${prevData[1]}`, marketList: resultMarketList,specialtyList:specialtyList, uid: uid })
+  }
   logout = () => {
     Alert.alert(
       '로그아웃',
@@ -206,130 +296,14 @@ class City extends React.Component {
                 return (
                   <GradientButton key={i} style={{ marginVertical: 8, marginLeft: 30 }} text={region}
                     prev={region} onPressAction={
-                      async () => {
-                        const prevData = region.split('/');
-                        const userDataSnapshot = await database.ref(`Users/UserInfo/${uid}`).child("taste").once('value');
-                        var userTasteDict = userDataSnapshot.val();
-                        var userTasteList = Object.keys(userTasteDict).map(function (key) {
-                          return [key, userTasteDict[key]];
-                        });
-                        userTasteList.sort(function (first, second) {
-                          return second[1] - first[1];
-                        });
-                        userTasteList = userTasteList.map(function (value, index) { return value[0]; });
-                        console.log("사용자의 취향 리스트", userTasteList);
-                        var marketList = [];
-                        const snapshot = await database.ref(`Data/${regionName}`).once('value');
-                        snapshot.forEach(childSnapshot => {
-                          var regionData = childSnapshot.child("시군구").val();
-                          var marketData = childSnapshot.child("시장명").val();
-                          if (regionData == prevData[0] && marketData == prevData[1]) {
-                            var marketDict = {}
-                            marketDict["상가이름"] = childSnapshot.child("상가이름").val();
-                            marketDict["음식"] = childSnapshot.child("음식").val();
-                            marketDict["음식태그"] = childSnapshot.child("음식태그").val();
-                            marketDict["주소도로명"] = childSnapshot.child("주소도로명").val();
-                            marketDict["평점"] = childSnapshot.child("평점").val();
-                            marketDict["선호"] = false;
-                            marketList.push(marketDict);
-                          }
-                        })
-                        await Promise.all(marketList);
-                        var resultMarketList = []
-                        userTasteList.forEach(tasteInfo => {
-                          for (var i = 0; i < marketList.length; i++) {
-                            var chk = true;
-                            if (marketList[i]["음식태그"].indexOf(tasteInfo) !== -1) {
-                              // resultMarketList를 한 번더 순회해서 만약에 이미 저장되어있는 데이터라면 chk = false
-                              resultMarketList.forEach(result => {
-                                if (result == marketList[i]) {
-                                  chk = false;
-                                }
-                              })
-                              if (chk) {
-                                resultMarketList.push(marketList[i]);
-                              }
-                            }
-                          }
-                        })
-                        const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
-                        favoriteSnapshot.forEach(childSnapshot => {
-                          var marketData = childSnapshot.child("상가이름").val();
-                          var locData = childSnapshot.child("주소도로명").val();
-                          resultMarketList.forEach(result => {
-                            if (result["상가이름"] == marketData && result["주소도로명"] == locData) {
-                              result["선호"] = true;
-                            }
-                          })
-                        })
-                        // console.log(resultMarketList);
-                        this.props.navigation.navigate('Sijang', { name: `${prevData[1]}`, marketList: resultMarketList, uid: uid })
-                      }
+                      () => this.gotoNextView(region)
                     } width='80%' deepBlue impact />
                 )
               }) : this.state.searchreg.map((region, i) => {
                 return (
                   <GradientButton key={i} style={{ marginVertical: 8, marginLeft: 30 }} text={region}
                     prev={region} onPressAction={
-                      async () => {
-                        const prevData = region.split('/');
-                        const userDataSnapshot = await database.ref(`Users/UserInfo/${uid}`).child("taste").once('value');
-                        var userTasteDict = userDataSnapshot.val();
-                        var userTasteList = Object.keys(userTasteDict).map(function (key) {
-                          return [key, userTasteDict[key]];
-                        });
-                        userTasteList.sort(function (first, second) {
-                          return second[1] - first[1];
-                        });
-                        userTasteList = userTasteList.map(function (value, index) { return value[0]; });
-                        console.log("사용자의 취향 리스트", userTasteList);
-                        var marketList = [];
-                        const snapshot = await database.ref(`Data/${regionName}`).once('value');
-                        snapshot.forEach(childSnapshot => {
-                          var regionData = childSnapshot.child("시군구").val();
-                          var marketData = childSnapshot.child("시장명").val();
-                          if (regionData == prevData[0] && marketData == prevData[1]) {
-                            var marketDict = {}
-                            marketDict["상가이름"] = childSnapshot.child("상가이름").val();
-                            marketDict["음식"] = childSnapshot.child("음식").val();
-                            marketDict["음식태그"] = childSnapshot.child("음식태그").val();
-                            marketDict["주소도로명"] = childSnapshot.child("주소도로명").val();
-                            marketDict["평점"] = childSnapshot.child("평점").val();
-                            marketDict["선호"] = false;
-                            marketList.push(marketDict);
-                          }
-                        })
-                        await Promise.all(marketList);
-                        var resultMarketList = []
-                        userTasteList.forEach(tasteInfo => {
-                          for (var i = 0; i < marketList.length; i++) {
-                            var chk = true;
-                            if (marketList[i]["음식태그"].indexOf(tasteInfo) !== -1) {
-                              // resultMarketList를 한 번더 순회해서 만약에 이미 저장되어있는 데이터라면 chk = false
-                              resultMarketList.forEach(result => {
-                                if (result == marketList[i]) {
-                                  chk = false;
-                                }
-                              })
-                              if (chk) {
-                                resultMarketList.push(marketList[i]);
-                              }
-                            }
-                          }
-                        })
-                        const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
-                        favoriteSnapshot.forEach(childSnapshot => {
-                          var marketData = childSnapshot.child("상가이름").val();
-                          var locData = childSnapshot.child("주소도로명").val();
-                          resultMarketList.forEach(result => {
-                            if (result["상가이름"] == marketData && result["주소도로명"] == locData) {
-                              result["선호"] = true;
-                            }
-                          })
-                        })
-                        // console.log(resultMarketList);
-                        this.props.navigation.navigate('Sijang', { name: `${prevData[1]}`, marketList: resultMarketList, uid: uid })
-                      }
+                      () => this.gotoNextView(region)
                     } width='80%' deepBlue impact />
                 )
               })}

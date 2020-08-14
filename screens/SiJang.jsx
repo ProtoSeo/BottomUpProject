@@ -91,6 +91,7 @@ class Sijang extends Component {
   render() {
     const { search, marketList } = this.state;
     const uid = this.props.navigation.getParam('uid');
+    const specialtyList = this.props.navigation
     console.log("Sijang")
 
     return (
