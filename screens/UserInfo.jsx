@@ -1,5 +1,4 @@
 import React, { Component }  from 'react';
-import { SearchBar } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 import {
   StyleSheet,
@@ -99,35 +98,35 @@ class UserInfo extends Component {
           </View>
           <View style={{flex: 3, alignItems: 'center'}}>
             <Text style={styles.TopBarText}>
-              사용자 정보
+              마이페이지
             </Text>
           </View>
           <View style={{flex: 2}}>
             <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-              <AntDesign name="back" size={30} color="white" />
+              <AntDesign name="back" size={15} color="white" />
             </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.MainSpace}>
-        <View style={{marginTop : '5%',marginLeft:'5%'}}>
-         <Text style={{fontSize : 46}}>
+        <View style={{marginTop : '5%', marginLeft:'5%'}}>
+         <Text style={{fontSize : 24, }}>
              ID : {userID}
          </Text>
          </View>
-         <View style={{marginTop : '5%',marginLeft:'5%'}}>
-         <Text style={{fontSize : 46}}>
+         <View style={{marginTop : '5%', marginLeft:'5%'}}>
+         <Text style={{fontSize : 24}}>
              이름 : {userName}
          </Text>
         </View>
-         <View style={{marginTop : '5%',marginLeft:'5%'}}>
-         <Text style={{fontSize : 46}}>
+         <View style={{marginTop : '5%', marginLeft:'5%'}}>
+         <Text style={{fontSize : 24}}>
              전화번호 : {userPhone}
          </Text>
          </View>
          <View style={{height: '65%'}}>
-         <Text style={{fontSize : 46}}>
-             선호도 리스트
+         <Text style={{fontSize : 24, marginLeft:'5%', marginTop: '10%'}}>
+             담아둔 시장
          </Text>
          <ScrollView >
           <FlatList
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   TopBar: {
-    height: 140,
+    height: '14%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#81888F',
@@ -174,7 +173,7 @@ const styles = StyleSheet.create({
 
   TopBarText: {
     fontSize: 25, 
-    marginTop: 25,
+    marginTop: '25%',
     color: 'white'
   },
 
@@ -193,13 +192,9 @@ const styles = StyleSheet.create({
   TopButton: {
     alignItems: 'center',
     backgroundColor: '#6A6F75',
-    padding: 10,
-    width : 60,
-    height : 50,
-    marginLeft: 20,
-    marginRight: 40,
-    marginTop: 70,
-    marginBottom: 40
+    padding: '8%',
+    marginHorizontal: '32%',
+    marginTop: '38%',
   },
 
   StatusButton: {

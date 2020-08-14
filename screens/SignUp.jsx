@@ -307,18 +307,23 @@ class SignUp extends Component {
         <View style={styles.MainSpace}>
         <ScrollView>
           <View style={{flex:1}}>
-          <View style={{flexDirection:'row'}}>
+          <View style={{flexDirection:'row', alignItems: 'center'}}>
             <TextInput
              placeholder="아이디"
              onChangeText={this.updateId}
              value={this.state.ID}
-             style={styles.input}
+             style={styles.input_ID}
             />
-            <Button 
+            <TouchableOpacity
               title={'중복확인'} 
               onPress={this.overlap}
               style={{flex: 1}}
-            ></Button>
+            >
+              <Text style={{alignItems: 'center', marginLeft: '20%'}}>
+                중복확인
+              </Text>
+
+            </TouchableOpacity>
           </View>
           <TextInput
             placeholder="비밀번호"
@@ -470,13 +475,24 @@ const styles = StyleSheet.create({
   },
 
   input :{
-    width: '80%',
+    width: '70%',
     height: 50,
     padding: '2%',
     borderWidth: 2,
     borderColor: '#81888F',
     marginVertical: '5%',
-    marginHorizontal: '10%',
+    marginLeft: '10%',
+    marginRight: '30%'
+  },
+
+  input_ID :{
+    width: '70%',
+    height: 50,
+    padding: '2%',
+    borderWidth: 2,
+    borderColor: '#81888F',
+    marginVertical: '5%',
+    marginLeft: '10%',
   },
 
   item:{

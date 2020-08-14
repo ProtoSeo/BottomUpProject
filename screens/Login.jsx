@@ -62,7 +62,7 @@ class Login extends Component {
     
     return (
       
-      <SafeAreaView style={{flex : 1}}>
+      <SafeAreaView style={{flex : 1, backgroundColor: '#E8EAEB',}}>
       <View style={styles.container}>
         <View style={styles.TopBar}>
           <View style={{flex: 3, alignItems: 'center'}}>
@@ -157,6 +157,7 @@ class Login extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#E8EAEB',
     flex: 1,
     flexDirection: 'column',
     
