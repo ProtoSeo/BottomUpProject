@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { Component } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import {
   StyleSheet,
@@ -12,7 +12,7 @@ import {
 import * as firebase from "firebase";
 
 import "firebase/database";
-    
+
 const firebaseConfig = {
   apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
   authDomain: "bottom-up-project.firebaseapp.com",
@@ -23,86 +23,86 @@ const firebaseConfig = {
   appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
 };
 
-if(!firebase.apps.length){
+if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 var database = firebase.database()
 
 const DATA = [
-    {
-      name: '중리시장',
-      subname: '춘천365닭갈비, 오늘은 닭, 마인하우스',
-      icon: './icon/chicken.png',
-      number : 1,
-    },
-    {
-      name: '중앙시장',
-      subname: '오씨네 칼국수, 국수',
-      icon: '.icon/soup'
-    },
-    {
-      name: '유성시장',
-      subname: '학생회관',
-      icon: './icon/rice.png'
-    },
-    {
-      name: '태평전통시장',
-      subname: '충남통닭, 깻잎치킨',
-      icon: './icon/chicken.png'
-    },
-    {
-      name: '내 시장',
-      subname: '마루, 배재원',
-      icon: './icon/rice.png'
-    }
-  ]
+  {
+    name: '중리시장',
+    subname: '춘천365닭갈비, 오늘은 닭, 마인하우스',
+    icon: './icon/chicken.png',
+    number: 1,
+  },
+  {
+    name: '중앙시장',
+    subname: '오씨네 칼국수, 국수',
+    icon: '.icon/soup'
+  },
+  {
+    name: '유성시장',
+    subname: '학생회관',
+    icon: './icon/rice.png'
+  },
+  {
+    name: '태평전통시장',
+    subname: '충남통닭, 깻잎치킨',
+    icon: './icon/chicken.png'
+  },
+  {
+    name: '내 시장',
+    subname: '마루, 배재원',
+    icon: './icon/rice.png'
+  }
+]
 const Item = ({ name, subname, func }) => (
-    <TouchableOpacity style={styles.item_view} onPress={func}>
-      <View style={{flex: 7, flexDirection: 'row'}}>
-        <Image style={styles.item_icon} source={require('./icon/rice.png')}/>
-        <Text style={styles.item_title}>{name}</Text>
-      </View>
-      <View style={{flex: 3}}>
-        <Text style={styles.item_subtitle}>{subname}</Text>
-      </View>
-    </TouchableOpacity>
-  )
-  
+  <TouchableOpacity style={styles.item_view} onPress={func}>
+    <View style={{ flex: 7, flexDirection: 'row' }}>
+      <Image style={styles.item_icon} source={require('./icon/rice.png')} />
+      <Text style={styles.item_title}>{name}</Text>
+    </View>
+    <View style={{ flex: 3 }}>
+      <Text style={styles.item_subtitle}>{subname}</Text>
+    </View>
+  </TouchableOpacity>
+)
+
 
 
 class UserInfo extends Component {
   state = {
-  
+
   };
-  
-  updateSearch = ( search) => {
+
+  updateSearch = (search) => {
     this.setState({ search });
   };
-  
+
   test = () => {
     this.props.navigation.goBack();
   }
 
   render() {
     const renderItem = ({ item }) => (
-        <Item name={item.name} subname={item.subname} icon={item.icon} func = {() => this.props.navigation.navigate('Sijang',{name:item.name})} />
-      )
+      <Item name={item.name} subname={item.subname} icon={item.icon} func={() => this.props.navigation.navigate('Sijang', { name: item.name })} />
+    )
     const userName = this.props.navigation.getParam("userName");
     const userID = this.props.navigation.getParam("userID");
     const userPhone = this.props.navigation.getParam("userPhone");
     const favoriteList = this.props.navigation.getParam("favoriteList");
-    
+
     return (
       <View style={styles.container}>
         <View style={styles.TopBar}>
-          <View style={{flex: 2}}>
+          <View style={{ flex: 2 }}>
           </View>
-          <View style={{flex: 3, alignItems: 'center'}}>
+          <View style={{ flex: 3, alignItems: 'center' }}>
             <Text style={styles.TopBarText}>
               마이페이지
             </Text>
           </View>
-          <View style={{flex: 2}}>
+          <View style={{ flex: 2 }}>
             <TouchableOpacity style={styles.TopButton} onPress={this.test}>
               <AntDesign name="back" size={15} color="white" />
             </TouchableOpacity>
@@ -110,38 +110,38 @@ class UserInfo extends Component {
         </View>
 
         <View style={styles.MainSpace}>
-        <View style={{marginTop : '5%', marginLeft:'5%'}}>
-         <Text style={{fontSize : 24, }}>
-             ID : {userID}
+          <View style={{ marginTop: '5%', marginLeft: '5%' }}>
+            <Text style={{ fontSize: 24, }}>
+              ID : {userID}
+            </Text>
+          </View>
+          <View style={{ marginTop: '5%', marginLeft: '5%' }}>
+            <Text style={{ fontSize: 24 }}>
+              이름 : {userName}
+            </Text>
+          </View>
+          <View style={{ marginTop: '5%', marginLeft: '5%' }}>
+            <Text style={{ fontSize: 24 }}>
+              전화번호 : {userPhone}
+            </Text>
+          </View>
+          <View style={{ height: '65%' }}>
+            <Text style={{ fontSize: 24, marginLeft: '5%', marginTop: '10%' }}>
+              담아둔 시장
          </Text>
-         </View>
-         <View style={{marginTop : '5%', marginLeft:'5%'}}>
-         <Text style={{fontSize : 24}}>
-             이름 : {userName}
-         </Text>
-        </View>
-         <View style={{marginTop : '5%', marginLeft:'5%'}}>
-         <Text style={{fontSize : 24}}>
-             전화번호 : {userPhone}
-         </Text>
-         </View>
-         <View style={{height: '65%'}}>
-         <Text style={{fontSize : 24, marginLeft:'5%', marginTop: '10%'}}>
-             담아둔 시장
-         </Text>
-         <ScrollView >
-          <FlatList
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={item => item.name}
-          />
-         </ScrollView>
-         </View>
+            <ScrollView >
+              <FlatList
+                data={DATA}
+                renderItem={renderItem}
+                keyExtractor={item => item.name}
+              />
+            </ScrollView>
+          </View>
         </View>
 
-        <View style={{height: 20}}></View>
+        <View style={{ height: 20 }}></View>
 
-       
+
       </View>
     )
   }
@@ -156,10 +156,10 @@ const styles = StyleSheet.create({
     color: 'yellow',
     backgroundColor: 'transparent',
     textShadowColor: 'black',
-    textShadowOffset: {width: 1, height: 1},
+    textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
-    height : 300,
- 
+    height: 300,
+
   },
   myEmptyStarStyle: {
     color: 'white',
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   },
 
   TopBarText: {
-    fontSize: 25, 
+    fontSize: 25,
     marginTop: '25%',
     color: 'white'
   },

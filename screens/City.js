@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView, TouchableOpacity, View, KeyboardAvoidingView, Alert} from 'react-native';
+import { StyleSheet, Text, ScrollView, TouchableOpacity, View, KeyboardAvoidingView, Alert } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { SearchBar } from 'react-native-elements'
 import GradientButton from 'react-native-gradient-buttons';
@@ -12,7 +12,7 @@ import Dialog, {
 } from 'react-native-popup-dialog';
 
 import "firebase/database";
-    
+
 const firebaseConfig = {
   apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
   authDomain: "bottom-up-project.firebaseapp.com",
@@ -23,15 +23,29 @@ const firebaseConfig = {
   appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
 };
 
-if(!firebase.apps.length){
+if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 var database = firebase.database()
 
 class City extends React.Component {
   state = {
-    searchString: '시장을 검색하세요',
-    dataList :[]
+    searchString: '',
+    dataList: [],
+    region: [],
+    searchreg: [],
+  }
+
+  componentDidMount() {
+    var arr = []
+    const reg = this.props.navigation.getParam('regionList');
+    for (var i = 0; i < reg.length; i++) {
+      var region1 = reg[i].split('/')[0];
+      arr.push(region1)
+    }
+    this.setState({
+      region: arr
+    })
   }
 
   home = () => {
@@ -47,14 +61,14 @@ class City extends React.Component {
     var uid = this.props.navigation.getParam("uid");
     const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value');
     const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
-    
+
     var userName = snapshot.val()["name"];
     var userID = snapshot.val()["id"];
     var userPhone = snapshot.val()['phone'];
     var favoriteList = favoriteSnapshot.val();
     console.log(favoriteList);
     this.setState({ menuDialog: false });
-    this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID,userPhone:userPhone,favoriteList:favoriteList});
+    this.props.navigation.navigate('UserInfo', { uid: uid, userName: userName, userID: userID, userPhone: userPhone, favoriteList: favoriteList });
   }
 
   logout = () => {
@@ -62,31 +76,46 @@ class City extends React.Component {
       '로그아웃',
       '로그아웃 하시겠습니까?',
       [
-        {text: 'Yes', style : 'cancel', onPress: () => 
-          {
+        {
+          text: 'Yes', style: 'cancel', onPress: () => {
             this.setState({ menuDialog: false });
             this.props.navigation.navigate('Login');
           }
         },
-        {text: 'NO', onPress: () => {}, style: 'cancel'},
+        { text: 'NO', onPress: () => { }, style: 'cancel' },
       ]
     )
   }
 
-  render () {
+  updateSearch = (text) => {
+    this.setState({
+      searchString: text
+    })
+    const reg = this.props.navigation.getParam('regionList');
 
-    const { search } = this.state;
+    var arr = [];
+    for (var i = 0; i < reg.length; i++) {
+      if (text == this.state.region[i] && this.state.region[i] == reg[i].split('/')[0]) {
+        arr.push(reg[i]);
+      }
+    }
+    this.setState({
+      searchreg: arr
+    })
+  }
 
-    console.log(this.props.navigation.getParam('name'))
+  render() {
+    const { searchString } = this.state;
     const regionName = this.props.navigation.getParam('name')
     const regionList = this.props.navigation.getParam("regionList")
+
     const uid = this.props.navigation.getParam("uid")
-    return(
+    return (
 
-        <View style={styles.one}>
-          <View style={styles.TopBar}>
+      <View style={styles.one}>
+        <View style={styles.TopBar}>
 
-          <View style={{flex: 2}}>
+          <View style={{ flex: 2 }}>
             <TouchableOpacity style={styles.TopButton} onPress={() => {
               this.setState({
                 menuDialog: true
@@ -95,167 +124,232 @@ class City extends React.Component {
               <AntDesign name="bars" size={15} color="white" />
             </TouchableOpacity>
 
-          <Dialog
-            onTouchOutside={() => {
-              this.setState({ menuDialog: false });
-            }}
-            width={0.9}
-            visible={this.state.menuDialog}
-            dialogAnimation={new ScaleAnimation()}
-            onHardwareBackPress={() => {
-              console.log('onHardwareBackPress');
-              this.setState({ menuDialog: false });
-              return true;
-            }}
-            dialogTitle={
-              <DialogTitle
-                title="Menu"
-                hasTitleBar={true}
-                style={{color: '#6A6F75', fontSize:24}}
-              />
-            }
-            actions={[
-              <DialogButton
-                text="DISMISS"
-                onPress={() => {
-                  this.setState({ menuDialog: false });
-                }}
-                key="button-1"
-              />,
-            ]}
-            >
-            <DialogContent>
-              <View>
-                <View style={{flexDirection: 'row'}}>
-                  <TouchableOpacity style={styles.dialog_Button} onPress={this.home}>
-                    <AntDesign name="home" size={20} color="white" />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity style={styles.dialog_Button} onPress={this.mypage}>
-                    <AntDesign name="user" size={20} color="white" />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity style={styles.dialog_Button} onPress={this.logout
-                  }>
-                    <AntDesign name="deleteuser" size={20} color="white" />
-                  </TouchableOpacity>
-
-                </View>
-
-                <TouchableOpacity
-                  style={{alignItems: 'center'}}
+            <Dialog
+              onTouchOutside={() => {
+                this.setState({ menuDialog: false });
+              }}
+              width={0.9}
+              visible={this.state.menuDialog}
+              dialogAnimation={new ScaleAnimation()}
+              onHardwareBackPress={() => {
+                console.log('onHardwareBackPress');
+                this.setState({ menuDialog: false });
+                return true;
+              }}
+              dialogTitle={
+                <DialogTitle
+                  title="Menu"
+                  hasTitleBar={true}
+                  style={{ color: '#6A6F75', fontSize: 24 }}
+                />
+              }
+              actions={[
+                <DialogButton
+                  text="DISMISS"
                   onPress={() => {
                     this.setState({ menuDialog: false });
-                  }}>
-                  <Text style={{fontSize:20, color:"#81888F"}}>CLOSE</Text>    
-                </TouchableOpacity>
-              </View>
-            </DialogContent>
-          </Dialog>
+                  }}
+                  key="button-1"
+                />,
+              ]}
+            >
+              <DialogContent>
+                <View>
+                  <View style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity style={styles.dialog_Button} onPress={this.home}>
+                      <AntDesign name="home" size={20} color="white" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.dialog_Button} onPress={this.mypage}>
+                      <AntDesign name="user" size={20} color="white" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.dialog_Button} onPress={this.logout
+                    }>
+                      <AntDesign name="deleteuser" size={20} color="white" />
+                    </TouchableOpacity>
+
+                  </View>
+
+                  <TouchableOpacity
+                    style={{ alignItems: 'center' }}
+                    onPress={() => {
+                      this.setState({ menuDialog: false });
+                    }}>
+                    <Text style={{ fontSize: 20, color: "#81888F" }}>CLOSE</Text>
+                  </TouchableOpacity>
+                </View>
+              </DialogContent>
+            </Dialog>
+
+          </View>
+
+          <View style={{ flex: 3, alignItems: 'center' }}>
+            <Text style={styles.TopBarText}>
+              우리의 시소
+          </Text>
+          </View>
+
+          <View style={{ flex: 2 }}>
+            <TouchableOpacity style={styles.TopButton} onPress={this.back}>
+              <AntDesign name="back" size={15} color="white" />
+            </TouchableOpacity>
+          </View>
 
         </View>
-          
-        <View style={{flex: 3, alignItems: 'center'}}>
-          <Text style={styles.TopBarText}>
-            우리의 시소
-          </Text>
-        </View>
-          
-        <View style={{flex: 2}}>
-          <TouchableOpacity style={styles.TopButton} onPress={this.back}>
-              <AntDesign name="back" size={15} color="white" />
-          </TouchableOpacity>
-        </View>
-        
-        </View>
-        
-        <KeyboardAvoidingView behavior={'height'}> 
-        
-        <View style={styles.view}>
-        <ScrollView>
-          {regionList.map((region,i) => {
-              return (
-                <GradientButton key={i}  style={{ marginVertical: 8 ,marginLeft : 30}} text = {region} 
-                prev = {region} onPressAction={
-                  async () => {
-                    const prevData = region.split('/');
-                    const userDataSnapshot = await database.ref(`Users/UserInfo/${uid}`).child("taste").once('value');
-                    var userTasteDict = userDataSnapshot.val();
-                    var userTasteList = Object.keys(userTasteDict).map(function(key) {
-                      return [key, userTasteDict[key]];
-                    });
-                    userTasteList.sort(function(first, second) {
-                      return second[1] - first[1];
-                    });
-                    userTasteList = userTasteList.map(function(value,index){return value[0];});
-                    console.log("사용자의 취향 리스트",userTasteList);
-                    var marketList = [];
-                    const snapshot = await database.ref(`Data/${regionName}`).once('value');
-                    snapshot.forEach(childSnapshot=>{
-                      var regionData = childSnapshot.child("시군구").val();
-                      var marketData = childSnapshot.child("시장명").val();
-                      if(regionData == prevData[0] && marketData == prevData[1]){
-                        var marketDict = {}  
-                        marketDict["상가이름"] = childSnapshot.child("상가이름").val();
-                        marketDict["음식"] = childSnapshot.child("음식").val();
-                        marketDict["음식태그"] = childSnapshot.child("음식태그").val();
-                        marketDict["주소도로명"] = childSnapshot.child("주소도로명").val();
-                        marketDict["평점"] = childSnapshot.child("평점").val();
-                        marketDict["선호"] = false;
-                        marketList.push(marketDict);
-                      }
-                    })
-                  await Promise.all(marketList);
-                  var resultMarketList = []
-                  userTasteList.forEach(tasteInfo=>{
-                    for(var i = 0;i<marketList.length;i++){
-                      var chk = true;
-                      if(marketList[i]["음식태그"].indexOf(tasteInfo)!==-1){
-                        // resultMarketList를 한 번더 순회해서 만약에 이미 저장되어있는 데이터라면 chk = false
-                        resultMarketList.forEach(result=>{
-                          if(result==marketList[i]){
-                            chk=false;
+
+        <KeyboardAvoidingView behavior={'height'}>
+
+          <View style={styles.view}>
+            <ScrollView>
+              {!this.state.region.includes(this.state.searchString) ? regionList.map((region, i) => {
+                return (
+                  <GradientButton key={i} style={{ marginVertical: 8, marginLeft: 30 }} text={region}
+                    prev={region} onPressAction={
+                      async () => {
+                        const prevData = region.split('/');
+                        const userDataSnapshot = await database.ref(`Users/UserInfo/${uid}`).child("taste").once('value');
+                        var userTasteDict = userDataSnapshot.val();
+                        var userTasteList = Object.keys(userTasteDict).map(function (key) {
+                          return [key, userTasteDict[key]];
+                        });
+                        userTasteList.sort(function (first, second) {
+                          return second[1] - first[1];
+                        });
+                        userTasteList = userTasteList.map(function (value, index) { return value[0]; });
+                        console.log("사용자의 취향 리스트", userTasteList);
+                        var marketList = [];
+                        const snapshot = await database.ref(`Data/${regionName}`).once('value');
+                        snapshot.forEach(childSnapshot => {
+                          var regionData = childSnapshot.child("시군구").val();
+                          var marketData = childSnapshot.child("시장명").val();
+                          if (regionData == prevData[0] && marketData == prevData[1]) {
+                            var marketDict = {}
+                            marketDict["상가이름"] = childSnapshot.child("상가이름").val();
+                            marketDict["음식"] = childSnapshot.child("음식").val();
+                            marketDict["음식태그"] = childSnapshot.child("음식태그").val();
+                            marketDict["주소도로명"] = childSnapshot.child("주소도로명").val();
+                            marketDict["평점"] = childSnapshot.child("평점").val();
+                            marketDict["선호"] = false;
+                            marketList.push(marketDict);
                           }
                         })
-                        if(chk){
-                          resultMarketList.push(marketList[i]);
-                        }
+                        await Promise.all(marketList);
+                        var resultMarketList = []
+                        userTasteList.forEach(tasteInfo => {
+                          for (var i = 0; i < marketList.length; i++) {
+                            var chk = true;
+                            if (marketList[i]["음식태그"].indexOf(tasteInfo) !== -1) {
+                              // resultMarketList를 한 번더 순회해서 만약에 이미 저장되어있는 데이터라면 chk = false
+                              resultMarketList.forEach(result => {
+                                if (result == marketList[i]) {
+                                  chk = false;
+                                }
+                              })
+                              if (chk) {
+                                resultMarketList.push(marketList[i]);
+                              }
+                            }
+                          }
+                        })
+                        const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
+                        favoriteSnapshot.forEach(childSnapshot => {
+                          var marketData = childSnapshot.child("상가이름").val();
+                          var locData = childSnapshot.child("주소도로명").val();
+                          resultMarketList.forEach(result => {
+                            if (result["상가이름"] == marketData && result["주소도로명"] == locData) {
+                              result["선호"] = true;
+                            }
+                          })
+                        })
+                        // console.log(resultMarketList);
+                        this.props.navigation.navigate('Sijang', { name: `${prevData[1]}`, marketList: resultMarketList, uid: uid })
                       }
-                    }
-                  })
-                  const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
-                  favoriteSnapshot.forEach(childSnapshot=>{
-                    var marketData = childSnapshot.child("상가이름").val();
-                    var locData = childSnapshot.child("주소도로명").val();
-                    resultMarketList.forEach(result=>{
-                      if(result["상가이름"]==marketData&&result["주소도로명"]==locData){
-                        result["선호"] = true;
+                    } width='80%' deepBlue impact />
+                )
+              }) : this.state.searchreg.map((region, i) => {
+                return (
+                  <GradientButton key={i} style={{ marginVertical: 8, marginLeft: 30 }} text={region}
+                    prev={region} onPressAction={
+                      async () => {
+                        const prevData = region.split('/');
+                        const userDataSnapshot = await database.ref(`Users/UserInfo/${uid}`).child("taste").once('value');
+                        var userTasteDict = userDataSnapshot.val();
+                        var userTasteList = Object.keys(userTasteDict).map(function (key) {
+                          return [key, userTasteDict[key]];
+                        });
+                        userTasteList.sort(function (first, second) {
+                          return second[1] - first[1];
+                        });
+                        userTasteList = userTasteList.map(function (value, index) { return value[0]; });
+                        console.log("사용자의 취향 리스트", userTasteList);
+                        var marketList = [];
+                        const snapshot = await database.ref(`Data/${regionName}`).once('value');
+                        snapshot.forEach(childSnapshot => {
+                          var regionData = childSnapshot.child("시군구").val();
+                          var marketData = childSnapshot.child("시장명").val();
+                          if (regionData == prevData[0] && marketData == prevData[1]) {
+                            var marketDict = {}
+                            marketDict["상가이름"] = childSnapshot.child("상가이름").val();
+                            marketDict["음식"] = childSnapshot.child("음식").val();
+                            marketDict["음식태그"] = childSnapshot.child("음식태그").val();
+                            marketDict["주소도로명"] = childSnapshot.child("주소도로명").val();
+                            marketDict["평점"] = childSnapshot.child("평점").val();
+                            marketDict["선호"] = false;
+                            marketList.push(marketDict);
+                          }
+                        })
+                        await Promise.all(marketList);
+                        var resultMarketList = []
+                        userTasteList.forEach(tasteInfo => {
+                          for (var i = 0; i < marketList.length; i++) {
+                            var chk = true;
+                            if (marketList[i]["음식태그"].indexOf(tasteInfo) !== -1) {
+                              // resultMarketList를 한 번더 순회해서 만약에 이미 저장되어있는 데이터라면 chk = false
+                              resultMarketList.forEach(result => {
+                                if (result == marketList[i]) {
+                                  chk = false;
+                                }
+                              })
+                              if (chk) {
+                                resultMarketList.push(marketList[i]);
+                              }
+                            }
+                          }
+                        })
+                        const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
+                        favoriteSnapshot.forEach(childSnapshot => {
+                          var marketData = childSnapshot.child("상가이름").val();
+                          var locData = childSnapshot.child("주소도로명").val();
+                          resultMarketList.forEach(result => {
+                            if (result["상가이름"] == marketData && result["주소도로명"] == locData) {
+                              result["선호"] = true;
+                            }
+                          })
+                        })
+                        // console.log(resultMarketList);
+                        this.props.navigation.navigate('Sijang', { name: `${prevData[1]}`, marketList: resultMarketList, uid: uid })
                       }
-                    })
-                  })
-                  // console.log(resultMarketList);
-                  this.props.navigation.navigate('Sijang',{name :`${prevData[1]}`, marketList : resultMarketList, uid:uid})  
-                }
-                } width='80%' deepBlue impact />
-              )
-          })}
-        </ScrollView>
-        </View>
+                    } width='80%' deepBlue impact />
+                )
+              })}
+            </ScrollView>
+          </View>
 
-        <View style={styles.SearchSpace}>
-          <SearchBar
-            showCancel
-            round
-            lightTheme
-            placeholder="검색하세요"
-            onChangeText={this.updateSearch}
-            value={search}
-          />
-        </View>
+          <View style={styles.SearchSpace}>
+            <SearchBar
+              showCancel
+              round
+              lightTheme
+              placeholder="시장을 검색하세요"
+              onChangeText={this.updateSearch}
+              value={searchString}
+            />
+          </View>
         </KeyboardAvoidingView>
 
-        </View>
-    
+      </View>
+
     )
   }
 }
@@ -270,7 +364,7 @@ const styles = StyleSheet.create({
   },
 
   TopBarText: {
-    fontSize: 25, 
+    fontSize: 25,
     marginTop: '25%',
     color: 'white'
   },
@@ -303,32 +397,32 @@ const styles = StyleSheet.create({
     flex: 1
   },
 
-  title : {
-    marginTop : 22,
-    textAlign : 'center',
-    fontSize :24,
+  title: {
+    marginTop: 22,
+    textAlign: 'center',
+    fontSize: 24,
   },
 
-  text : {
-    marginTop : '15%',
-    width : 35,
-    marginLeft : 65,
+  text: {
+    marginTop: '15%',
+    width: 35,
+    marginLeft: 65,
   },
 
-  image : {
-    flex : 1,
+  image: {
+    flex: 1,
   },
 
-  view : {
+  view: {
     height: '77%',
-    textAlign : 'center',
-    marginTop : '5%',
-    marginHorizontal : '5%',
-  
+    textAlign: 'center',
+    marginTop: '5%',
+    marginHorizontal: '5%',
+
   },
 
-  one : {
-    flex : 1,
+  one: {
+    flex: 1,
   }
 });
 

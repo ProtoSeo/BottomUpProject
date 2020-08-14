@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Text,
   View,
-  FlatList,
   Image,
   ScrollView
 } from 'react-native';
@@ -36,7 +35,7 @@ if (!firebase.apps.length) {
 var database = firebase.database();
 
 class Sijang extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       search: '',
@@ -47,7 +46,7 @@ class Sijang extends Component {
       MarketName: '',
       SubName: '',
       marketList: this.props.navigation.getParam("marketList"),
-    } 
+    }
   }
 
   updateSearch = (search) => {
@@ -79,18 +78,18 @@ class Sijang extends Component {
     var uid = this.props.navigation.getParam("uid");
     const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value');
     const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
-    
+
     var userName = snapshot.val()["name"];
     var userID = snapshot.val()["id"];
     var userPhone = snapshot.val()['phone'];
     var favoriteList = favoriteSnapshot.val();
     console.log(favoriteList);
     this.setState({ menuDialog: false });
-    this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID,userPhone:userPhone,favoriteList:favoriteList});
+    this.props.navigation.navigate('UserInfo', { uid: uid, userName: userName, userID: userID, userPhone: userPhone, favoriteList: favoriteList });
   }
 
   render() {
-    const { search,marketList } = this.state;
+    const { search, marketList } = this.state;
     const uid = this.props.navigation.getParam('uid');
     console.log("Sijang")
 
@@ -161,6 +160,7 @@ class Sijang extends Component {
                 </View>
               </DialogContent>
             </Dialog>
+
             <Dialog
               onTouchOutside={() => {
                 this.setState({ market: false });
@@ -264,14 +264,16 @@ class Sijang extends Component {
 
         <ScrollView style={styles.MainSpace}>
           {marketList.map((marketDict, key) =>
-            <View key = {key} style={{ flexDirection: 'row' }}>
+            <View key={key} style={{ flexDirection: 'row' }}>
               <TouchableOpacity style={styles.item_view} onPress={
-                () => {this.setState({
-                  market:true, 
-                  MarketName : marketDict["상가이름"], 
-                  starCount : marketDict["평점"],
-                  SubName : marketDict["음식"]
-                })}
+                () => {
+                  this.setState({
+                    market: true,
+                    MarketName: marketDict["상가이름"],
+                    starCount: marketDict["평점"],
+                    SubName: marketDict["음식"]
+                  })
+                }
               } >
                 <View style={{ flex: 7, flexDirection: 'row' }}>
                   <Image style={styles.item_icon} source={require('./icon/rice.png')} />
@@ -282,25 +284,25 @@ class Sijang extends Component {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity style={styles.item_heart} onPress={
-                async ()=>{
-                  if(marketList[key]["선호"] == true){  //true 
+                async () => {
+                  if (marketList[key]["선호"] == true) {  //true 
                     marketList[key]["선호"] = false;
-                    
+
                     var marketName = marketDict["상가이름"];
                     var marketLocation = marketDict["주소도로명"];
                     var updateList = []
                     const snapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
-                   
-                    snapshot.forEach(childSnapshot=>{
+
+                    snapshot.forEach(childSnapshot => {
                       var key = childSnapshot.key
                       var marketData = childSnapshot.child("상가이름").val();
                       var locData = childSnapshot.child("주소도로명").val();
-                      if(marketData!=marketName || locData != marketLocation){
+                      if (marketData != marketName || locData != marketLocation) {
                         updateList[key] = childSnapshot.val();
                       }
                     })
                     await database.ref(`Users/UserInfo/${uid}/favorite/list`).set(updateList);
-                  }else{  //false  
+                  } else {  //false  
                     marketList[key]["선호"] = true;
                     const snapshot = await database.ref(`Users/UserInfo/${uid}/favorite/count`).once('value');
                     var count = snapshot.val();
@@ -309,18 +311,20 @@ class Sijang extends Component {
                     );
                     await database.ref(`Users/UserInfo/${uid}/favorite/count`).set(++count);
                   }
-                 this.setState({marketList:marketList});
+                  this.setState({ marketList: marketList });
                 }
               }>
                 {
                   marketDict["선호"] ?
-                    <AntDesign name="heart" size={25} color="black" /> :
-                    <AntDesign name="heart" size={25} color="white" />
+                    <AntDesign name="heart" size={30} color="#D62B83" /> :
+                    <AntDesign name="hearto" size={30} color="#D62B83" />
                 }
               </TouchableOpacity>
             </View>
           )}
         </ScrollView>
+
+        <View style={{ height: 20 }}></View>
 
       </View>
     )
