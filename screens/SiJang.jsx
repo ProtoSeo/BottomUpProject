@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { Component } from 'react';
 import Swiper from "react-native-web-swiper";
 import { AntDesign } from '@expo/vector-icons';
 import {
@@ -19,7 +19,7 @@ import Dialog, {
 import StarRating from 'react-native-star-rating';
 import * as firebase from "firebase";
 import "firebase/database";
-    
+
 const firebaseConfig = {
   apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
   authDomain: "bottom-up-project.firebaseapp.com",
@@ -30,51 +30,37 @@ const firebaseConfig = {
   appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
 };
 
-if(!firebase.apps.length){
+if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 var database = firebase.database();
 
-const Item = ({ name, subname, icon ,func}) => (
-  <View style={{flexDirection : 'row'}}>
-  <TouchableOpacity style={styles.item_view} onPress={func}> 
-    <View style={{flex: 7, flexDirection: 'row'}}>
-      <Image style={styles.item_icon} source={require('./icon/rice.png')}/>
-      <Text style={styles.item_title}>{name}</Text>
-    </View>
-    <View style={{flex: 3}}>
-      <Text style={styles.item_subtitle}>{subname}</Text>
-    </View>
-  </TouchableOpacity>
-  <TouchableOpacity style={styles.item_heart}>
-  <AntDesign name="heart" size={25} color="black" />
-  </TouchableOpacity>
-  </View>
-)
-
 class Sijang extends Component {
-  state = {
-    search: '',
-    menuDialog: false,
-    LoginDialog : false,
-    market : false,
-    starCount: 3.5,
-    MarketName : '',
-    SubName : '',
-    heart : 0,
-  };
-  
-  updateSearch = ( search) => {
+  constructor(props){
+    super(props);
+    this.state = {
+      search: '',
+      menuDialog: false,
+      LoginDialog: false,
+      market: false,
+      starCount: 3.5,
+      MarketName: '',
+      SubName: '',
+      marketList: this.props.navigation.getParam("marketList"),
+    } 
+  }
+
+  updateSearch = (search) => {
     this.setState({ search });
   };
-  
+
   test = () => {
     this.props.navigation.goBack();
   }
 
   changeState = () => {
     this.props.navigation.navigate('Home');
-    this.setState({menuDialog : false});
+    this.setState({ menuDialog: false });
   }
 
   onStarRatingPress(rating) {
@@ -82,47 +68,37 @@ class Sijang extends Component {
       starCount: rating
     });
   }
- 
-  openmodal =  () =>{
+
+  openmodal = () => {
     this.setState({
-      market : true,
+      market: true,
     })
   }
 
   mypage = async () => {
     var uid = this.props.navigation.getParam("uid");
-    const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value')
+    const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value');
+    const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
+    
     var userName = snapshot.val()["name"];
     var userID = snapshot.val()["id"];
-    //var userPhone = snapshot.val()['phone']
-    var favoriteList = snapshot.val()["favorite"];
+    var userPhone = snapshot.val()['phone'];
+    var favoriteList = favoriteSnapshot.val();
+    console.log(favoriteList);
     this.setState({ menuDialog: false });
-    this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID});
-    // this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID,userPhone:userPhone});
-  
+    this.props.navigation.navigate('UserInfo',{uid:uid,userName:userName,userID:userID,userPhone:userPhone,favoriteList:favoriteList});
   }
+
   render() {
-    const { search } = this.state;
-    const marketName = this.props.navigation.getParam('name');
-    const marketList = this.props.navigation.getParam("marketList");
-    const uid = this.props.navigation.getParam("uid")
+    const { search,marketList } = this.state;
+    const uid = this.props.navigation.getParam('uid');
     console.log("Sijang")
-    const renderItem = ({ item }) => (
-      
-      <Item name={item["상가이름"]} subname={item["음식"]} 
-      // icon={item.icon} 
-      func = {() => {this.setState({
-        market:true, 
-        MarketName : item["상가이름"], 
-        starCount : item["평점"],
-        SubName : item["음식"]})}} />
-    )
-    
+
     return (
-      
+
       <View style={styles.container}>
         <View style={styles.TopBar}>
-          <View style={{flex: 2}}>
+          <View style={{ flex: 2 }}>
             <TouchableOpacity style={styles.TopButton} onPress={() => {
               this.setState({
                 menuDialog: true
@@ -144,9 +120,9 @@ class Sijang extends Component {
               }}
               dialogTitle={
                 <DialogTitle
-                  title= 'Menu'
+                  title='Menu'
                   hasTitleBar={true}
-                  style={{color: '#6A6F75', fontSize:24}}
+                  style={{ color: '#6A6F75', fontSize: 24 }}
                 />
               }
               actions={[
@@ -158,10 +134,10 @@ class Sijang extends Component {
                   key="button-1"
                 />,
               ]}
-              >
+            >
               <DialogContent>
                 <View>
-                  <View style={{flexDirection: 'row'}}>
+                  <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.changeState}>
                       <AntDesign name="home" size={20} color="white" />
                     </TouchableOpacity>
@@ -176,16 +152,16 @@ class Sijang extends Component {
                   </View>
 
                   <TouchableOpacity
-                    style={{alignItems: 'center'}}
+                    style={{ alignItems: 'center' }}
                     onPress={() => {
                       this.setState({ menuDialog: false });
                     }}>
-                    <Text style={{fontSize:20, color:"#81888F"}}>CLOSE</Text>    
+                    <Text style={{ fontSize: 20, color: "#81888F" }}>CLOSE</Text>
                   </TouchableOpacity>
                 </View>
               </DialogContent>
-              </Dialog>
-              <Dialog
+            </Dialog>
+            <Dialog
               onTouchOutside={() => {
                 this.setState({ market: false });
               }}
@@ -201,7 +177,7 @@ class Sijang extends Component {
                 <DialogTitle
                   title={this.state.MarketName}
                   hasTitleBar={true}
-                  style={{color: '#6A6F75', fontSize:24}}
+                  style={{ color: '#6A6F75', fontSize: 24 }}
                 />
               }
               actions={[
@@ -213,86 +189,138 @@ class Sijang extends Component {
                   key="button-1"
                 />,
               ]}
-              >
+            >
+              {/* 음식점을 눌렀을 때 나오는 Dialog state 이용 */}
               <DialogContent>
-                <View style={{height : '50%'}}>
-                <View style = {{marginTop : '50%',marginBottom : '25%'}}>
-                
-                <StarRating
-                  disabled={false}
-                  emptyStar={require('./images/starEmpty.png')}
-                  fullStar={require('./images/starFilled.png')}
-                  halfStar={require('./images/starHalf.png')}
-                  iconSet={'Ionicons'}
-                  maxStars={5}
-                  
-                  rating={this.state.starCount}
-                  selectedStar={(rating) => this.onStarRatingPress(rating)}/>
-                </View>
-                <Text>
-                  {this.state.starCount}
+                <View style={{ height: '50%' }}>
+                  <View style={{ marginTop: '50%', marginBottom: '25%' }}>
+
+                    <StarRating
+                      disabled={false}
+                      emptyStar={require('./images/starEmpty.png')}
+                      fullStar={require('./images/starFilled.png')}
+                      halfStar={require('./images/starHalf.png')}
+                      iconSet={'Ionicons'}
+                      maxStars={5}
+
+                      rating={this.state.starCount}
+                      selectedStar={(rating) => this.onStarRatingPress(rating)} />
+                  </View>
+                  <Text>
+                    {this.state.starCount}
                   </Text>
                   <Text>
-                  {this.state.MarketName}
-                </Text>
-                <Text>
-                  {this.state.SubName}
-                </Text>
-               
-                <TouchableOpacity
-                    style={{alignItems: 'center'}}
+                    {this.state.MarketName}
+                  </Text>
+                  <Text>
+                    {this.state.SubName}
+                  </Text>
+
+                  <TouchableOpacity
+                    style={{ alignItems: 'center' }}
                     onPress={() => {
                       this.setState({ market: false });
                     }}>
-                    <Text style={{fontSize:20, color:"#81888F"}}>CLOSE</Text>  
-                    
+                    <Text style={{ fontSize: 20, color: "#81888F" }}>CLOSE</Text>
+
                   </TouchableOpacity>
                 </View>
               </DialogContent>
-              </Dialog>
-            
+            </Dialog>
+
           </View>
-            
-          <View style={{flex: 3, alignItems: 'center'}}>
+
+          <View style={{ flex: 3, alignItems: 'center' }}>
             <Text style={styles.TopBarText}>
               {this.props.navigation.getParam('name')}
             </Text>
           </View>
-            
-          <View style={{flex: 2}}>
+
+          <View style={{ flex: 2 }}>
             <TouchableOpacity style={styles.TopButton} onPress={this.test}>
               <AntDesign name="back" size={15} color="white" />
             </TouchableOpacity>
           </View>
-          
+
         </View>
 
         <View style={styles.SearchSpace}>
-        <Swiper showsButtons={true} nextButton={false}>
-            <View style={[styles.slideContainer,styles.slide1]}>
-                <Text>봄</Text>
+          <Swiper showsButtons={true} nextButton={false}>
+            <View style={[styles.slideContainer, styles.slide1]}>
+              <Text>봄</Text>
             </View>
-            <View style={[styles.slideContainer,styles.slide2]}>
-                <Text>여름</Text>
+            <View style={[styles.slideContainer, styles.slide2]}>
+              <Text>여름</Text>
             </View>
-            <View style={[styles.slideContainer,styles.slide3]}>
-                <Text>가을</Text>
+            <View style={[styles.slideContainer, styles.slide3]}>
+              <Text>가을</Text>
             </View>
-            <View style={[styles.slideContainer,styles.slide4]}>
-                <Text>겨울</Text>
+            <View style={[styles.slideContainer, styles.slide4]}>
+              <Text>겨울</Text>
             </View>
-        </Swiper>
-        {/* 여기가 Swiper 텍스트 사용가능 터치블 사용가능*/}
+          </Swiper>
+          {/* 여기가 Swiper 텍스트 사용가능 터치블 사용가능*/}
         </View>
-        
-        <View style={styles.MainSpace}>
-          <FlatList
-            data={marketList}
-            renderItem={renderItem}
-            keyExtractor={item => item["상가이름"]}
-            
-          />
-        </View>
+
+        <ScrollView style={styles.MainSpace}>
+          {marketList.map((marketDict, key) =>
+            <View key = {key} style={{ flexDirection: 'row' }}>
+              <TouchableOpacity style={styles.item_view} onPress={
+                () => {this.setState({
+                  market:true, 
+                  MarketName : marketDict["상가이름"], 
+                  starCount : marketDict["평점"],
+                  SubName : marketDict["음식"]
+                })}
+              } >
+                <View style={{ flex: 7, flexDirection: 'row' }}>
+                  <Image style={styles.item_icon} source={require('./icon/rice.png')} />
+                  <Text style={styles.item_title}>{marketDict["상가이름"]}</Text>
+                </View>
+                <View style={{ flex: 3 }}>
+                  <Text style={styles.item_subtitle}>{marketDict["음식"]}</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.item_heart} onPress={
+                async ()=>{
+                  if(marketList[key]["선호"] == true){  //true 
+                    marketList[key]["선호"] = false;
+                    
+                    var marketName = marketDict["상가이름"];
+                    var marketLocation = marketDict["주소도로명"];
+                    var updateList = []
+                    const snapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
+                   
+                    snapshot.forEach(childSnapshot=>{
+                      var key = childSnapshot.key
+                      var marketData = childSnapshot.child("상가이름").val();
+                      var locData = childSnapshot.child("주소도로명").val();
+                      if(marketData!=marketName || locData != marketLocation){
+                        updateList[key] = childSnapshot.val();
+                      }
+                    })
+                    await database.ref(`Users/UserInfo/${uid}/favorite/list`).set(updateList);
+                  }else{  //false  
+                    marketList[key]["선호"] = true;
+                    const snapshot = await database.ref(`Users/UserInfo/${uid}/favorite/count`).once('value');
+                    var count = snapshot.val();
+                    await database.ref(`Users/UserInfo/${uid}/favorite/list/${count}`).set(
+                      marketDict
+                    );
+                    await database.ref(`Users/UserInfo/${uid}/favorite/count`).set(++count);
+                  }
+                 this.setState({marketList:marketList});
+                }
+              }>
+                {
+                  marketDict["선호"] ?
+                    <AntDesign name="heart" size={25} color="black" /> :
+                    <AntDesign name="heart" size={25} color="white" />
+                }
+              </TouchableOpacity>
+            </View>
+          )}
+        </ScrollView>
 
       </View>
     )
@@ -304,42 +332,35 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-  
   myStarStyle: {
     color: 'yellow',
     backgroundColor: 'transparent',
     textShadowColor: 'black',
-    textShadowOffset: {width: 1, height: 1},
+    textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
-    height : 300,
-  },
+    height: 300,
 
+  },
   slideContainer: {
-    flex : 1,
+    flex: 1,
     alignItems: "center",
     justifyContent: "center"
-},
-
+  },
   slide1: {
     backgroundColor: "rgba(20,20,200,0.3)"
-},
-
-slide2: {
+  },
+  slide2: {
     backgroundColor: "rgba(20,200,20,0.3)"
-},
-
-slide3: {
+  },
+  slide3: {
     backgroundColor: "rgba(215,178,116,0.3)"
-},
-
-slide4: {
-  backgroundColor: "#50BCDF"
-},
-
+  },
+  slide4: {
+    backgroundColor: "#50BCDF"
+  },
   myEmptyStarStyle: {
     color: 'white',
   },
-
   TopBar: {
     height: '14%',
     justifyContent: 'center',
@@ -349,7 +370,7 @@ slide4: {
   },
 
   TopBarText: {
-    fontSize: 25, 
+    fontSize: 25,
     marginTop: '25%',
     color: 'white'
   },
@@ -363,7 +384,7 @@ slide4: {
     backgroundColor: '#E8EAEB',
     height: 120,
     justifyContent: 'center',
-    
+
   },
 
   TopButton: {
@@ -389,17 +410,17 @@ slide4: {
     backgroundColor: '#DDDDDD',
     padding: 20,
     marginVertical: 8,
-    marginLeft :12,
+    marginLeft: 12,
     height: 120,
-    flex:9
+    flex: 9
   },
 
   item_heart: {
     backgroundColor: '#E8EAEB',
     marginVertical: '12%',
-    marginHorizontal : 20,
+    marginHorizontal: 20,
     height: 50,
-    flex:1
+    flex: 1
   },
 
   item_title: {

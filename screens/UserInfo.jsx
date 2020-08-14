@@ -90,6 +90,7 @@ class UserInfo extends Component {
     const userName = this.props.navigation.getParam("userName");
     const userID = this.props.navigation.getParam("userID");
     const userPhone = this.props.navigation.getParam("userPhone");
+    const favoriteList = this.props.navigation.getParam("favoriteList");
     
     return (
       <View style={styles.container}>

@@ -136,6 +136,7 @@ class Login extends Component {
           <Button style={{height: 100, width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
           buttonStyle={{width : '100%',backgroundColor: "gray",height: '50%'}} title={`아이디/${'\n'}비밀번호찾기`} 
           onPress = {() =>{
+            
             this.setState({
               search: '',
               menuDialog: false,
