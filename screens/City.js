@@ -99,7 +99,7 @@ class City extends React.Component {
         marketDict["주소도로명"] = childSnapshot.child("주소도로명").val();
         marketDict["평점"] = childSnapshot.child("평점").val();
         marketDict["특징"] = childSnapshot.child("특징").val();
-        marketDict["uid"] = childSnapshot.child("uid").val();
+        marketDict["uri"] = childSnapshot.child("uri").val();
         marketDict["선호"] = false;
         marketList.push(marketDict);
       }
@@ -150,10 +150,7 @@ class City extends React.Component {
       
       if (regionData == regionName && cityData == prevData[0]){
         seasonList.forEach(season=>{
-          var seasonData = specialtyInfo.val()[`${season}`];
-          if(seasonData != ''){
-            specialtyList.push(`${season} : ${seasonData}`)
-          }
+          specialtyList.push(specialtyInfo.val()[`${season}`])
         })
       } 
     });

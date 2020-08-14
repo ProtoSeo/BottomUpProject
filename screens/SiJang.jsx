@@ -33,6 +33,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 var database = firebase.database();
+var showComponent = [true,true,true,true,true,true];
 
 class Sijang extends Component {
   constructor(props) {
@@ -45,6 +46,8 @@ class Sijang extends Component {
       starCount: 3.5,
       MarketName: '',
       SubName: '',
+      uri : '',
+      place : '',
       marketList: this.props.navigation.getParam("marketList"),
     }
   }
@@ -91,9 +94,14 @@ class Sijang extends Component {
   render() {
     const { search, marketList } = this.state;
     const uid = this.props.navigation.getParam('uid');
-    const specialtyList = this.props.navigation
+    const specialtyList = this.props.navigation.getParam("specialtyList")
+    specialtyList.forEach((specialty,key)=>{
+      if(specialty == ''){
+        console.log(key);
+        showComponent[key] = false;
+      }
+    })
     console.log("Sijang")
-
     return (
 
       <View style={styles.container}>
@@ -193,9 +201,11 @@ class Sijang extends Component {
             >
               {/* 음식점을 눌렀을 때 나오는 Dialog state 이용 */}
               <DialogContent>
+              <ScrollView>
                 <View style={{ height: '50%' }}>
-                  <View style={{ marginTop: '50%', marginBottom: '25%' }}>
-
+                
+                  <View style={{ marginTop: '20%', marginBottom: '20%' }}>
+                  
                     <StarRating
                       disabled={false}
                       emptyStar={require('./images/starEmpty.png')}
@@ -216,7 +226,11 @@ class Sijang extends Component {
                   <Text>
                     {this.state.SubName}
                   </Text>
-
+                  <Text>
+                    {this.state.place}
+                  </Text>
+                  <Image source={{uri : `${this.state.uri}`}} style={{width:300, height :300,marginBottom :'5%'}} />
+                  
                   <TouchableOpacity
                     style={{ alignItems: 'center' }}
                     onPress={() => {
@@ -225,7 +239,9 @@ class Sijang extends Component {
                     <Text style={{ fontSize: 20, color: "#81888F" }}>CLOSE</Text>
 
                   </TouchableOpacity>
+                  
                 </View>
+                </ScrollView>
               </DialogContent>
             </Dialog>
 
@@ -247,18 +263,24 @@ class Sijang extends Component {
 
         <View style={styles.SearchSpace}>
           <Swiper showsButtons={true} nextButton={false}>
-            <View style={[styles.slideContainer, styles.slide1]}>
-              <Text>봄</Text>
-            </View>
-            <View style={[styles.slideContainer, styles.slide2]}>
-              <Text>여름</Text>
-            </View>
-            <View style={[styles.slideContainer, styles.slide3]}>
-              <Text>가을</Text>
-            </View>
-            <View style={[styles.slideContainer, styles.slide4]}>
-              <Text>겨울</Text>
-            </View>
+            {showComponent[0]&&<View style={[styles.slideContainer, styles.slide1]}>
+              <Text>시장의 정보 : {specialtyList[0]}</Text>
+            </View>}
+            {showComponent[1]&&<View style={[styles.slideContainer, styles.slide2]}>
+              <Text>봄 : {specialtyList[1]}</Text>
+            </View>}
+            {showComponent[2]&&<View style={[styles.slideContainer, styles.slide3]}>
+              <Text>여름 : {specialtyList[2]}</Text>
+            </View>}
+            {showComponent[3]&&<View style={[styles.slideContainer, styles.slide4]}>
+              <Text>가을 : {specialtyList[3]}</Text>
+            </View>}
+            {showComponent[4]&&<View style={[styles.slideContainer, styles.slide1]}>
+              <Text>겨울 : {specialtyList[4]}</Text>
+            </View>}
+            {showComponent[5]&&<View style={[styles.slideContainer, styles.slide2]}>
+              <Text>연중 : {specialtyList[5]}</Text>
+            </View>}
           </Swiper>
           {/* 여기가 Swiper 텍스트 사용가능 터치블 사용가능*/}
         </View>
@@ -272,7 +294,9 @@ class Sijang extends Component {
                     market: true,
                     MarketName: marketDict["상가이름"],
                     starCount: marketDict["평점"],
-                    SubName: marketDict["음식"]
+                    SubName: marketDict["음식"],
+                    uri : marketDict['uri'],
+                    place : marketDict['주소도로명'],
                   })
                 }
               } >
@@ -305,6 +329,12 @@ class Sijang extends Component {
                     await database.ref(`Users/UserInfo/${uid}/favorite/list`).set(updateList);
                   } else {  //false  
                     marketList[key]["선호"] = true;
+                    var foodTag = marketList[key]["음식태그"].split(' ');
+                    for(var i = 0;i<foodTag.length;i++){
+                      const tasteSnapshot = await database.ref(`Users/UserInfo/${uid}/taste`).child(`${foodTag[i]}`).once('value');
+                      var score = tasteSnapshot.val() + 2;
+                      await database.ref(`Users/UserInfo/${uid}/taste`).child(`${foodTag[i]}`).set(score);
+                    }
                     const snapshot = await database.ref(`Users/UserInfo/${uid}/favorite/count`).once('value');
                     var count = snapshot.val();
                     await database.ref(`Users/UserInfo/${uid}/favorite/list/${count}`).set(

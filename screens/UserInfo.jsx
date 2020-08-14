@@ -68,11 +68,11 @@ const Item = ({ name, subname, func }) => (
   </TouchableOpacity>
 )
 
-
-
 class UserInfo extends Component {
   state = {
-
+    market: false,
+    MarketName: '',
+    SubName: '',
   };
 
   updateSearch = (search) => {
@@ -85,13 +85,15 @@ class UserInfo extends Component {
 
   render() {
     const renderItem = ({ item }) => (
-      <Item name={item.name} subname={item.subname} icon={item.icon} func={() => this.props.navigation.navigate('Sijang', { name: item.name })} />
+      <Item name={item["상가이름"]} subname={item["음식"]} 
+      // icon={item.icon} 
+      func={() => this.props.navigation.navigate('Sijang', { name: item.name })} />
     )
     const userName = this.props.navigation.getParam("userName");
     const userID = this.props.navigation.getParam("userID");
     const userPhone = this.props.navigation.getParam("userPhone");
     const favoriteList = this.props.navigation.getParam("favoriteList");
-
+    console.log("favorite",favoriteList);
     return (
       <View style={styles.container}>
         <View style={styles.TopBar}>
@@ -131,7 +133,7 @@ class UserInfo extends Component {
          </Text>
             <ScrollView >
               <FlatList
-                data={DATA}
+                data={favoriteList}
                 renderItem={renderItem}
                 keyExtractor={item => item.name}
               />

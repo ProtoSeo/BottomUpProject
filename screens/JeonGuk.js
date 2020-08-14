@@ -164,7 +164,7 @@ class JeonGuk extends React.Component {
 
           <View style={{ flex: 3, alignItems: 'center' }}>
             <Text style={styles.TopBarText}>
-              우리시소
+              우리의 시소
           </Text>
           </View>
 
