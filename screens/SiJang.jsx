@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import Swiper from "react-native-web-swiper";
 import { AntDesign } from '@expo/vector-icons';
 import {
-  StyleSheet,
   TouchableOpacity,
   Text,
   View,
   Image,
-  ScrollView
+  ScrollView,
+  SafeAreaView, 
+  Alert
 } from 'react-native';
 import Dialog, {
   DialogTitle,
@@ -18,6 +19,8 @@ import Dialog, {
 import StarRating from 'react-native-star-rating';
 import * as firebase from "firebase";
 import "firebase/database";
+
+import styles from "../design/styles";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
@@ -50,6 +53,22 @@ class Sijang extends Component {
       place: '',
       marketList: this.props.navigation.getParam("marketList"),
     }
+  }
+
+  logout = () => {
+    Alert.alert(
+      '로그아웃',
+      '로그아웃 하시겠습니까?',
+      [
+        {
+          text: 'Yes', style: 'cancel', onPress: () => {
+            this.setState({ menuDialog: false });
+            this.props.navigation.navigate('Login');
+          }
+        },
+        { text: 'NO', onPress: () => { }, style: 'cancel' },
+      ]
+    )
   }
 
   updateSearch = (search) => {
@@ -136,7 +155,8 @@ class Sijang extends Component {
       return this.state.marketList == nextState.marketList;
   }
   render() {
-    const { search, marketList } = this.state;
+    const { marketList } = this.state;
+    const uid = this.props.navigation.getParam('uid');
     const specialtyList = this.props.navigation.getParam("specialtyList")
     specialtyList.forEach((specialty, key) => {
       if (specialty == '') {
@@ -146,6 +166,7 @@ class Sijang extends Component {
     })
     console.log("Sijang")
     return (
+      <SafeAreaView style={{flex : 1}}>
       <View style={styles.container}>
         <View style={styles.TopBar}>
           <View style={{ flex: 2 }}>
@@ -154,7 +175,7 @@ class Sijang extends Component {
                 menuDialog: true
               });
             }}>
-              <AntDesign name="bars" size={15} color="white" />
+              <AntDesign name="bars" size={25} color="white" />
             </TouchableOpacity>
             <Dialog
               onTouchOutside={() => {
@@ -170,7 +191,7 @@ class Sijang extends Component {
               }}
               dialogTitle={
                 <DialogTitle
-                  title='Menu'
+                  title="Menu"
                   hasTitleBar={true}
                   style={{ color: '#6A6F75', fontSize: 24 }}
                 />
@@ -188,7 +209,7 @@ class Sijang extends Component {
               <DialogContent>
                 <View>
                   <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity style={styles.dialog_Button} onPress={this.changeState}>
+                    <TouchableOpacity style={styles.dialog_Button} onPress={this.home}>
                       <AntDesign name="home" size={20} color="white" />
                     </TouchableOpacity>
 
@@ -196,9 +217,11 @@ class Sijang extends Component {
                       <AntDesign name="user" size={20} color="white" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.dialog_Button} onPress={this.onPress}>
-                      <AntDesign name="setting" size={20} color="white" />
+                    <TouchableOpacity style={styles.dialog_Button} onPress={this.logout
+                    }>
+                      <AntDesign name="deleteuser" size={20} color="white" />
                     </TouchableOpacity>
+
                   </View>
 
                   <TouchableOpacity
@@ -297,31 +320,31 @@ class Sijang extends Component {
 
           <View style={{ flex: 2 }}>
             <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-              <AntDesign name="back" size={15} color="white" />
+              <AntDesign name="back" size={25} color="white" />
             </TouchableOpacity>
           </View>
 
         </View>
 
-        <View style={styles.SearchSpace}>
+        <View style={styles.SlideSpace}>
           <Swiper showsButtons={true} nextButton={false}>
             {showComponent[0] && <View style={[styles.slideContainer, styles.slide1]}>
               <Text>시장의 정보 : {specialtyList[0]}</Text>
             </View>}
-            {showComponent[1] && <View style={[styles.slideContainer, styles.slide2]}>
-              <Text>봄 : {specialtyList[1]}</Text>
+            {showComponent[1]&&<View style={[styles.slideContainer, styles.slide2]}>
+              <Text style={{marginTop: "10%", fontSize: 25}}>봄 특산물 : {specialtyList[1]}</Text>
             </View>}
-            {showComponent[2] && <View style={[styles.slideContainer, styles.slide3]}>
-              <Text>여름 : {specialtyList[2]}</Text>
+            {showComponent[2]&&<View style={[styles.slideContainer, styles.slide2]}>
+              <Text style={{marginTop: "10%", fontSize: 25}}>여름 특산물 : {specialtyList[2]}</Text>
             </View>}
-            {showComponent[3] && <View style={[styles.slideContainer, styles.slide4]}>
-              <Text>가을 : {specialtyList[3]}</Text>
+            {showComponent[3]&&<View style={[styles.slideContainer, styles.slide2]}>
+              <Text style={{marginTop: "10%", fontSize: 25}}>가을 특산물 : {specialtyList[3]}</Text>
             </View>}
-            {showComponent[4] && <View style={[styles.slideContainer, styles.slide1]}>
-              <Text>겨울 : {specialtyList[4]}</Text>
+            {showComponent[4]&&<View style={[styles.slideContainer, styles.slide2]}>
+              <Text style={{marginTop: "10%", fontSize: 25}}>겨울 특산물 : {specialtyList[4]}</Text>
             </View>}
-            {showComponent[5] && <View style={[styles.slideContainer, styles.slide2]}>
-              <Text>연중 : {specialtyList[5]}</Text>
+            {showComponent[5]&&<View style={[styles.slideContainer, styles.slide2]}>
+              <Text style={{marginTop: "10%", fontSize: 25}}>연중 특산물 : {specialtyList[5]}</Text>
             </View>}
           </Swiper>
           {/* 여기가 Swiper 텍스트 사용가능 터치블 사용가능*/}
@@ -360,146 +383,10 @@ class Sijang extends Component {
             </View>
           )}
         </ScrollView>
-
-        <View style={{ height: 20 }}></View>
-
       </View>
+      </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  myStarStyle: {
-    color: 'yellow',
-    backgroundColor: 'transparent',
-    textShadowColor: 'black',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-    height: 300,
-
-  },
-  slideContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  slide1: {
-    backgroundColor: "rgba(20,20,200,0.3)"
-  },
-  slide2: {
-    backgroundColor: "rgba(20,200,20,0.3)"
-  },
-  slide3: {
-    backgroundColor: "rgba(215,178,116,0.3)"
-  },
-  slide4: {
-    backgroundColor: "#50BCDF"
-  },
-  myEmptyStarStyle: {
-    color: 'white',
-  },
-  TopBar: {
-    height: '14%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#81888F',
-    flexDirection: 'row'
-  },
-
-  TopBarText: {
-    fontSize: 25,
-    marginTop: '25%',
-    color: 'white'
-  },
-
-  MainSpace: {
-    height: '100%',
-    backgroundColor: '#E8EAEB'
-  },
-
-  SearchSpace: {
-    backgroundColor: '#E8EAEB',
-    height: 120,
-    justifyContent: 'center',
-
-  },
-
-  TopButton: {
-    alignItems: 'center',
-    backgroundColor: '#6A6F75',
-    padding: '8%',
-    marginHorizontal: '32%',
-    marginTop: '38%',
-  },
-
-  StatusButton: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 20,
-    width: 30,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 10,
-    marginBottom: 10
-  },
-
-  item_view: {
-    backgroundColor: '#DDDDDD',
-    padding: 20,
-    marginVertical: 8,
-    marginLeft: 12,
-    height: 120,
-    flex: 9
-  },
-
-  item_heart: {
-    backgroundColor: '#E8EAEB',
-    marginVertical: '12%',
-    marginHorizontal: 20,
-    height: 50,
-    flex: 1
-  },
-
-  item_title: {
-    marginTop: 8,
-    fontSize: 24,
-  },
-
-  item_subtitle: {
-    fontSize: 14,
-  },
-
-  item_icon: {
-    height: 20,
-    width: 20,
-    padding: 20,
-    marginRight: 20
-  },
-
-  menu_dialogContentView: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-
-  menu_dialog_button: {
-    width: '40%',
-    height: 30,
-  },
-
-  dialog_Button: {
-    alignItems: 'center',
-    backgroundColor: '#6A6F75',
-    padding: 10,
-    marginVertical: 20,
-    marginHorizontal: 20,
-    flex: 1
-  },
-
-})
 
 export default Sijang;

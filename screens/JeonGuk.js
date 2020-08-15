@@ -1,7 +1,6 @@
-import React, { Component,PureComponent } from 'react';
-import { StyleSheet, Text, ScrollView, TouchableOpacity, View, KeyboardAvoidingView, Alert } from 'react-native';
+import React from 'react'
+import { Text, TextInput, ScrollView, TouchableOpacity, View, KeyboardAvoidingView, Alert, SafeAreaView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { SearchBar } from 'react-native-elements'
 import GradientButton from 'react-native-gradient-buttons';
 import * as firebase from "firebase";
 import Dialog, {
@@ -10,8 +9,9 @@ import Dialog, {
   DialogButton,
   ScaleAnimation,
 } from 'react-native-popup-dialog';
-
 import "firebase/database";
+
+import styles from "../design/styles";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
@@ -93,9 +93,10 @@ class JeonGuk extends Component {
   render() {
     const { searchString } = this.state;
     const uid = this.props.navigation.getParam("uid");
-    return (
 
-      <View style={styles.one}>
+    return (
+      <SafeAreaView style={{flex : 1}}>
+      <View style={styles.container}>
         <View style={styles.TopBar}>
 
           <View style={{ flex: 2 }}>
@@ -104,7 +105,7 @@ class JeonGuk extends Component {
                 menuDialog: true
               });
             }}>
-              <AntDesign name="bars" size={15} color="white" />
+              <AntDesign name="bars" size={25} color="white" />
             </TouchableOpacity>
 
             <Dialog
@@ -167,7 +168,7 @@ class JeonGuk extends Component {
 
           <View style={{ flex: 3, alignItems: 'center' }}>
             <Text style={styles.TopBarText}>
-              우리의 시소
+              지역 선택
           </Text>
           </View>
 
@@ -192,11 +193,9 @@ class JeonGuk extends Component {
           </View>
 
           <View style={styles.SearchSpace}>
-            <SearchBar
-              showCancel
-              round
-              lightTheme
-              placeholder="검색하세요"
+            <TextInput
+              style={styles.input}
+              placeholder="지역을 검색하세요"
               onChangeText={this.updateSearch}
               value={searchString}
             />
@@ -205,85 +204,10 @@ class JeonGuk extends Component {
       
       </View>
 
+      </SafeAreaView>
+
     )
   }
 }
-
-const styles = StyleSheet.create({
-  TopBar: {
-    height: '14%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#81888F',
-    flexDirection: 'row'
-  },
-
-  TopBarText: {
-    fontSize: 25,
-    marginTop: '25%',
-    color: 'white'
-  },
-
-  TopButton: {
-    alignItems: 'center',
-    backgroundColor: '#6A6F75',
-    padding: '8%',
-    marginHorizontal: '32%',
-    marginTop: '38%',
-  },
-
-  menu_dialogContentView: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-
-  menu_dialog_button: {
-    width: '40%',
-    height: 30,
-  },
-
-  dialog_Button: {
-    alignItems: 'center',
-    backgroundColor: '#6A6F75',
-    padding: 10,
-    marginVertical: 20,
-    marginHorizontal: 20,
-    flex: 1
-  },
-
-  title: {
-    marginTop: 22,
-    textAlign: 'center',
-    fontSize: 24,
-  },
-
-  text: {
-    marginTop: '15%',
-    width: 35,
-    marginLeft: 65,
-  },
-
-  image: {
-    flex: 1,
-  },
-
-  view: {
-    height: '77%',
-    textAlign: 'center',
-    marginTop: '5%',
-    marginHorizontal: '5%',
-
-  },
-
-  SearchSpace: {
-    height: 100,
-    justifyContent: 'center',
-  },
-
-  one: {
-    flex: 1,
-  }
-});
 
 export default JeonGuk;

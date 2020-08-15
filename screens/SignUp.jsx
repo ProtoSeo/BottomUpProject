@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { SearchBar } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 import {
   StyleSheet,
@@ -9,11 +8,14 @@ import {
   Image,
   ScrollView,
   Alert,
+  SafeAreaView
 } from 'react-native';
 import { Button } from 'react-native-elements'
 import * as firebase from "firebase";
 import "firebase/database";
 import { TextInput } from 'react-native-gesture-handler';
+
+import styles from "../design/styles";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
@@ -310,6 +312,7 @@ class SignUp extends Component {
     // console.log(Food)
     const { search, idCheck, ID, Name, Phone, Password, notSelected } = this.state;
     return (
+      <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.TopBar}>
           <View style={{ flex: 2 }}>
@@ -321,7 +324,7 @@ class SignUp extends Component {
           </View>
           <View style={{ flex: 2 }}>
             <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-              <AntDesign name="back" size={15} color="white" />
+              <AntDesign name="back" size={25} color="white" />
             </TouchableOpacity>
           </View>
         </View>
@@ -352,20 +355,20 @@ class SignUp extends Component {
                 placeholder="비밀번호"
                 onChangeText={this.updatepas}
                 value={this.state.Password}
-                style={styles.input}
+                style={styles.input_signup}
               />
               <TextInput
                 placeholder="이름을 입력하세요"
                 onChangeText={this.updateName}
                 value={this.state.Name}
-                style={styles.input}
+                style={styles.input_signup}
               />
               <TextInput
                 placeholder="전화번호를 입력하세요"
                 keyboardType = 'numeric'
                 onChangeText={this.updatePhone}
                 value={this.state.Phone}
-                style={styles.input}
+                style={styles.input_signup}
               />
 
             </View>
@@ -399,7 +402,7 @@ class SignUp extends Component {
               </View>
             </View>
             <Button style={{ width: '30%', alignContents: 'center', marginTop: '25%', marginLeft: '35%', marginBottom: '10%' }} titleStyle={{ color: "white", fontSize: 15, padding: '5%' }}
-              buttonStyle={{ backgroundColor: "gray", height: '45%' }} title={`가입하기`} onPress={
+              buttonStyle={{ backgroundColor: "#7E64CC", height: '45%' }} title={`가입하기`} onPress={
                 async () => {
                   const snapshot = await database.ref('Users/UserCount').once('value')
                   var userCount = snapshot.val()
@@ -465,154 +468,9 @@ class SignUp extends Component {
         </View>
         <View style={{ height: 20 }}></View>
       </View>
+      </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-
-  submit: {
-    width: "80%",
-    backgroundColor: "#fc5185",
-    borderRadius: 20,
-    padding: 10,
-    alignItems: "center",
-    marginTop: 20,
-    marginLeft: 25
-  },
-
-  header: {
-    fontSize: 25,
-    fontWeight: "bold",
-    color: "#364f6b",
-    marginTop: 10,
-    marginBottom: 20,
-    marginLeft: 40,
-  },
-
-  TopBar: {
-    height: '14%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#81888F',
-    flexDirection: 'row'
-  },
-
-  TopBarText: {
-    fontSize: 25,
-    marginTop: '25%',
-    color: 'white'
-  },
-
-  input: {
-    width: '70%',
-    height: 50,
-    padding: '2%',
-    borderWidth: 2,
-    borderColor: '#81888F',
-    marginVertical: '5%',
-    marginLeft: '10%',
-    marginRight: '30%'
-  },
-
-  input_ID: {
-    width: '70%',
-    height: 50,
-    padding: '2%',
-    borderWidth: 2,
-    borderColor: '#81888F',
-    marginVertical: '5%',
-    marginLeft: '10%',
-  },
-
-  item: {
-    width: "80%",
-    backgroundColor: "#fff",
-    borderRadius: 20,
-    padding: 10,
-    marginBottom: 10,
-    flexDirection: "row",
-    marginLeft: 25,
-  },
-
-  checkBoxTxt: {
-    marginLeft: 20
-  },
-
-  MainSpace: {
-    flex: 4,
-    backgroundColor: '#E8EAEB',
-    paddingTop: 30
-  },
-
-  TopButton: {
-    alignItems: 'center',
-    backgroundColor: '#6A6F75',
-    padding: '8%',
-    marginHorizontal: '32%',
-    marginTop: '38%',
-  },
-
-  StatusButton: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 20,
-    width: 30,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 10,
-    marginBottom: 10
-  },
-
-  item_view: {
-    backgroundColor: '#DDDDDD',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    height: 120
-  },
-
-  item_title: {
-    marginTop: 8,
-    fontSize: 24,
-  },
-
-  item_subtitle: {
-    fontSize: 14,
-  },
-
-  item_icon: {
-    height: 20,
-    width: 20,
-    padding: 20,
-    marginRight: 20
-  },
-
-  menu_dialogContentView: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-
-  menu_dialog_button: {
-    width: '40%',
-    height: 30,
-  },
-
-  dialog_Button: {
-    alignItems: 'center',
-    backgroundColor: '#6A6F75',
-    padding: 10,
-    marginVertical: 20,
-    marginHorizontal: 20,
-    flex: 1
-  },
-
-})
-
 
 export default SignUp;
