@@ -174,7 +174,6 @@ const styles = StyleSheet.create({
     
       dialog_Button: {
         alignItems: 'center',
-        backgroundColor: '#6A6F75',
         padding: 10,
         marginVertical: 20,
         marginHorizontal: 20,
@@ -250,6 +249,17 @@ const styles = StyleSheet.create({
         height: 50,
         flex: 1
       },
+
+      explain_text: {
+        fontSize: 20,
+        marginBottom: '5%'
+      },
+
+      title_text: {
+        fontSize: 30,
+        marginVertical: '8%',
+        fontWeight: "bold",
+      }
 });
 
 export default styles;

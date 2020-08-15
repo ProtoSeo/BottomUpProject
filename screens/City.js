@@ -247,15 +247,15 @@ class City extends React.PureComponent {
                 <View>
                   <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.home}>
-                      <AntDesign name="home" size={20} color="white" />
+                      <AntDesign name="home" size={30} color="#6466E3" />
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.mypage}>
-                      <AntDesign name="user" size={20} color="white" />
+                      <AntDesign name="user" size={30} color="#6466E3" />
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.logout}>
-                      <AntDesign name="deleteuser" size={20} color="white" />
+                      <AntDesign name="deleteuser" size={30} color="#6466E3" />
                     </TouchableOpacity>
 
                   </View>

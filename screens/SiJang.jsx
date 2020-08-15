@@ -210,16 +210,16 @@ class Sijang extends Component {
                 <View>
                   <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.home}>
-                      <AntDesign name="home" size={20} color="white" />
+                      <AntDesign name="home" size={30} color="#6466E3" />
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.mypage}>
-                      <AntDesign name="user" size={20} color="white" />
+                      <AntDesign name="user" size={30} color="#6466E3" />
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.logout
                     }>
-                      <AntDesign name="deleteuser" size={20} color="white" />
+                      <AntDesign name="deleteuser" size={30} color="#6466E3" />
                     </TouchableOpacity>
 
                   </View>
@@ -249,9 +249,9 @@ class Sijang extends Component {
               }}
               dialogTitle={
                 <DialogTitle
-                  title={this.state.MarketName}
+                  title='Market Info'
                   hasTitleBar={true}
-                  style={{ color: '#6A6F75', fontSize: 24 }}
+                  style={{ color: '#6A6F75', fontSize: 30 }}
                 />
               }
               actions={[
@@ -267,9 +267,17 @@ class Sijang extends Component {
               {/* 음식점을 눌렀을 때 나오는 Dialog state 이용 */}
               <DialogContent>
                 <ScrollView>
-                  <View style={{ height: '50%' }}>
+                  <View style={{ height: '100%' }}>
 
-                    <View style={{ marginTop: '20%', marginBottom: '20%' }}>
+                    <View style={{marginBottom: '15%', alignItems: 'center'}}>
+
+                    <Text style={styles.title_text}>
+                      {this.state.MarketName}
+                    </Text>
+
+                    <Text style={styles.explain_text}>
+                      예상 평점 : {this.state.starCount}
+                    </Text>
 
                       <StarRating
                         disabled={false}
@@ -278,23 +286,19 @@ class Sijang extends Component {
                         halfStar={require('./images/starHalf.png')}
                         iconSet={'Ionicons'}
                         maxStars={5}
-
                         rating={this.state.starCount}
                         selectedStar={(rating) => this.onStarRatingPress(rating)} />
                     </View>
-                    <Text>
-                      {this.state.starCount}
+                    <Text style={styles.explain_text}>
+                      판매 상품 : {this.state.SubName}
                     </Text>
-                    <Text>
-                      {this.state.MarketName}
+                    <Text style={styles.explain_text}>
+                      매장 위치 : {this.state.place}
                     </Text>
-                    <Text>
-                      {this.state.SubName}
+                    <Text style={styles.explain_text}>
+                      [사용가능한 지역화폐]
                     </Text>
-                    <Text>
-                      {this.state.place}
-                    </Text>
-                    <Image source={{ uri: `${this.state.uri}` }} style={{ width: 300, height: 300, marginBottom: '5%' }} />
+                    <Image source={{ uri: `${this.state.uri}` }} style={{ marginBottom: '5%', height: 200, resizeMode: 'cover' }} />
 
                     <TouchableOpacity
                       style={{ alignItems: 'center' }}
