@@ -91,6 +91,7 @@ class SignUp extends Component {
     ID: '',
     Password: '',
     Phone: '',
+    PhoneLen: 0,
     Name: '',
     initialFood: Food,
     SecondFood: [],
@@ -109,7 +110,12 @@ class SignUp extends Component {
     this.setState({ Password: pas })
   }
   updatePhone = (phone) => {
-    this.setState({ Phone: phone })
+    if(phone.length>=this.state.PhoneLen){
+      if(phone.length==3||phone.length==8){
+        phone += "-";
+      }
+    }
+    this.setState({Phone : phone ,PhoneLen : phone.length})
   }
   updateName = (name) => {
     this.setState({ Name: name })

@@ -30,7 +30,7 @@ var database = firebase.database()
 
 const List = ["서울", "경기", "대전", "부산", "강원", "경북", "경남", "광주", "충북", "울산", "충남", "전남", "전북", "제주", "인천", "세종"].sort()
 
-class JeonGuk extends Component {
+class JeonGuk extends React.Component {
   state = {
     searchString: '',
     menuDialog: false,
@@ -51,7 +51,7 @@ class JeonGuk extends Component {
     var userPhone = snapshot.val()['phone'];
     var favoriteList = []
     if(favoriteSnapshot.exists && favoriteSnapshot.val() !== null){
-      favoriteList = favoriteSnapshot.val();
+      favoriteList = Object.values(favoriteSnapshot.val());
     }
     this.setState({ menuDialog: false });
     this.props.navigation.navigate('UserInfo', { uid: uid, userName: userName, userID: userID, userPhone: userPhone, favoriteList: favoriteList });
