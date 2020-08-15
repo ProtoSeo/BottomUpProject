@@ -5,7 +5,7 @@ import { Text, View,StatusBar,StyleSheet } from "react-native";
 export default function Loading(){
     return <View style = {styles.container}>
         <StatusBar barStyle="dark-content"/>
-        <Text style={styles.text}>우리의 시소</Text>
+        <Text style={styles.text}>우리시소</Text>
     </View>
 }
 
@@ -14,10 +14,12 @@ const styles = StyleSheet.create({
         flex:1,
         alignItems: 'center',
         justifyContent:"center",
-        backgroundColor:"#FDF6AA",
+        backgroundColor:"#6466E3",
     },
+    
     text:{
-        color:"#2c2c2c",
+        color:"white",
+        fontWeight:'bold',
         fontSize:40,
         marginBottom: '120%'
     }

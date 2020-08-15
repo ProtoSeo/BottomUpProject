@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
       MainSpace: {
         flex: 4,
         backgroundColor: '#E8EAEB',
-        paddingTop: 30
+        paddingTop: 30,
       },
     
       StatusButton: {
@@ -174,7 +174,6 @@ const styles = StyleSheet.create({
     
       dialog_Button: {
         alignItems: 'center',
-        backgroundColor: '#6A6F75',
         padding: 10,
         marginVertical: 20,
         marginHorizontal: 20,
@@ -249,6 +248,29 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         height: 50,
         flex: 1
+      },
+
+      explain_text: {
+        fontSize: 20,
+        marginBottom: '5%'
+      },
+
+      title_text: {
+        fontSize: 30,
+        marginVertical: '8%',
+        fontWeight: "bold",
+      },
+
+      small_text: {
+        fontSize: 12,
+        marginTop: '4%'
+      },
+
+      list_like_view: {
+        height: '100%',
+        alignItems: 'center',
+        marginTop: '30%',
+
       },
 });
 

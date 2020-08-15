@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import {
-  StyleSheet,
   TouchableOpacity,
   Text,
   View,
