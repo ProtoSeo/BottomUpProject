@@ -8,6 +8,13 @@ import {
   Image,
   SafeAreaView
 } from 'react-native';
+import Dialog, {
+  DialogTitle,
+  DialogContent,
+  DialogButton,
+  ScaleAnimation,
+} from 'react-native-popup-dialog';
+import StarRating from 'react-native-star-rating';
 import * as firebase from "firebase";
 import "firebase/database";
 
@@ -55,6 +62,84 @@ class UserInfo extends Component {
     return (
       <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
+      <Dialog
+              onTouchOutside={() => {
+                this.setState({ market: false });
+              }}
+              width={0.9}
+              visible={this.state.market}
+              dialogAnimation={new ScaleAnimation()}
+              onHardwareBackPress={() => {
+                console.log('onHardwareBackPress');
+                this.setState({ market: false });
+                return true;
+              }}
+              dialogTitle={
+                <DialogTitle
+                  title='Market Info'
+                  hasTitleBar={true}
+                  style={{ color: '#6A6F75', fontSize: 30 }}
+                />
+              }
+              actions={[
+                <DialogButton
+                  text="DISMISS"
+                  onPress={() => {
+                    this.setState({ market: false });
+                  }}
+                  key="button-1"
+                />,
+              ]}
+            >
+              {/* 음식점을 눌렀을 때 나오는 Dialog state 이용 */}
+              <DialogContent>
+                <ScrollView>
+                  <View style={{ height: '100%' }}>
+
+                    <View style={{marginBottom: '15%', alignItems: 'center'}}>
+
+                    <Text style={styles.title_text}>
+                      {this.state.MarketName}
+                    </Text>
+
+                    <Text style={styles.explain_text}>
+                      예상 평점 : {this.state.starCount}
+                    </Text>
+
+                      <StarRating
+                        disabled={false}
+                        emptyStar={require('./images/starEmpty.png')}
+                        fullStar={require('./images/starFilled.png')}
+                        halfStar={require('./images/starHalf.png')}
+                        iconSet={'Ionicons'}
+                        maxStars={5}
+                        rating={this.state.starCount}
+                        selectedStar={(rating) => this.onStarRatingPress(rating)} />
+                    </View>
+                    <Text style={styles.explain_text}>
+                      판매 상품 : {this.state.SubName}
+                    </Text>
+                    <Text style={styles.explain_text}>
+                      매장 위치 : {this.state.place}
+                    </Text>
+                    <Text style={styles.explain_text}>
+                      [사용가능한 지역화폐]
+                    </Text>
+                    <Image source={{ uri: `${this.state.uri}` }} style={{ marginBottom: '5%', height: 200, resizeMode: 'cover' }} />
+
+                    <TouchableOpacity
+                      style={{ alignItems: 'center' }}
+                      onPress={() => {
+                        this.setState({ market: false });
+                      }}>
+                      <Text style={{ fontSize: 20, color: "#81888F" }}>CLOSE</Text>
+
+                    </TouchableOpacity>
+
+                  </View>
+                </ScrollView>
+              </DialogContent>
+            </Dialog>
         <View style={styles.TopBar}>
           <View style={{ flex: 2 }}>
           </View>

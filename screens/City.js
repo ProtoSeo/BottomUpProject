@@ -123,8 +123,10 @@ class City extends React.PureComponent {
         }
       }
     })
-    const favoriteSnapshot = testSnapshot.child(`Users/UserInfo/${uid}/favorite/list`).val();
+    var favoriteSnapshot = testSnapshot.child(`Users/UserInfo/${uid}/favorite/list`).val();
+    console.log(favoriteSnapshot);
     if(favoriteSnapshot !== null){
+      favoriteSnapshot = Object.values(favoriteSnapshot);
       favoriteSnapshot.forEach(childSnapshot => {
         var marketData = childSnapshot["상가이름"];
         var locData = childSnapshot["주소도로명"];

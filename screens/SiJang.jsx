@@ -76,14 +76,12 @@ class Sijang extends Component {
       ]
     )
   }
-
+  home = () => {
+    this.setState({ menuDialog: false });
+    this.props.navigation.navigate('Home');
+  }
   test = () => {
     this.props.navigation.goBack();
-  }
-
-  changeState = () => {
-    this.props.navigation.navigate('Home');
-    this.setState({ menuDialog: false });
   }
 
   onStarRatingPress(rating) {
