@@ -28,51 +28,15 @@ if (!firebase.apps.length) {
 }
 var database = firebase.database()
 
-const DATA = [
-  {
-    name: '중리시장',
-    subname: '춘천365닭갈비, 오늘은 닭, 마인하우스',
-    icon: './icon/chicken.png',
-    number: 1,
-  },
-  {
-    name: '중앙시장',
-    subname: '오씨네 칼국수, 국수',
-    icon: '.icon/soup'
-  },
-  {
-    name: '유성시장',
-    subname: '학생회관',
-    icon: './icon/rice.png'
-  },
-  {
-    name: '태평전통시장',
-    subname: '충남통닭, 깻잎치킨',
-    icon: './icon/chicken.png'
-  },
-  {
-    name: '내 시장',
-    subname: '마루, 배재원',
-    icon: './icon/rice.png'
-  }
-]
-const Item = ({ name, subname, func }) => (
-  <TouchableOpacity style={styles.item_view} onPress={func}>
-    <View style={{ flex: 7, flexDirection: 'row' }}>
-      <Image style={styles.item_icon} source={require('./icon/rice.png')} />
-      <Text style={styles.item_title}>{name}</Text>
-    </View>
-    <View style={{ flex: 3 }}>
-      <Text style={styles.item_subtitle}>{subname}</Text>
-    </View>
-  </TouchableOpacity>
-)
-
 class UserInfo extends Component {
   state = {
+    search: '',
+    menuDialog: false,
     market: false,
     MarketName: '',
     SubName: '',
+    uri: '',
+    place: '',
   };
 
   updateSearch = (search) => {
@@ -84,16 +48,10 @@ class UserInfo extends Component {
   }
 
   render() {
-    const renderItem = ({ item }) => (
-      <Item name={item["상가이름"]} subname={item["음식"]} 
-      // icon={item.icon} 
-      func={() => this.props.navigation.navigate('Sijang', { name: item.name })} />
-    )
     const userName = this.props.navigation.getParam("userName");
     const userID = this.props.navigation.getParam("userID");
     const userPhone = this.props.navigation.getParam("userPhone");
     const favoriteList = this.props.navigation.getParam("favoriteList");
-    console.log("favorite",favoriteList);
     return (
       <View style={styles.container}>
         <View style={styles.TopBar}>
@@ -131,19 +89,37 @@ class UserInfo extends Component {
             <Text style={{ fontSize: 24, marginLeft: '5%', marginTop: '10%' }}>
               담아둔 시장
          </Text>
-            <ScrollView >
-              <FlatList
-                data={favoriteList}
-                renderItem={renderItem}
-                keyExtractor={item => item.name}
-              />
+
+            <ScrollView style={styles.MainSpace}>
+              {
+              favoriteList.length==0? <Text>리스트가 비어있습니다.</Text> : (favoriteList.map((favoriteDict, key) =>
+                <TouchableOpacity style={styles.item_view} onPress={
+                  () => {
+                    this.setState({
+                      market: true,
+                      MarketName: favoriteDict["상가이름"],
+                      starCount: favoriteDict["평점"],
+                      SubName: favoriteDict["음식"],
+                      uri: favoriteDict['uri'],
+                      place: favoriteDict['주소도로명'],
+                    })
+                  }
+                } >
+                  <View style={{ flex: 7, flexDirection: 'row' }}>
+                    <Image style={styles.item_icon} source={require('./icon/rice.png')} />
+                    <Text style={styles.item_title}>{favoriteDict["상가이름"]}</Text>
+                  </View>
+                  <View style={{ flex: 3 }}>
+                    <Text style={styles.item_subtitle}>{favoriteDict["음식"]}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))
+              }
             </ScrollView>
           </View>
         </View>
 
         <View style={{ height: 20 }}></View>
-
-
       </View>
     )
   }

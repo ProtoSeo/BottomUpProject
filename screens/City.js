@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component,PureComponent } from 'react';
 import { StyleSheet, Text, ScrollView, TouchableOpacity, View, KeyboardAvoidingView, Alert } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { SearchBar } from 'react-native-elements'
@@ -28,13 +28,14 @@ if (!firebase.apps.length) {
 }
 var database = firebase.database()
 
-class City extends React.Component {
+class City extends PureComponent {
   
   state = {
     searchString: '',
     dataList: [],
     region: [],
     searchreg: [],
+    menuDialog:false,
   }
   componentDidMount() {
     var arr = []
@@ -61,12 +62,14 @@ class City extends React.Component {
     var uid = this.props.navigation.getParam("uid");
     const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value');
     const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
-
+    
     var userName = snapshot.val()["name"];
     var userID = snapshot.val()["id"];
     var userPhone = snapshot.val()['phone'];
-    var favoriteList = favoriteSnapshot.val();
-    console.log(favoriteList);
+    var favoriteList = []
+    if(favoriteSnapshot.exists && favoriteSnapshot.val() !== null){
+      favoriteList = favoriteSnapshot.val();
+    }
     this.setState({ menuDialog: false });
     this.props.navigation.navigate('UserInfo', { uid: uid, userName: userName, userID: userID, userPhone: userPhone, favoriteList: favoriteList });
   }
@@ -251,8 +254,7 @@ class City extends React.Component {
                       <AntDesign name="user" size={20} color="white" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.dialog_Button} onPress={this.logout
-                    }>
+                    <TouchableOpacity style={styles.dialog_Button} onPress={this.logout}>
                       <AntDesign name="deleteuser" size={20} color="white" />
                     </TouchableOpacity>
 

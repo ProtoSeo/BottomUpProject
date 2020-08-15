@@ -33,7 +33,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 var database = firebase.database();
-var showComponent = [true,true,true,true,true,true];
+var showComponent = [true, true, true, true, true, true];
 
 class Sijang extends Component {
   constructor(props) {
@@ -46,8 +46,8 @@ class Sijang extends Component {
       starCount: 3.5,
       MarketName: '',
       SubName: '',
-      uri : '',
-      place : '',
+      uri: '',
+      place: '',
       marketList: this.props.navigation.getParam("marketList"),
     }
   }
@@ -78,6 +78,7 @@ class Sijang extends Component {
   }
 
   mypage = async () => {
+
     var uid = this.props.navigation.getParam("uid");
     const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value');
     const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
@@ -85,25 +86,66 @@ class Sijang extends Component {
     var userName = snapshot.val()["name"];
     var userID = snapshot.val()["id"];
     var userPhone = snapshot.val()['phone'];
-    var favoriteList = favoriteSnapshot.val();
-    console.log(favoriteList);
+    var favoriteList = []
+    if(favoriteSnapshot.exists && favoriteSnapshot.val() !== null){
+      favoriteList = favoriteSnapshot.val();
+    }
     this.setState({ menuDialog: false });
     this.props.navigation.navigate('UserInfo', { uid: uid, userName: userName, userID: userID, userPhone: userPhone, favoriteList: favoriteList });
   }
 
+  favorite = async (key) => {
+    var marketList = this.state.marketList;
+    const uid = this.props.navigation.getParam('uid');
+    if (marketList[key]["선호"] == true) {  //true 
+      marketList[key]["선호"] = false;
+
+      var marketName = marketList[key]["상가이름"];
+      var marketLocation = marketList[key]["주소도로명"];
+      var updateList = []
+      const snapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
+
+      snapshot.forEach(childSnapshot => {
+        var key = childSnapshot.key
+        var marketData = childSnapshot.child("상가이름").val();
+        var locData = childSnapshot.child("주소도로명").val();
+        if (marketData != marketName || locData != marketLocation) {
+          updateList[key] = childSnapshot.val();
+        }
+      })
+      await database.ref(`Users/UserInfo/${uid}/favorite/list`).set(updateList);
+    } else {  //false  
+      marketList[key]["선호"] = true;
+      var foodTag = marketList[key]["음식태그"].split(' ');
+      for (var i = 0; i < foodTag.length; i++) {
+        const tasteSnapshot = await database.ref(`Users/UserInfo/${uid}/taste`).child(`${foodTag[i]}`).once('value');
+        var score = tasteSnapshot.val() + 2;
+        await database.ref(`Users/UserInfo/${uid}/taste`).child(`${foodTag[i]}`).set(score);
+      }
+      const snapshot = await database.ref(`Users/UserInfo/${uid}/favorite/count`).once('value');
+      var count = snapshot.val();
+      await database.ref(`Users/UserInfo/${uid}/favorite/list/${count}`).set(
+        marketList[key]
+      );
+      await database.ref(`Users/UserInfo/${uid}/favorite/count`).set(++count);
+    }
+    this.setState({ marketList: marketList });
+  }
+
+  shouldComponentUpdate(nextProps,nextState){
+      return this.state.marketList == nextState.marketList;
+  }
   render() {
     const { search, marketList } = this.state;
-    const uid = this.props.navigation.getParam('uid');
     const specialtyList = this.props.navigation.getParam("specialtyList")
-    specialtyList.forEach((specialty,key)=>{
-      if(specialty == ''){
+    specialtyList.forEach((specialty, key) => {
+      if (specialty == '') {
         console.log(key);
         showComponent[key] = false;
       }
     })
     console.log("Sijang")
     return (
-
       <View style={styles.container}>
         <View style={styles.TopBar}>
           <View style={{ flex: 2 }}>
@@ -201,46 +243,46 @@ class Sijang extends Component {
             >
               {/* 음식점을 눌렀을 때 나오는 Dialog state 이용 */}
               <DialogContent>
-              <ScrollView>
-                <View style={{ height: '50%' }}>
-                
-                  <View style={{ marginTop: '20%', marginBottom: '20%' }}>
-                  
-                    <StarRating
-                      disabled={false}
-                      emptyStar={require('./images/starEmpty.png')}
-                      fullStar={require('./images/starFilled.png')}
-                      halfStar={require('./images/starHalf.png')}
-                      iconSet={'Ionicons'}
-                      maxStars={5}
+                <ScrollView>
+                  <View style={{ height: '50%' }}>
 
-                      rating={this.state.starCount}
-                      selectedStar={(rating) => this.onStarRatingPress(rating)} />
+                    <View style={{ marginTop: '20%', marginBottom: '20%' }}>
+
+                      <StarRating
+                        disabled={false}
+                        emptyStar={require('./images/starEmpty.png')}
+                        fullStar={require('./images/starFilled.png')}
+                        halfStar={require('./images/starHalf.png')}
+                        iconSet={'Ionicons'}
+                        maxStars={5}
+
+                        rating={this.state.starCount}
+                        selectedStar={(rating) => this.onStarRatingPress(rating)} />
+                    </View>
+                    <Text>
+                      {this.state.starCount}
+                    </Text>
+                    <Text>
+                      {this.state.MarketName}
+                    </Text>
+                    <Text>
+                      {this.state.SubName}
+                    </Text>
+                    <Text>
+                      {this.state.place}
+                    </Text>
+                    <Image source={{ uri: `${this.state.uri}` }} style={{ width: 300, height: 300, marginBottom: '5%' }} />
+
+                    <TouchableOpacity
+                      style={{ alignItems: 'center' }}
+                      onPress={() => {
+                        this.setState({ market: false });
+                      }}>
+                      <Text style={{ fontSize: 20, color: "#81888F" }}>CLOSE</Text>
+
+                    </TouchableOpacity>
+
                   </View>
-                  <Text>
-                    {this.state.starCount}
-                  </Text>
-                  <Text>
-                    {this.state.MarketName}
-                  </Text>
-                  <Text>
-                    {this.state.SubName}
-                  </Text>
-                  <Text>
-                    {this.state.place}
-                  </Text>
-                  <Image source={{uri : `${this.state.uri}`}} style={{width:300, height :300,marginBottom :'5%'}} />
-                  
-                  <TouchableOpacity
-                    style={{ alignItems: 'center' }}
-                    onPress={() => {
-                      this.setState({ market: false });
-                    }}>
-                    <Text style={{ fontSize: 20, color: "#81888F" }}>CLOSE</Text>
-
-                  </TouchableOpacity>
-                  
-                </View>
                 </ScrollView>
               </DialogContent>
             </Dialog>
@@ -263,22 +305,22 @@ class Sijang extends Component {
 
         <View style={styles.SearchSpace}>
           <Swiper showsButtons={true} nextButton={false}>
-            {showComponent[0]&&<View style={[styles.slideContainer, styles.slide1]}>
+            {showComponent[0] && <View style={[styles.slideContainer, styles.slide1]}>
               <Text>시장의 정보 : {specialtyList[0]}</Text>
             </View>}
-            {showComponent[1]&&<View style={[styles.slideContainer, styles.slide2]}>
+            {showComponent[1] && <View style={[styles.slideContainer, styles.slide2]}>
               <Text>봄 : {specialtyList[1]}</Text>
             </View>}
-            {showComponent[2]&&<View style={[styles.slideContainer, styles.slide3]}>
+            {showComponent[2] && <View style={[styles.slideContainer, styles.slide3]}>
               <Text>여름 : {specialtyList[2]}</Text>
             </View>}
-            {showComponent[3]&&<View style={[styles.slideContainer, styles.slide4]}>
+            {showComponent[3] && <View style={[styles.slideContainer, styles.slide4]}>
               <Text>가을 : {specialtyList[3]}</Text>
             </View>}
-            {showComponent[4]&&<View style={[styles.slideContainer, styles.slide1]}>
+            {showComponent[4] && <View style={[styles.slideContainer, styles.slide1]}>
               <Text>겨울 : {specialtyList[4]}</Text>
             </View>}
-            {showComponent[5]&&<View style={[styles.slideContainer, styles.slide2]}>
+            {showComponent[5] && <View style={[styles.slideContainer, styles.slide2]}>
               <Text>연중 : {specialtyList[5]}</Text>
             </View>}
           </Swiper>
@@ -295,8 +337,8 @@ class Sijang extends Component {
                     MarketName: marketDict["상가이름"],
                     starCount: marketDict["평점"],
                     SubName: marketDict["음식"],
-                    uri : marketDict['uri'],
-                    place : marketDict['주소도로명'],
+                    uri: marketDict['uri'],
+                    place: marketDict['주소도로명'],
                   })
                 }
               } >
@@ -308,43 +350,7 @@ class Sijang extends Component {
                   <Text style={styles.item_subtitle}>{marketDict["음식"]}</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.item_heart} onPress={
-                async () => {
-                  if (marketList[key]["선호"] == true) {  //true 
-                    marketList[key]["선호"] = false;
-
-                    var marketName = marketDict["상가이름"];
-                    var marketLocation = marketDict["주소도로명"];
-                    var updateList = []
-                    const snapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
-
-                    snapshot.forEach(childSnapshot => {
-                      var key = childSnapshot.key
-                      var marketData = childSnapshot.child("상가이름").val();
-                      var locData = childSnapshot.child("주소도로명").val();
-                      if (marketData != marketName || locData != marketLocation) {
-                        updateList[key] = childSnapshot.val();
-                      }
-                    })
-                    await database.ref(`Users/UserInfo/${uid}/favorite/list`).set(updateList);
-                  } else {  //false  
-                    marketList[key]["선호"] = true;
-                    var foodTag = marketList[key]["음식태그"].split(' ');
-                    for(var i = 0;i<foodTag.length;i++){
-                      const tasteSnapshot = await database.ref(`Users/UserInfo/${uid}/taste`).child(`${foodTag[i]}`).once('value');
-                      var score = tasteSnapshot.val() + 2;
-                      await database.ref(`Users/UserInfo/${uid}/taste`).child(`${foodTag[i]}`).set(score);
-                    }
-                    const snapshot = await database.ref(`Users/UserInfo/${uid}/favorite/count`).once('value');
-                    var count = snapshot.val();
-                    await database.ref(`Users/UserInfo/${uid}/favorite/list/${count}`).set(
-                      marketDict
-                    );
-                    await database.ref(`Users/UserInfo/${uid}/favorite/count`).set(++count);
-                  }
-                  this.setState({ marketList: marketList });
-                }
-              }>
+              <TouchableOpacity style={styles.item_heart} onPress={()=>this.favorite(key)}>
                 {
                   marketDict["선호"] ?
                     <AntDesign name="heart" size={30} color="#D62B83" /> :

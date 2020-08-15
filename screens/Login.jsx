@@ -51,7 +51,14 @@ class Login extends Component {
   test = () => {
     this.props.navigation.goBack();
   }
-
+  componentWillUnmount() {
+    this.setState({
+      search: '',
+      menuDialog: false,
+      ID : '',
+      Password : ''
+    })
+  }
 
   render() {
     const { search,ID,Password } = this.state;
@@ -86,6 +93,7 @@ class Login extends Component {
             style={styles.input}
           />
           <TextInput
+            secureTextEntry={true}
             value={this.state.Password}
             onChangeText={this.updatepas}
             Label='password'
@@ -98,6 +106,7 @@ class Login extends Component {
           buttonStyle={{backgroundColor: "gray",height: '50%',}} title='로그인' onPress = {
             async () =>{ 
               console.log("login")
+              console.log(ID,Password)
               const snapshot = await database.ref('Users/UserInfo').once('value')
               var loginCheck = false;
               var loginKey = 0;
@@ -109,7 +118,6 @@ class Login extends Component {
                 }
               })
               if(loginCheck===true){
-                console.log(snapshot.val()[loginKey])
                 this.setState({
                   search: '',
                   menuDialog: false,

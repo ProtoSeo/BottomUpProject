@@ -348,6 +348,7 @@ class SignUp extends Component {
                 </TouchableOpacity>
               </View>
               <TextInput
+                secureTextEntry={true}
                 placeholder="비밀번호"
                 onChangeText={this.updatepas}
                 value={this.state.Password}
@@ -361,6 +362,7 @@ class SignUp extends Component {
               />
               <TextInput
                 placeholder="전화번호를 입력하세요"
+                keyboardType = 'numeric'
                 onChangeText={this.updatePhone}
                 value={this.state.Phone}
                 style={styles.input}

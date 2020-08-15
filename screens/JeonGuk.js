@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component,PureComponent } from 'react';
 import { StyleSheet, Text, ScrollView, TouchableOpacity, View, KeyboardAvoidingView, Alert } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { SearchBar } from 'react-native-elements'
@@ -30,9 +30,10 @@ var database = firebase.database()
 
 const List = ["서울", "경기", "대전", "부산", "강원", "경북", "경남", "광주", "충북", "울산", "충남", "전남", "전북", "제주", "인천", "세종"].sort()
 
-class JeonGuk extends React.Component {
+class JeonGuk extends Component {
   state = {
     searchString: '',
+    menuDialog: false,
   }
 
   home = () => {
@@ -48,8 +49,10 @@ class JeonGuk extends React.Component {
     var userName = snapshot.val()["name"];
     var userID = snapshot.val()["id"];
     var userPhone = snapshot.val()['phone'];
-    var favoriteList = favoriteSnapshot.val();
-    console.log(favoriteList);
+    var favoriteList = []
+    if(favoriteSnapshot.exists && favoriteSnapshot.val() !== null){
+      favoriteList = favoriteSnapshot.val();
+    }
     this.setState({ menuDialog: false });
     this.props.navigation.navigate('UserInfo', { uid: uid, userName: userName, userID: userID, userPhone: userPhone, favoriteList: favoriteList });
   }
@@ -199,6 +202,7 @@ class JeonGuk extends React.Component {
             />
           </View>
         </KeyboardAvoidingView>
+      
       </View>
 
     )
