@@ -259,6 +259,11 @@ const styles = StyleSheet.create({
         fontSize: 30,
         marginVertical: '8%',
         fontWeight: "bold",
+      },
+
+      small_text: {
+        fontSize: 12,
+        marginTop: '4%'
       }
 });
 

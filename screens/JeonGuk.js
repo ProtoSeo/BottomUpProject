@@ -142,14 +142,17 @@ class JeonGuk extends React.Component {
                   <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.home}>
                       <AntDesign name="home" size={30} color="#6466E3" />
+                      <Text style={styles.small_text}>홈으로</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.mypage}>
                       <AntDesign name="user" size={30} color="#6466E3" />
+                      <Text style={styles.small_text}>마이페이지</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.logout}>
                       <AntDesign name="deleteuser" size={30} color="#6466E3" />
+                      <Text style={styles.small_text}>로그아웃</Text>
                     </TouchableOpacity>
 
                   </View>
