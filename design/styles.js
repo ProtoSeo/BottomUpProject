@@ -249,6 +249,17 @@ const styles = StyleSheet.create({
         height: 50,
         flex: 1
       },
+
+      explain_text: {
+        fontSize: 20,
+        marginBottom: '5%'
+      },
+
+      title_text: {
+        fontSize: 30,
+        marginVertical: '8%',
+        fontWeight: "bold",
+      }
 });
 
 export default styles;
