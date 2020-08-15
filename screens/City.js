@@ -28,7 +28,7 @@ if (!firebase.apps.length) {
 }
 var database = firebase.database()
 
-class City extends PureComponent {
+class City extends React.PureComponent {
   
   state = {
     searchString: '',
