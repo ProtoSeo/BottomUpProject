@@ -1,12 +1,14 @@
 import React, { Component }  from 'react';
-import { SearchBar } from 'react-native-elements';
 import {
-  StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  SafeAreaView
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+
+import styles from "../design/styles";
+
 class SelectFind extends Component {
 
   state = {
@@ -37,6 +39,7 @@ class SelectFind extends Component {
     )
     
     return (
+      <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.TopBar}>
         <View style={{flex: 2}}>
@@ -49,7 +52,7 @@ class SelectFind extends Component {
           </View>
           <View style={{flex: 2}}>
             <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-              <AntDesign name="back" size={15} color="white" />
+              <AntDesign name="back" size={25} color="white" />
             </TouchableOpacity>
           </View>
         </View>
@@ -76,112 +79,9 @@ class SelectFind extends Component {
           </View>
         </View>
       </View>
+      </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-
-  TopBar: {
-    height: 140,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#81888F',
-    flexDirection: 'row'
-  },
-
-  TopBarText: {
-    fontSize: 25, 
-    marginTop: '25%',
-    color: 'white'
-  },
-
-  input :{
-    alignItems: 'center',
-    width : 60,
-  },
-
-  MainSpace: {
-    flex: 1,
-    backgroundColor: '#E8EAEB',
-    paddingTop : 50
-  },
-
-  SearchSpace: {
-    height: 100,
-    justifyContent: 'center',
-    marginLeft: 15,
-    marginRight: 15
-  },
-
-  TopButton: {
-    alignItems: 'center',
-    backgroundColor: '#6A6F75',
-    padding: '8%',
-    marginHorizontal: '32%',
-    marginTop: '38%',
-  },
-
-  StatusButton: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 20,
-    width: 30,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 10,
-    marginBottom: 10
-  },
-
-  item_view: {
-    backgroundColor: '#DDDDDD',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    height: 120
-  },
-
-  item_title: {
-    marginTop: 8,
-    fontSize: 24,
-  },
-
-  item_subtitle: {
-    fontSize: 14,
-  },
-
-  item_icon: {
-    height: 20,
-    width: 20,
-    padding: 20,
-    marginRight: 20
-  },
-
-  menu_dialogContentView: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-
-  menu_dialog_button: {
-    width: '40%',
-    height: 30,
-  },
-
-  dialog_Button: {
-    alignItems: 'center',
-    backgroundColor: '#6A6F75',
-    padding: 10,
-    marginVertical: 20,
-    marginHorizontal: 20,
-    flex: 1
-  },
-
-})
-
 
 export default SelectFind;

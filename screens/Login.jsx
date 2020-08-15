@@ -1,15 +1,16 @@
 import React, { Component }  from 'react';
 import {
-  StyleSheet,
   Text,
   View,
   SafeAreaView,
   Alert
 } from 'react-native';
-import { Button } from 'react-native-elements'
+import { Button,} from 'react-native-elements'
 import * as firebase from "firebase";
 import "firebase/database";
 import { TextInput } from 'react-native-gesture-handler';
+
+import styles from "../design/styles";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
@@ -62,20 +63,22 @@ class Login extends Component {
     
     return (
       
-      <SafeAreaView style={{flex : 1, backgroundColor: '#E8EAEB',}}>
+      <SafeAreaView style={{flex : 1}}>
       <View style={styles.container}>
-        <View style={styles.TopBar}>
+        <View style={styles.login_TopBar}>
           <View style={{flex: 3, alignItems: 'center'}}>
-            <Text style={styles.TopBarText}>
+            <Text style={styles.login_TopBarText}>
               우리시소
+            </Text>
+            <Text style={{fontSize: 20, color: 'white', marginTop: '5%'}}>
+              우리나라 전통시장을 소개합니다.
             </Text>
           </View>
         </View>
      
         <View style={styles.MainSpace}>
-        <Text style={{textAlign : 'center',marginBottom : '10%',fontSize:25,}}>
-              로그인
-              
+        <Text style={{textAlign : 'center', marginBottom : '10%', fontSize:25, color:'#6466E3', fontWeight:'bold'}}>
+              Log In
         </Text>
 
           <TextInput
@@ -94,8 +97,9 @@ class Login extends Component {
           />
           
           <View style={{flexDirection : 'row',marginLeft:'8%',marginTop:'10%'}}>
-          <Button style={{height: 100, width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
-          buttonStyle={{backgroundColor: "gray",height: '50%',}} title='로그인' onPress = {
+          <Button style={styles.login_buttons} 
+            titleStyle={{color: "white",fontSize: 15,}} 
+            buttonStyle={{backgroundColor: "#7E64CC",height: '50%',}} title='로그인' onPress = {
             async () =>{ 
               console.log("login")
               const snapshot = await database.ref('Users/UserInfo').once('value')
@@ -122,8 +126,8 @@ class Login extends Component {
               }
             }
           } />
-          <Button style={{height: 100, width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
-          buttonStyle={{backgroundColor: "gray",height: '50%'}} title='회원가입'
+          <Button style={styles.login_buttons} titleStyle={{color: "white",fontSize: 15,}} 
+          buttonStyle={{backgroundColor: "#7E64CC",height: '50%'}} title='회원가입'
           onPress = {() => {
             this.setState({
               search: '',
@@ -133,8 +137,8 @@ class Login extends Component {
             })
             this.props.navigation.navigate('SignUp')}
           } />
-          <Button style={{height: 100, width:100,marginLeft:'5%',marginTop:'15%'}} titleStyle={{color: "white",fontSize: 15,}} 
-          buttonStyle={{width : '100%',backgroundColor: "gray",height: '50%'}} title={`아이디/${'\n'}비밀번호찾기`} 
+          <Button style={styles.login_buttons} titleStyle={{color: "white",fontSize: 15,}} 
+          buttonStyle={{width : '100%',backgroundColor: "#7E64CC",height: '50%'}} title={`아이디/${'\n'}비밀번호찾기`} 
           onPress = {() =>{
             
             this.setState({
@@ -149,50 +153,27 @@ class Login extends Component {
         </View>
        
       </View>
+      <View style={{flex: 1, alignItems: 'center', marginBottom: "20%"}}>
+        <Text>
+          CNU BottomUp Project
+          {"\n"}
+        </Text>
+        <Text>
+          ProtoSeo
+        </Text>
+        <Text>
+          whdgusdl48
+        </Text>
+        <Text>
+          Deokk
+        </Text>
+
+      </View>
       </View>
       </SafeAreaView>
     
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#E8EAEB',
-    flex: 1,
-    flexDirection: 'column',
-    
-  },
-
-  TopBar: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#81888F',
-    flexDirection: 'row'
-  },
-
-  TopBarText: {
-    fontSize: 33, 
-    color: 'white'
-  },
-
-  input :{
-    width: '80%',
-    height: 50,
-    padding: '2%',
-    borderWidth: 2,
-    borderColor: '#81888F',
-    marginVertical: '5%',
-    marginHorizontal: '10%',
-  },
-
-  MainSpace: {
-    flex: 4,
-    backgroundColor: '#E8EAEB',
-    paddingTop : 50
-  },
-
-})
 
 export default Login;
