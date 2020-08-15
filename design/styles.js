@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
       MainSpace: {
         flex: 4,
         backgroundColor: '#E8EAEB',
-        paddingTop: 30
+        paddingTop: 30,
       },
     
       StatusButton: {
@@ -264,7 +264,14 @@ const styles = StyleSheet.create({
       small_text: {
         fontSize: 12,
         marginTop: '4%'
-      }
+      },
+
+      list_like_view: {
+        height: '100%',
+        alignItems: 'center',
+        marginTop: '30%',
+
+      },
 });
 
 export default styles;

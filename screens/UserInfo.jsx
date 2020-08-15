@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import {
-  StyleSheet,
   TouchableOpacity,
   Text,
   View,
   ScrollView,
-  FlatList,
-  Image
+  Image,
+  SafeAreaView
 } from 'react-native';
 import * as firebase from "firebase";
-
 import "firebase/database";
+
+import styles from "../design/styles";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
@@ -53,6 +53,7 @@ class UserInfo extends Component {
     const userPhone = this.props.navigation.getParam("userPhone");
     const favoriteList = this.props.navigation.getParam("favoriteList");
     return (
+      <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.TopBar}>
           <View style={{ flex: 2 }}>
@@ -64,7 +65,7 @@ class UserInfo extends Component {
           </View>
           <View style={{ flex: 2 }}>
             <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-              <AntDesign name="back" size={15} color="white" />
+              <AntDesign name="back" size={25} color="white" />
             </TouchableOpacity>
           </View>
         </View>
@@ -85,14 +86,15 @@ class UserInfo extends Component {
               전화번호 : {userPhone}
             </Text>
           </View>
-          <View style={{ height: '65%' }}>
+          <View style={{ height: '75%' }}>
             <Text style={{ fontSize: 24, marginLeft: '5%', marginTop: '10%' }}>
               담아둔 시장
          </Text>
 
             <ScrollView style={styles.MainSpace}>
               {
-              favoriteList.length==0? <Text>리스트가 비어있습니다.</Text> : (favoriteList.map((favoriteDict, key) =>
+              favoriteList.length==0? <View style={styles.list_like_view}><Text style={styles.title_text}>리스트가 비어있습니다.</Text></View>
+               : (favoriteList.map((favoriteDict, key) =>
                 <TouchableOpacity style={styles.item_view} onPress={
                   () => {
                     this.setState({
@@ -118,119 +120,10 @@ class UserInfo extends Component {
             </ScrollView>
           </View>
         </View>
-
-        <View style={{ height: 20 }}></View>
       </View>
+      </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  myStarStyle: {
-    color: 'yellow',
-    backgroundColor: 'transparent',
-    textShadowColor: 'black',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-    height: 300,
-
-  },
-  myEmptyStarStyle: {
-    color: 'white',
-  },
-  TopBar: {
-    height: '14%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#81888F',
-    flexDirection: 'row'
-  },
-
-  TopBarText: {
-    fontSize: 25,
-    marginTop: '25%',
-    color: 'white'
-  },
-
-  MainSpace: {
-    height: '100%',
-    backgroundColor: '#E8EAEB'
-  },
-
-  SearchSpace: {
-    height: 100,
-    justifyContent: 'center',
-    marginLeft: 15,
-    marginRight: 15
-  },
-
-  TopButton: {
-    alignItems: 'center',
-    backgroundColor: '#6A6F75',
-    padding: '8%',
-    marginHorizontal: '32%',
-    marginTop: '38%',
-  },
-
-  StatusButton: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 20,
-    width: 30,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 10,
-    marginBottom: 10
-  },
-
-  item_view: {
-    backgroundColor: '#DDDDDD',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    height: 120
-  },
-
-  item_title: {
-    marginTop: 8,
-    fontSize: 24,
-  },
-
-  item_subtitle: {
-    fontSize: 14,
-  },
-
-  item_icon: {
-    height: 20,
-    width: 20,
-    padding: 20,
-    marginRight: 20
-  },
-
-  menu_dialogContentView: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-
-  menu_dialog_button: {
-    width: '40%',
-    height: 30,
-  },
-
-  dialog_Button: {
-    alignItems: 'center',
-    backgroundColor: '#6A6F75',
-    padding: 10,
-    marginVertical: 20,
-    marginHorizontal: 20,
-    flex: 1
-  },
-
-})
 
 export default UserInfo;
