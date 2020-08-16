@@ -53,6 +53,45 @@ class UserInfo extends Component {
   test = () => {
     this.props.navigation.goBack();
   }
+
+  favorite = async (key) => {
+    var marketList = this.state.marketList;
+    const uid = this.props.navigation.getParam('uid');
+    if (marketList[key]["선호"] == true) {  //true 
+      marketList[key]["선호"] = false;
+      this.setState({ marketList: marketList });
+      var marketName = marketList[key]["상가이름"];
+      var marketLocation = marketList[key]["주소도로명"];
+      var updateList = []
+      const snapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
+
+      snapshot.forEach(childSnapshot => {
+        var key = childSnapshot.key
+        var marketData = childSnapshot.child("상가이름").val();
+        var locData = childSnapshot.child("주소도로명").val();
+        if (marketData != marketName || locData != marketLocation) {
+          updateList[key] = childSnapshot.val();
+        }
+      })
+      await database.ref(`Users/UserInfo/${uid}/favorite/list`).set(updateList);
+    } else {  //false  
+      marketList[key]["선호"] = true;
+      this.setState({ marketList: marketList });
+      const foodTag = marketList[key]["음식태그"].split(' ');
+      for (const tag of foodTag) {
+        const tasteSnapshot = await database.ref(`Users/UserInfo/${uid}/taste`).child(`${tag}`).once('value');
+        var score = tasteSnapshot.val() + 2;
+        await database.ref(`Users/UserInfo/${uid}/taste`).child(`${tag}`).set(score);
+      }
+      const snapshot = await database.ref(`Users/UserInfo/${uid}/favorite/count`).once('value');
+      var count = snapshot.val();
+      await database.ref(`Users/UserInfo/${uid}/favorite/list/${count}`).set(
+        marketList[key]
+      );
+      await database.ref(`Users/UserInfo/${uid}/favorite/count`).set(++count);
+    }
+  }
+
   returnFoodTag(dict){
     var tagList = dict['음식태그'].split(' ');
     return tagList[0];
@@ -99,15 +138,13 @@ class UserInfo extends Component {
                 <ScrollView>
                   <View style={{ height: '100%' }}>
 
-                    <View style={{marginBottom: '15%', alignItems: 'center'}}>
+                    <View style={{marginBottom: '5%', alignItems: 'center'}}>
 
-                    <Text style={styles.title_text}>
+                    <View style={styles.marketname}>
+                    <Text style={styles.title_text_1}>
                       {this.state.MarketName}
                     </Text>
-
-                    <Text style={styles.explain_text}>
-                      예상 평점 : {this.state.starCount}
-                    </Text>
+                    </View>
 
                       <StarRating
                         disabled={false}
@@ -119,6 +156,13 @@ class UserInfo extends Component {
                         rating={this.state.starCount}
                         selectedStar={(rating) => this.onStarRatingPress(rating)} />
                     </View>
+
+                    <View style={styles.touchableopacity_4}>
+                    <Text style={styles.explain_text_no_margin_blue}>
+                      평점 : {this.state.starCount}
+                    </Text>
+                    </View>
+
                     <Text style={styles.explain_text}>
                       판매 상품 : {this.state.SubName}
                     </Text>
@@ -191,10 +235,10 @@ class UserInfo extends Component {
           </View>
 
             <ScrollView style={styles.MainSpace}>
-              {
-              favoriteList.length==0? <View style={styles.list_like_view}><Text style={styles.title_text}>리스트가 비어있습니다.</Text></View>
+              {favoriteList.length==0? <View style={styles.list_like_view}><Text style={styles.title_text}>리스트가 비어있습니다.</Text></View>
                : (favoriteList.map((favoriteDict, key) =>
-                <TouchableOpacity key = {key} style={styles.item_view} onPress={
+               <View key={key} style={ styles.item_view }>
+                <TouchableOpacity style={{flex: 8}} onPress={
                   () => {
                     this.setState({
                       market: true,
@@ -210,10 +254,22 @@ class UserInfo extends Component {
                     <Image style={styles.item_icon} source={FoodImage[this.returnFoodTag(favoriteDict)].src} />
                     <Text style={styles.item_title}>{favoriteDict["상가이름"]}</Text>
                   </View>
+
                   <View style={{ flex: 3 }}>
                     <Text style={styles.item_subtitle}>{favoriteDict["음식"]}</Text>
                   </View>
+
                 </TouchableOpacity>
+
+                <TouchableOpacity style={styles.item_heart} onPress={()=>this.favorite(key)}>
+                {
+                  favoriteDict["선호"] ?
+                    <AntDesign name="heart" size={30} color="#D62B83" /> :
+                    <AntDesign name="hearto" size={30} color="#D62B83" />
+                }
+              </TouchableOpacity>
+
+              </View>
               ))
               }
             </ScrollView>

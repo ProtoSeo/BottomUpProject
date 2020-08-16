@@ -149,6 +149,7 @@ class Sijang extends Component {
       await database.ref(`Users/UserInfo/${uid}/favorite/count`).set(++count);
     }
   }
+
   returnFoodTag(dict){
     var tagList = dict['음식태그'].split(' ');
     return tagList[0];
@@ -265,15 +266,13 @@ class Sijang extends Component {
                 <ScrollView>
                   <View style={{ height: '100%' }}>
 
-                    <View style={{marginBottom: '15%', alignItems: 'center'}}>
+                    <View style={{marginBottom: '5%', alignItems: 'center'}}>
 
-                    <Text style={styles.title_text}>
+                    <View style={styles.marketname}>
+                    <Text style={styles.title_text_1}>
                       {this.state.MarketName}
                     </Text>
-
-                    <Text style={styles.explain_text}>
-                      예상 평점 : {this.state.starCount}
-                    </Text>
+                    </View>
 
                       <StarRating
                         disabled={false}
@@ -285,6 +284,13 @@ class Sijang extends Component {
                         rating={this.state.starCount}
                         selectedStar={(rating) => this.onStarRatingPress(rating)} />
                     </View>
+
+                    <View style={styles.touchableopacity_4}>
+                    <Text style={styles.explain_text_no_margin_blue}>
+                      평점 : {this.state.starCount}
+                    </Text>
+                    </View>
+
                     <Text style={styles.explain_text}>
                       판매 상품 : {this.state.SubName}
                     </Text>
@@ -329,7 +335,7 @@ class Sijang extends Component {
         <View style={styles.SlideSpace}>
           <Swiper showsButtons={true} nextButton={false}>
             {showComponent[0] && <View style={[styles.slideContainer, styles.slide1]}>
-              <Text>시장의 정보 : {specialtyList[0]}</Text>
+              <Text style={{fontSize: 14, color: 'white'}}>시장의 정보 : {specialtyList[0]}</Text>
             </View>}
             {showComponent[1]&&<View style={[styles.slideContainer, styles.slide2]}>
               <Text style={{marginTop: "10%", fontSize: 25}}>봄 특산물 : {specialtyList[1]}</Text>
@@ -352,8 +358,8 @@ class Sijang extends Component {
 
         <ScrollView style={styles.MainSpace}>
           {marketList.map((marketDict, key) =>
-            <View key={key} style={{ flexDirection: 'row' }}>
-              <TouchableOpacity style={styles.item_view} onPress={
+            <View key={key} style={ styles.item_view }>
+              <TouchableOpacity style={{flex: 8}} onPress={
                 () => {
                   this.setState({
                     market: true,
@@ -365,14 +371,18 @@ class Sijang extends Component {
                   })
                 }
               } >
+
                 <View style={{ flex: 7, flexDirection: 'row' }}>
                   <Image style={styles.item_icon} source={FoodImage[this.returnFoodTag(marketDict)].src} />
                   <Text style={styles.item_title}>{marketDict["상가이름"]}</Text>
                 </View>
+
                 <View style={{ flex: 3 }}>
                   <Text style={styles.item_subtitle}>{marketDict["음식"]}</Text>
                 </View>
+
               </TouchableOpacity>
+              
               <TouchableOpacity style={styles.item_heart} onPress={()=>this.favorite(key)}>
                 {
                   marketDict["선호"] ?
@@ -380,6 +390,7 @@ class Sijang extends Component {
                     <AntDesign name="hearto" size={30} color="#D62B83" />
                 }
               </TouchableOpacity>
+              
             </View>
           )}
         </ScrollView>
