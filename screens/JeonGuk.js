@@ -198,6 +198,8 @@ class JeonGuk extends React.Component {
                   key={this.state.searchString} 
                   style={{ marginVertical: 8, marginLeft: 30 }} 
                   text={this.state.searchString}
+                  gradientBegin="#DB9A96"
+                  gradientEnd="#DB9A96"
                   onPressAction={() => this.gotoNextView(region)}
                   width='80%'/>}
             </ScrollView>
