@@ -176,6 +176,7 @@ class City extends React.PureComponent {
 
     const uid = this.props.navigation.getParam("uid")
     return (
+      <KeyboardAvoidingView style={{flex: 1}} behavior={'height'}>
       <SafeAreaView style={{flex : 1}}>
       <View style={styles.container}>
         <View style={styles.TopBar}>
@@ -222,17 +223,17 @@ class City extends React.PureComponent {
                 <View>
                   <View style={{ flexDirection: 'row' }}>
                   <TouchableOpacity style={styles.dialog_Button} onPress={this.home}>
-                      <AntDesign name="home" size={30} color="#6466E3" />
+                      <AntDesign name="home" size={30} color="#799FA7" />
                       <Text style={styles.small_text}>홈으로</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.mypage}>
-                      <AntDesign name="user" size={30} color="#6466E3" />
+                      <AntDesign name="user" size={30} color="#799FA7" />
                       <Text style={styles.small_text}>마이페이지</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.logout}>
-                      <AntDesign name="deleteuser" size={30} color="#6466E3" />
+                      <AntDesign name="deleteuser" size={30} color="#799FA7" />
                       <Text style={styles.small_text}>로그아웃</Text>
                     </TouchableOpacity>
 
@@ -265,24 +266,28 @@ class City extends React.PureComponent {
 
         </View>
 
-        <KeyboardAvoidingView behavior={'height'}>
-
           <View style={styles.view}>
             <ScrollView>
               {!this.state.region.includes(this.state.searchString) ? regionList.map((region, i) => {
                 return (
-                  <GradientButton key={i} style={{ marginVertical: 8, marginLeft: 30 }} text={region}
-                    prev={region} onPressAction={
-                      () => this.gotoNextView(region)
-                    } width='80%' deepBlue impact />
-                )
+                  <GradientButton 
+                  key={i} 
+                  style={{ marginVertical: 8, marginLeft: 30 }} 
+                  text={region}
+                  prev={region} 
+                  gradientBegin="#DB9A96"
+                  gradientEnd="#DB9A96"
+                  onPressAction={() => this.gotoNextView(region)} 
+                  width='80%' 
+                  />)
               }) : this.state.searchreg.map((region, i) => {
                 return (
-                  <GradientButton key={i} style={{ marginVertical: 8, marginLeft: 30 }} text={region}
-                    prev={region} onPressAction={
-                      () => this.gotoNextView(region)
-                    } width='80%' deepBlue impact />
-                )
+                  <GradientButton 
+                  key={i} style={{ marginVertical: 8, marginLeft: 30 }} 
+                  text={region}
+                  prev={region} onPressAction={() => this.gotoNextView(region)} 
+                  width='80%'
+                  />)
               })}
             </ScrollView>
           </View>
@@ -295,9 +300,11 @@ class City extends React.PureComponent {
               value={searchString}
             />
           </View>
-        </KeyboardAvoidingView>
+          
       </View>
       </SafeAreaView>
+      </KeyboardAvoidingView>
+      
     )
   }
 }
