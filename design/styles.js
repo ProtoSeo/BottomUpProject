@@ -1,5 +1,6 @@
 
 import {StyleSheet} from "react-native";
+import { color } from "react-native-reanimated";
 
 const styles = StyleSheet.create({
     container: {
@@ -135,12 +136,13 @@ const styles = StyleSheet.create({
       item_view: {
         padding: 20,
         marginVertical: 8,
-        marginHorizontal: '10%',
+        marginHorizontal: '5%',
         borderRadius: 10,
         height: 120,
         flex: 9, 
         borderWidth: 3,
-        borderColor: '#DB9A96'
+        borderColor: '#DB9A96',
+        flexDirection: 'row'
       },
     
       item_title: {
@@ -228,11 +230,11 @@ const styles = StyleSheet.create({
       },
 
       slide1: {
-        backgroundColor: "#F8EEDA"
+        backgroundColor: "#799FA7"
       },
 
       slide2: {
-        backgroundColor: "#F5F6F6",
+        backgroundColor: "#CEE8DD",
       },
 
       myEmptyStarStyle: {
@@ -240,8 +242,9 @@ const styles = StyleSheet.create({
       },
 
       item_heart: {
-        marginVertical: '12%',
-        marginHorizontal: 20,
+        alignItems: 'flex-end',
+        marginTop: 20,
+        marginRight: 10,
         height: 50,
         flex: 1
       },
@@ -251,10 +254,24 @@ const styles = StyleSheet.create({
         marginBottom: '5%'
       },
 
+      explain_text_no_margin_blue: {
+        fontSize: 20,
+        padding: 10,
+        color: '#799FA7',
+        fontWeight: "bold",
+      },
+
       title_text: {
         fontSize: 30,
         marginVertical: '8%',
         fontWeight: "bold",
+      },
+
+      title_text_1: {
+        fontSize: 30,
+        marginVertical: '8%',
+        fontWeight: "bold",
+        paddingHorizontal: '10%'
       },
 
       small_text: {
@@ -289,6 +306,23 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginHorizontal: '15%',
         marginVertical: '5%'
+      },
+
+      marketname: {
+        padding: 5,
+        marginVertical: 10,
+        borderRadius: 10,
+        flex: 10,
+      },
+
+      touchableopacity_4: {
+        alignItems: 'center',
+        borderRadius: 10,
+        marginHorizontal: '15%',
+        marginTop: '5%',
+        marginBottom: '10%',
+        borderWidth: 3,
+        borderColor: '#799FA7',
       },
 
 });
