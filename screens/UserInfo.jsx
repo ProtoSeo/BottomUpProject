@@ -141,40 +141,51 @@ class UserInfo extends Component {
               </DialogContent>
             </Dialog>
         <View style={styles.TopBar}>
+
           <View style={{ flex: 2 }}>
+            <TouchableOpacity style={styles.TopButton} onPress={this.test}>
+              <AntDesign name="left" size={25} color="white" />
+            </TouchableOpacity>
           </View>
+          
           <View style={{ flex: 3, alignItems: 'center' }}>
             <Text style={styles.TopBarText}>
               마이페이지
             </Text>
           </View>
+
           <View style={{ flex: 2 }}>
-            <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-              <AntDesign name="back" size={25} color="white" />
-            </TouchableOpacity>
           </View>
+
         </View>
 
         <View style={styles.MainSpace}>
-          <View style={{ marginTop: '5%', marginLeft: '5%' }}>
-            <Text style={{ fontSize: 24, }}>
+
+          <View style={ styles.touchableopacity_3 }>
+
+            <Text style={{ fontSize: 30, padding: 20, paddingLeft: '32.5%' }}>
+              사용자 정보
+            </Text>
+
+            <Text style={{ fontSize: 24, padding: 10, }}>
               ID : {userID}
             </Text>
-          </View>
-          <View style={{ marginTop: '5%', marginLeft: '5%' }}>
-            <Text style={{ fontSize: 24 }}>
+            
+            <Text style={{ fontSize: 24, padding: 10,  }}>
               이름 : {userName}
             </Text>
-          </View>
-          <View style={{ marginTop: '5%', marginLeft: '5%' }}>
-            <Text style={{ fontSize: 24 }}>
+            
+            <Text style={{ fontSize: 24, padding: 10,  }}>
               전화번호 : {userPhone}
             </Text>
           </View>
-          <View style={{ height: '75%' }}>
-            <Text style={{ fontSize: 24, marginLeft: '5%', marginTop: '10%' }}>
+
+
+          <View style={ styles.touchableopacity_1 }>
+            <Text style={{ fontSize: 24, marginVertical: '5%', color: 'white'}}>
               담아둔 시장
-         </Text>
+            </Text>
+          </View>
 
             <ScrollView style={styles.MainSpace}>
               {
@@ -203,7 +214,6 @@ class UserInfo extends Component {
               ))
               }
             </ScrollView>
-          </View>
         </View>
       </View>
       </SafeAreaView>

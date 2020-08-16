@@ -95,6 +95,7 @@ class JeonGuk extends React.Component {
     const uid = this.props.navigation.getParam("uid");
 
     return (
+      <KeyboardAvoidingView style={{flex: 1}} behavior={'padding'}>
       <SafeAreaView style={{flex : 1}}>
       <View style={styles.container}>
         <View style={styles.TopBar}>
@@ -141,17 +142,17 @@ class JeonGuk extends React.Component {
                 <View>
                   <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.home}>
-                      <AntDesign name="home" size={30} color="#6466E3" />
+                      <AntDesign name="home" size={30} color="#799FA7" />
                       <Text style={styles.small_text}>홈으로</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.mypage}>
-                      <AntDesign name="user" size={30} color="#6466E3" />
+                      <AntDesign name="user" size={30} color="#799FA7" />
                       <Text style={styles.small_text}>마이페이지</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.logout}>
-                      <AntDesign name="deleteuser" size={30} color="#6466E3" />
+                      <AntDesign name="deleteuser" size={30} color="#799FA7" />
                       <Text style={styles.small_text}>로그아웃</Text>
                     </TouchableOpacity>
 
@@ -180,18 +181,25 @@ class JeonGuk extends React.Component {
 
         </View>
 
-        <KeyboardAvoidingView behavior={'height'}>
 
           <View style={styles.view}>
             <ScrollView>
-              {!List.includes(this.state.searchString) ? List.map((region, i) => <GradientButton key={i} style={{ marginVertical: 8, marginLeft: 30 }} text={`${region}`}
-                onPressAction={
-                  ()=> this.gotoNextView(region)
-                } width='80%' deepBlue impact />)
-                : <GradientButton key={this.state.searchString} style={{ marginVertical: 8, marginLeft: 30 }} text={this.state.searchString}
-                  onPressAction={
-                      () => this.gotoNextView(region)
-                  } width='80%' deepBlue impact />}
+              {!List.includes(this.state.searchString) ? List.map((region, i) => 
+                <GradientButton 
+                key={i} 
+                style={{ marginVertical: 8, marginLeft: 30 }} 
+                text={`${region}`}
+                gradientBegin="#DB9A96"
+                gradientEnd="#DB9A96"
+                onPressAction={()=> this.gotoNextView(region)}
+                width='80%' 
+                />)
+                : <GradientButton 
+                  key={this.state.searchString} 
+                  style={{ marginVertical: 8, marginLeft: 30 }} 
+                  text={this.state.searchString}
+                  onPressAction={() => this.gotoNextView(region)}
+                  width='80%'/>}
             </ScrollView>
           </View>
 
@@ -201,13 +209,12 @@ class JeonGuk extends React.Component {
               placeholder="지역을 검색하세요"
               onChangeText={this.updateSearch}
               value={searchString}
-            />
+              />
           </View>
-        </KeyboardAvoidingView>
-      
-      </View>
+        </View>
 
       </SafeAreaView>
+      </KeyboardAvoidingView>
 
     )
   }
