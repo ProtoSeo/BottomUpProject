@@ -68,19 +68,19 @@ class City extends React.PureComponent {
     var userPhone = snapshot.val()['phone'];
     var favoriteList = []
     if(favoriteSnapshot.exists && favoriteSnapshot.val() !== null){
-      favoriteList = favoriteSnapshot.val();
+      favoriteList = Object.values(favoriteSnapshot.val());
     }
     this.setState({ menuDialog: false });
     this.props.navigation.navigate('UserInfo', { uid: uid, userName: userName, userID: userID, userPhone: userPhone, favoriteList: favoriteList });
   }
 
   gotoNextView = async (region) => {
-    console.log(region)
     const regionName = this.props.navigation.getParam('name')
     const uid = this.props.navigation.getParam("uid");
     const prevData = region.split('/');
-    const userDataSnapshot = await database.ref(`Users/UserInfo/${uid}`).child("taste").once('value');
-    var userTasteDict = userDataSnapshot.val();
+    const testSnapshot = await database.ref().once('value');
+    var userTasteDict = testSnapshot.child(`Users/UserInfo/${uid}/taste`).val();
+    
     var userTasteList = Object.keys(userTasteDict).map(function (key) {
       return [key, userTasteDict[key]];
     });
@@ -91,7 +91,6 @@ class City extends React.PureComponent {
     
     var marketList = testSnapshot.child(`Data/${regionName}/${prevData[0]}/${prevData[1]}`).val();
     var resultMarketList = [];
-    
     for(const tasteInfo of userTasteList){
       for (const marketInfo of marketList) {
         var chk = true;
@@ -99,24 +98,29 @@ class City extends React.PureComponent {
           for(const result of resultMarketList){
             if (result == marketInfo) {
               chk = false;
-              break;
             }
+          }
           if (chk) {
             resultMarketList.push(marketInfo);
           }
         }
       }
     }
-    const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
-    for(const favoriteInfo of favoriteSnapshot){
-      const marketData = favoriteInfo["상가이름"];
-      const locData = favoriteInfo["주소도로명"];
-      for(const result of resultMarketList){
-        if (result["상가이름"] == marketData && result["주소도로명"] == locData) {
-          result["선호"] = true;
+
+    var favoriteSnapshot = testSnapshot.child(`Users/UserInfo/${uid}/favorite/list`).val();
+    if(favoriteSnapshot !== null){
+      favoriteSnapshot = Object.values(favoriteSnapshot);
+      for(const favoriteInfo of favoriteSnapshot){
+        const marketData = favoriteInfo["상가이름"];
+        const locData = favoriteInfo["주소도로명"];
+        for(const result of resultMarketList){
+          if (result["상가이름"] == marketData && result["주소도로명"] == locData) {
+            result["선호"] = true;
+          }
         }
       }
     }
+
     var seasonList = ["시장정보","봄","여름","가을","겨울","연중"];
     var specialtyList = [];
     const specialtySnapshot = testSnapshot.child(`Specialty`).val();
@@ -130,20 +134,6 @@ class City extends React.PureComponent {
         }  
       } 
     }
-    const specialtySnapshot = await database.ref(`Specialty`).once('value');
-    console.log(region,prevData[0])
-    specialtySnapshot.forEach(specialtyInfo=>{
-      var regionData = specialtyInfo.child("시도").val();
-      var cityData = specialtyInfo.child("시군구").val();
-      
-      if (regionData == regionName && cityData == prevData[0]){
-        seasonList.forEach(season=>{
-          specialtyList.push(specialtyInfo.val()[`${season}`])
-        })
-      } 
-    });
-    console.log(specialtyList)
-    
     this.props.navigation.navigate('Sijang', { name: `${prevData[1]}`, marketList: resultMarketList,specialtyList:specialtyList, uid: uid })
   }
   logout = () => {
@@ -181,9 +171,11 @@ class City extends React.PureComponent {
 
   render() {
     const { searchString } = this.state;
+    const regionName = this.props.navigation.getParam('name')
     const regionList = this.props.navigation.getParam("regionList")
+
+    const uid = this.props.navigation.getParam("uid")
     return (
-      <KeyboardAvoidingView style={{flex: 1}} behavior={'height'}>
       <SafeAreaView style={{flex : 1}}>
       <View style={styles.container}>
         <View style={styles.TopBar}>
@@ -230,17 +222,17 @@ class City extends React.PureComponent {
                 <View>
                   <View style={{ flexDirection: 'row' }}>
                   <TouchableOpacity style={styles.dialog_Button} onPress={this.home}>
-                      <AntDesign name="home" size={30} color="#799FA7" />
+                      <AntDesign name="home" size={30} color="#6466E3" />
                       <Text style={styles.small_text}>홈으로</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.mypage}>
-                      <AntDesign name="user" size={30} color="#799FA7" />
+                      <AntDesign name="user" size={30} color="#6466E3" />
                       <Text style={styles.small_text}>마이페이지</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.dialog_Button} onPress={this.logout}>
-                      <AntDesign name="deleteuser" size={30} color="#799FA7" />
+                      <AntDesign name="deleteuser" size={30} color="#6466E3" />
                       <Text style={styles.small_text}>로그아웃</Text>
                     </TouchableOpacity>
 
@@ -273,28 +265,24 @@ class City extends React.PureComponent {
 
         </View>
 
+        <KeyboardAvoidingView behavior={'height'}>
+
           <View style={styles.view}>
             <ScrollView>
               {!this.state.region.includes(this.state.searchString) ? regionList.map((region, i) => {
                 return (
-                  <GradientButton 
-                  key={i} 
-                  style={{ marginVertical: 8, marginLeft: 30 }} 
-                  text={region}
-                  prev={region} 
-                  gradientBegin="#DB9A96"
-                  gradientEnd="#DB9A96"
-                  onPressAction={() => this.gotoNextView(region)} 
-                  width='80%' 
-                  />)
+                  <GradientButton key={i} style={{ marginVertical: 8, marginLeft: 30 }} text={region}
+                    prev={region} onPressAction={
+                      () => this.gotoNextView(region)
+                    } width='80%' deepBlue impact />
+                )
               }) : this.state.searchreg.map((region, i) => {
                 return (
-                  <GradientButton 
-                  key={i} style={{ marginVertical: 8, marginLeft: 30 }} 
-                  text={region}
-                  prev={region} onPressAction={() => this.gotoNextView(region)} 
-                  width='80%'
-                  />)
+                  <GradientButton key={i} style={{ marginVertical: 8, marginLeft: 30 }} text={region}
+                    prev={region} onPressAction={
+                      () => this.gotoNextView(region)
+                    } width='80%' deepBlue impact />
+                )
               })}
             </ScrollView>
           </View>
@@ -307,11 +295,9 @@ class City extends React.PureComponent {
               value={searchString}
             />
           </View>
-          
+        </KeyboardAvoidingView>
       </View>
       </SafeAreaView>
-      </KeyboardAvoidingView>
-      
     )
   }
 }
