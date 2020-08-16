@@ -90,68 +90,50 @@ class City extends React.PureComponent {
     userTasteList = userTasteList.map(function (value, index) { return value[0]; });
     
     var marketList = [];
-    const snapshot = testSnapshot.child(`Data/${regionName}`).val();
-    snapshot.forEach(childSnapshot => {
-      var regionData = childSnapshot["시군구"];
-      var marketData = childSnapshot["시장명"];
-      if (regionData == prevData[0] && marketData == prevData[1]) {
-        var marketDict = {}
-        marketDict["상가이름"] = childSnapshot["상가이름"];
-        marketDict["음식"] = childSnapshot["음식"];
-        marketDict["음식태그"] = childSnapshot["음식태그"];
-        marketDict["주소도로명"] = childSnapshot["주소도로명"];
-        marketDict["평점"] = childSnapshot["평점"];
-        marketDict["특징"] = childSnapshot["특징"];
-        marketDict["uri"] = childSnapshot["uri"];
-        marketDict["선호"] = false;
-        marketList.push(marketDict);
-      }
-    })
-    var resultMarketList = []
-    userTasteList.forEach(tasteInfo => {
-      for (var i = 0; i < marketList.length; i++) {
+    var resultMarketList = testSnapshot.child(`Data/${regionName}/${prevData[0]}/${prevData[1]}`).val();
+    for(const tasteInfo of userTasteList){
+      for (const marketInfo of marketList) {
         var chk = true;
-        if (marketList[i]["음식태그"].indexOf(tasteInfo) !== -1) {
-          resultMarketList.forEach(result => {
-            if (result == marketList[i]) {
+        if (marketInfo["음식태그"].indexOf(tasteInfo) !== -1) {
+          for(const result of resultMarketList){
+            if (result == marketInfo) {
               chk = false;
             }
-          })
+          }
           if (chk) {
-            resultMarketList.push(marketList[i]);
+            resultMarketList.push(marketInfo);
           }
         }
       }
-    })
+    }
+
     var favoriteSnapshot = testSnapshot.child(`Users/UserInfo/${uid}/favorite/list`).val();
-    console.log(favoriteSnapshot);
     if(favoriteSnapshot !== null){
       favoriteSnapshot = Object.values(favoriteSnapshot);
-      favoriteSnapshot.forEach(childSnapshot => {
-        var marketData = childSnapshot["상가이름"];
-        var locData = childSnapshot["주소도로명"];
-        resultMarketList.forEach(result => {
+      for(const favoriteInfo of favoriteSnapshot){
+        const marketData = favoriteInfo["상가이름"];
+        const locData = favoriteInfo["주소도로명"];
+        for(const result of resultMarketList){
           if (result["상가이름"] == marketData && result["주소도로명"] == locData) {
             result["선호"] = true;
           }
-        })
-      })
+        }
+      }
     }
 
     var seasonList = ["시장정보","봄","여름","가을","겨울","연중"];
     var specialtyList = [];
     const specialtySnapshot = testSnapshot.child(`Specialty`).val();
-    specialtySnapshot.forEach(specialtyInfo=>{
+    for(const specialtyInfo of specialtySnapshot){
       var regionData = specialtyInfo["시도"];
       var cityData = specialtyInfo["시군구"];
       var marketData = specialtyInfo["시장명"];
       if (regionData == regionName && cityData == prevData[0] && marketData == prevData[1]){
-        seasonList.forEach(season=>{
+        for(const season of seasonList){
           specialtyList.push(specialtyInfo[`${season}`])
-        })
+        }  
       } 
-    });
-    
+    }
     this.props.navigation.navigate('Sijang', { name: `${prevData[1]}`, marketList: resultMarketList,specialtyList:specialtyList, uid: uid })
   }
   logout = () => {

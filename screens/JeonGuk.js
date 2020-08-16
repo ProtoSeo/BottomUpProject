@@ -81,14 +81,14 @@ class JeonGuk extends React.Component {
     const uid = this.props.navigation.getParam("uid");
     var tempList = [];
     const snapshot = await database.ref(`Data/${region}`).once('value')
-    snapshot.forEach(childSnapshot => {
-      var regionData = childSnapshot.child("시군구").val()
-      var marketData = childSnapshot.child("시장명").val()
-      tempList.push(regionData + "/" + marketData);
-    })
-    await Promise.all(tempList);
-    let resultList = new Set([...tempList])
-    this.props.navigation.navigate('City', { name: `${region}`, regionList: [...resultList], uid: uid })
+    const keys = Object.keys(snapshot.val());
+    for(var i = 0;i<keys.length;i++){
+      const valueKeys = Object.keys(snapshot.child(keys[i]).val());
+      for(var j = 0;j<valueKeys.length;j++){
+        tempList.push(keys[i] + "/" + valueKeys[j]);  
+      }
+    }
+    this.props.navigation.navigate('City', { name: `${region}`, regionList: tempList, uid: uid })
   }
   render() {
     const { searchString } = this.state;
