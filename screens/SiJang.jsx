@@ -41,8 +41,13 @@ var showComponent = [true, true, true, true, true, true];
 class Sijang extends Component {
   constructor(props) {
     super(props);
+    const specialtyList = this.props.navigation.getParam("specialtyList")
+    specialtyList.forEach((specialty, key) => {
+      if (specialty == '') {
+        showComponent[key] = false;
+      }
+    });
     this.state = {
-      search: '',
       menuDialog: false,
       LoginDialog: false,
       market: false,
@@ -52,6 +57,7 @@ class Sijang extends Component {
       uri: '',
       place: '',
       marketList: this.props.navigation.getParam("marketList"),
+      specialtyList : specialtyList
     }
   }
 
@@ -70,18 +76,12 @@ class Sijang extends Component {
       ]
     )
   }
-
-  updateSearch = (search) => {
-    this.setState({ search });
-  };
-
+  home = () => {
+    this.setState({ menuDialog: false });
+    this.props.navigation.navigate('Home');
+  }
   test = () => {
     this.props.navigation.goBack();
-  }
-
-  changeState = () => {
-    this.props.navigation.navigate('Home');
-    this.setState({ menuDialog: false });
   }
 
   onStarRatingPress(rating) {
@@ -97,7 +97,6 @@ class Sijang extends Component {
   }
 
   mypage = async () => {
-
     var uid = this.props.navigation.getParam("uid");
     const snapshot = await database.ref(`Users/UserInfo/${uid}`).once('value');
     const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
@@ -107,7 +106,7 @@ class Sijang extends Component {
     var userPhone = snapshot.val()['phone'];
     var favoriteList = []
     if(favoriteSnapshot.exists && favoriteSnapshot.val() !== null){
-      favoriteList = favoriteSnapshot.val();
+      favoriteList = Object.values(favoriteSnapshot.val());
     }
     this.setState({ menuDialog: false });
     this.props.navigation.navigate('UserInfo', { uid: uid, userName: userName, userID: userID, userPhone: userPhone, favoriteList: favoriteList });
@@ -118,7 +117,7 @@ class Sijang extends Component {
     const uid = this.props.navigation.getParam('uid');
     if (marketList[key]["선호"] == true) {  //true 
       marketList[key]["선호"] = false;
-
+      this.setState({ marketList: marketList });
       var marketName = marketList[key]["상가이름"];
       var marketLocation = marketList[key]["주소도로명"];
       var updateList = []
@@ -135,11 +134,12 @@ class Sijang extends Component {
       await database.ref(`Users/UserInfo/${uid}/favorite/list`).set(updateList);
     } else {  //false  
       marketList[key]["선호"] = true;
-      var foodTag = marketList[key]["음식태그"].split(' ');
-      for (var i = 0; i < foodTag.length; i++) {
-        const tasteSnapshot = await database.ref(`Users/UserInfo/${uid}/taste`).child(`${foodTag[i]}`).once('value');
+      this.setState({ marketList: marketList });
+      const foodTag = marketList[key]["음식태그"].split(' ');
+      for (const tag of foodTag) {
+        const tasteSnapshot = await database.ref(`Users/UserInfo/${uid}/taste`).child(`${tag}`).once('value');
         var score = tasteSnapshot.val() + 2;
-        await database.ref(`Users/UserInfo/${uid}/taste`).child(`${foodTag[i]}`).set(score);
+        await database.ref(`Users/UserInfo/${uid}/taste`).child(`${tag}`).set(score);
       }
       const snapshot = await database.ref(`Users/UserInfo/${uid}/favorite/count`).once('value');
       var count = snapshot.val();
@@ -148,23 +148,14 @@ class Sijang extends Component {
       );
       await database.ref(`Users/UserInfo/${uid}/favorite/count`).set(++count);
     }
-    this.setState({ marketList: marketList });
   }
 
   shouldComponentUpdate(nextProps,nextState){
       return this.state.marketList == nextState.marketList;
   }
   render() {
-    const { marketList } = this.state;
-    const uid = this.props.navigation.getParam('uid');
-    const specialtyList = this.props.navigation.getParam("specialtyList")
-    specialtyList.forEach((specialty, key) => {
-      if (specialty == '') {
-        console.log(key);
-        showComponent[key] = false;
-      }
-    })
-    console.log("Sijang")
+    const { marketList,specialtyList } = this.state;
+    console.log("Sijang");
     return (
       <SafeAreaView style={{flex : 1}}>
       <View style={styles.container}>

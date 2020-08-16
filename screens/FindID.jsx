@@ -33,14 +33,20 @@ class FindID extends Component {
     search: '',
     menuDialog: false,
     Name : '',
-    Phone : ''
+    Phone : '',
+    PhoneLen : 0,
   };
 
   updateName = (name) => {
     this.setState({Name : name})
   }
   updatePhone = (phone) => {
-    this.setState({Phone : phone})
+    if(phone.length>=this.state.PhoneLen){
+      if(phone.length==3||phone.length==8){
+        phone += "-";
+      }
+    }
+    this.setState({Phone : phone ,PhoneLen : phone.length})
   }
   
   test = () => {
@@ -94,6 +100,7 @@ class FindID extends Component {
           </View>
 
           <TextInput
+            keyboardType = 'numeric'
             placeholder="ex): 010-0000-0000"
             style={styles.input}
             onChangeText={this.updatePhone}

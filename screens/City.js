@@ -68,19 +68,19 @@ class City extends React.PureComponent {
     var userPhone = snapshot.val()['phone'];
     var favoriteList = []
     if(favoriteSnapshot.exists && favoriteSnapshot.val() !== null){
-      favoriteList = favoriteSnapshot.val();
+      favoriteList = Object.values(favoriteSnapshot.val());
     }
     this.setState({ menuDialog: false });
     this.props.navigation.navigate('UserInfo', { uid: uid, userName: userName, userID: userID, userPhone: userPhone, favoriteList: favoriteList });
   }
 
   gotoNextView = async (region) => {
-    console.log(region)
     const regionName = this.props.navigation.getParam('name')
     const uid = this.props.navigation.getParam("uid");
     const prevData = region.split('/');
-    const userDataSnapshot = await database.ref(`Users/UserInfo/${uid}`).child("taste").once('value');
-    var userTasteDict = userDataSnapshot.val();
+    const testSnapshot = await database.ref().once('value');
+    var userTasteDict = testSnapshot.child(`Users/UserInfo/${uid}/taste`).val();
+    
     var userTasteList = Object.keys(userTasteDict).map(function (key) {
       return [key, userTasteDict[key]];
     });
@@ -88,77 +88,52 @@ class City extends React.PureComponent {
       return second[1] - first[1];
     });
     userTasteList = userTasteList.map(function (value, index) { return value[0]; });
-    console.log("사용자의 취향 리스트", userTasteList);
+    
     var marketList = [];
-    const snapshot = await database.ref(`Data/${regionName}`).once('value');
-    snapshot.forEach(childSnapshot => {
-      var regionData = childSnapshot.child("시군구").val();
-      var marketData = childSnapshot.child("시장명").val();
-      if (regionData == prevData[0] && marketData == prevData[1]) {
-        var marketDict = {}
-        marketDict["상가이름"] = childSnapshot.child("상가이름").val();
-        marketDict["음식"] = childSnapshot.child("음식").val();
-        marketDict["음식태그"] = childSnapshot.child("음식태그").val();
-        marketDict["주소도로명"] = childSnapshot.child("주소도로명").val();
-        marketDict["평점"] = childSnapshot.child("평점").val();
-        marketDict["특징"] = childSnapshot.child("특징").val();
-        marketDict["uri"] = childSnapshot.child("uri").val();
-        marketDict["선호"] = false;
-        marketList.push(marketDict);
-      }
-    })
-    await Promise.all(marketList);
-    var resultMarketList = []
-    userTasteList.forEach(tasteInfo => {
-      for (var i = 0; i < marketList.length; i++) {
+    var resultMarketList = testSnapshot.child(`Data/${regionName}/${prevData[0]}/${prevData[1]}`).val();
+    for(const tasteInfo of userTasteList){
+      for (const marketInfo of marketList) {
         var chk = true;
-        if (marketList[i]["음식태그"].indexOf(tasteInfo) !== -1) {
-          // resultMarketList를 한 번더 순회해서 만약에 이미 저장되어있는 데이터라면 chk = false
-          resultMarketList.forEach(result => {
-            if (result == marketList[i]) {
+        if (marketInfo["음식태그"].indexOf(tasteInfo) !== -1) {
+          for(const result of resultMarketList){
+            if (result == marketInfo) {
               chk = false;
             }
-          })
+          }
           if (chk) {
-            resultMarketList.push(marketList[i]);
+            resultMarketList.push(marketInfo);
           }
         }
       }
-    })
-    const favoriteSnapshot = await database.ref(`Users/UserInfo/${uid}/favorite/list`).once('value');
-    favoriteSnapshot.forEach(childSnapshot => {
-      var marketData = childSnapshot.child("상가이름").val();
-      var locData = childSnapshot.child("주소도로명").val();
-      resultMarketList.forEach(result => {
-        if (result["상가이름"] == marketData && result["주소도로명"] == locData) {
-          result["선호"] = true;
+    }
+
+    var favoriteSnapshot = testSnapshot.child(`Users/UserInfo/${uid}/favorite/list`).val();
+    if(favoriteSnapshot !== null){
+      favoriteSnapshot = Object.values(favoriteSnapshot);
+      for(const favoriteInfo of favoriteSnapshot){
+        const marketData = favoriteInfo["상가이름"];
+        const locData = favoriteInfo["주소도로명"];
+        for(const result of resultMarketList){
+          if (result["상가이름"] == marketData && result["주소도로명"] == locData) {
+            result["선호"] = true;
+          }
         }
-      })
-    })
-    var seasonList = ["봄","여름","가을","겨울","연중"];
+      }
+    }
+
+    var seasonList = ["시장정보","봄","여름","가을","겨울","연중"];
     var specialtyList = [];
-    const marketInfoSnapshot = await database.ref(`Market`).once('value');
-    marketInfoSnapshot.forEach(marketInfo=>{
-      var regionData = marketInfo.child("시군구").val();
-      var marketData = marketInfo.child("시장명").val();
-      if (regionData == prevData[0] && marketData == prevData[1]){
-        specialtyList.push(marketInfo.val()["시장정보"]);
+    const specialtySnapshot = testSnapshot.child(`Specialty`).val();
+    for(const specialtyInfo of specialtySnapshot){
+      var regionData = specialtyInfo["시도"];
+      var cityData = specialtyInfo["시군구"];
+      var marketData = specialtyInfo["시장명"];
+      if (regionData == regionName && cityData == prevData[0] && marketData == prevData[1]){
+        for(const season of seasonList){
+          specialtyList.push(specialtyInfo[`${season}`])
+        }  
       } 
-    });
-    const specialtySnapshot = await database.ref(`Specialty`).once('value');
-    console.log(region,prevData[0])
-    specialtySnapshot.forEach(specialtyInfo=>{
-      var regionData = specialtyInfo.child("시도").val();
-      var cityData = specialtyInfo.child("시군구").val();
-      
-      if (regionData == regionName && cityData == prevData[0]){
-        seasonList.forEach(season=>{
-          specialtyList.push(specialtyInfo.val()[`${season}`])
-        })
-      } 
-    });
-    console.log(specialtyList)
-    
+    }
     this.props.navigation.navigate('Sijang', { name: `${prevData[1]}`, marketList: resultMarketList,specialtyList:specialtyList, uid: uid })
   }
   logout = () => {
