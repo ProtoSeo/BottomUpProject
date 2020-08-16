@@ -12,7 +12,7 @@ import Dialog, {
 import "firebase/database";
 
 import styles from "../design/styles";
-
+console.disableYellowBox = true;
 const firebaseConfig = {
   apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
   authDomain: "bottom-up-project.firebaseapp.com",

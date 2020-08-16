@@ -89,8 +89,9 @@ class City extends React.PureComponent {
     });
     userTasteList = userTasteList.map(function (value, index) { return value[0]; });
     
-    var marketList = [];
-    var resultMarketList = testSnapshot.child(`Data/${regionName}/${prevData[0]}/${prevData[1]}`).val();
+    var marketList = testSnapshot.child(`Data/${regionName}/${prevData[0]}/${prevData[1]}`).val();
+    var resultMarketList = [];
+    
     for(const tasteInfo of userTasteList){
       for (const marketInfo of marketList) {
         var chk = true;
@@ -98,6 +99,7 @@ class City extends React.PureComponent {
           for(const result of resultMarketList){
             if (result == marketInfo) {
               chk = false;
+              break;
             }
           }
           if (chk) {
@@ -171,10 +173,7 @@ class City extends React.PureComponent {
 
   render() {
     const { searchString } = this.state;
-    const regionName = this.props.navigation.getParam('name')
     const regionList = this.props.navigation.getParam("regionList")
-
-    const uid = this.props.navigation.getParam("uid")
     return (
       <SafeAreaView style={{flex : 1}}>
       <View style={styles.container}>

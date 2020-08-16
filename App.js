@@ -31,7 +31,7 @@ const firebaseConfig = {
   messagingSenderId: "109120495683",
   appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
 };
-
+console.disableYellowBox = true;
 if(!firebase.apps.length){
   firebase.initializeApp(firebaseConfig);
 }

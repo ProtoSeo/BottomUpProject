@@ -30,7 +30,7 @@ const firebaseConfig = {
 //     profile_picture : imageUrl
 //   });
 // }
-
+console.disableYellowBox = true;
 if(!firebase.apps.length){
   firebase.initializeApp(firebaseConfig);
 }

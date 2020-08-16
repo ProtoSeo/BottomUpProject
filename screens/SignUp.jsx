@@ -81,7 +81,7 @@ const FoodCopy = ['국수', '국밥', '후라이드치킨', '닭강정', '떡볶
   '돈까스', '족발', '보쌈',
   '스테이크', '쌀국수', '짜장면', '짬뽕',
   '삼겹살', '곱창', '회', '초밥'].sort(function () { return 0.5 - Math.random() });
-
+console.disableYellowBox = true;
 class SignUp extends Component {
   state = {
     idCheck: false,

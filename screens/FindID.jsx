@@ -4,7 +4,8 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
-  TextInput
+  TextInput,
+  Alert
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Button } from 'react-native-elements'
@@ -12,7 +13,7 @@ import * as firebase from "firebase";
 import "firebase/database";
 
 import styles from "../design/styles";
-
+console.disableYellowBox = true;
 const firebaseConfig = {
   apiKey: "AIzaSyCipbhAk-bVbgdubYf_lLvRPXsSHFQhZS4",
   authDomain: "bottom-up-project.firebaseapp.com",
@@ -119,10 +120,10 @@ class FindID extends Component {
               })
               if(findID==true){
                 console.log(snapshot.val()[loginKey])
-                alert('회원님의 아이디는 \n'+ IdValue +' 입니다.');
+                Alert.alert('회원님의 아이디는 \n'+ IdValue +' 입니다.');
                 this.props.navigation.navigate('Login')
               }else{
-                alert('회원님의 아이디를 찾을 수 없습니다.');
+                Alert.alert('회원님의 아이디를 찾을 수 없습니다.');
               }
             }
           } /> 

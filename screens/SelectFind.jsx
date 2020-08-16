@@ -8,7 +8,7 @@ import {
 import { AntDesign } from '@expo/vector-icons';
 
 import styles from "../design/styles";
-
+console.disableYellowBox = true;
 class SelectFind extends Component {
 
   state = {

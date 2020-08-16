@@ -8,7 +8,7 @@ export default function Loading(){
         <Text style={styles.text}>우리시소</Text>
     </View>
 }
-
+console.disableYellowBox = true;
 const styles = StyleSheet.create({
     container:{
         flex:1,

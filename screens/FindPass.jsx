@@ -3,7 +3,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
+  Alert
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Button } from 'react-native-elements'
@@ -22,7 +23,7 @@ const firebaseConfig = {
   messagingSenderId: "109120495683",
   appId: "1:109120495683:web:84487d9538b2de43a5f4f6",
 };
-
+console.disableYellowBox = true;
 if(!firebase.apps.length){
   firebase.initializeApp(firebaseConfig);
 }
@@ -113,10 +114,10 @@ class FindID extends Component {
               })
               if(findPassword==true){
                 console.log(snapshot.val()[loginKey])
-                alert('회원님의 비밀번호는 \n'+ PasswordValue +' 입니다.');
+                Alert.alert('회원님의 비밀번호는 \n'+ PasswordValue +' 입니다.');
                 this.props.navigation.navigate('Login')
               }else{
-                alert('회원님의 비밀번호를 찾을 수 없습니다.');
+                Alert.alert('회원님의 비밀번호를 찾을 수 없습니다.');
               }
              
             }

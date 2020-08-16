@@ -19,7 +19,7 @@ import Dialog, {
 import StarRating from 'react-native-star-rating';
 import * as firebase from "firebase";
 import "firebase/database";
-
+import FoodImage from './FoodImage';
 import styles from "../design/styles";
 
 const firebaseConfig = {
@@ -37,7 +37,7 @@ if (!firebase.apps.length) {
 }
 var database = firebase.database();
 var showComponent = [true, true, true, true, true, true];
-
+console.disableYellowBox = true;
 class Sijang extends Component {
   constructor(props) {
     super(props);
@@ -149,7 +149,10 @@ class Sijang extends Component {
       await database.ref(`Users/UserInfo/${uid}/favorite/count`).set(++count);
     }
   }
-
+  returnFoodTag(dict){
+    var tagList = dict['음식태그'].split(' ');
+    return tagList[0];
+  }
   shouldComponentUpdate(nextProps,nextState){
       return this.state.marketList == nextState.marketList;
   }
@@ -363,7 +366,7 @@ class Sijang extends Component {
                 }
               } >
                 <View style={{ flex: 7, flexDirection: 'row' }}>
-                  <Image style={styles.item_icon} source={require('./icon/rice.png')} />
+                  <Image style={styles.item_icon} source={FoodImage[this.returnFoodTag(marketDict)].src} />
                   <Text style={styles.item_title}>{marketDict["상가이름"]}</Text>
                 </View>
                 <View style={{ flex: 3 }}>

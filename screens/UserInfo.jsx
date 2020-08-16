@@ -17,7 +17,7 @@ import Dialog, {
 import StarRating from 'react-native-star-rating';
 import * as firebase from "firebase";
 import "firebase/database";
-
+import FoodImage from './FoodImage';
 import styles from "../design/styles";
 
 const firebaseConfig = {
@@ -34,7 +34,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 var database = firebase.database()
-
+console.disableYellowBox = true;
 class UserInfo extends Component {
   state = {
     search: '',
@@ -53,7 +53,10 @@ class UserInfo extends Component {
   test = () => {
     this.props.navigation.goBack();
   }
-
+  returnFoodTag(dict){
+    var tagList = dict['음식태그'].split(' ');
+    return tagList[0];
+  }
   render() {
     const userName = this.props.navigation.getParam("userName");
     const userID = this.props.navigation.getParam("userID");
@@ -180,7 +183,7 @@ class UserInfo extends Component {
               {
               favoriteList.length==0? <View style={styles.list_like_view}><Text style={styles.title_text}>리스트가 비어있습니다.</Text></View>
                : (favoriteList.map((favoriteDict, key) =>
-                <TouchableOpacity style={styles.item_view} onPress={
+                <TouchableOpacity key = {key} style={styles.item_view} onPress={
                   () => {
                     this.setState({
                       market: true,
@@ -193,7 +196,7 @@ class UserInfo extends Component {
                   }
                 } >
                   <View style={{ flex: 7, flexDirection: 'row' }}>
-                    <Image style={styles.item_icon} source={require('./icon/rice.png')} />
+                    <Image style={styles.item_icon} source={FoodImage[this.returnFoodTag(favoriteDict)].src} />
                     <Text style={styles.item_title}>{favoriteDict["상가이름"]}</Text>
                   </View>
                   <View style={{ flex: 3 }}>
