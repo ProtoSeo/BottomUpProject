@@ -28,7 +28,7 @@ if(!firebase.apps.length){
   firebase.initializeApp(firebaseConfig);
 }
 var database = firebase.database()
-class FindID extends Component {
+class FindPass extends Component {
 
   state = {
     search: '',
@@ -65,7 +65,7 @@ class FindID extends Component {
 
         <View style={{flex: 3, alignItems: 'center'}}>
           <Text style={styles.TopBarText}>
-            Find ID
+            Find Pass
           </Text>
         </View>
 
@@ -139,4 +139,4 @@ class FindID extends Component {
   }
 }
 
-export default FindID;
+export default FindPass;

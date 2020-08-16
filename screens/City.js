@@ -285,6 +285,8 @@ class City extends React.PureComponent {
                 return (
                   <GradientButton 
                   key={i} style={{ marginVertical: 8, marginLeft: 30 }} 
+                  gradientBegin="#DB9A96"
+                  gradientEnd="#DB9A96"
                   text={region}
                   prev={region} onPressAction={() => this.gotoNextView(region)} 
                   width='80%'

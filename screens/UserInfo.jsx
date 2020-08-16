@@ -153,8 +153,7 @@ class UserInfo extends Component {
                         halfStar={require('./images/starHalf.png')}
                         iconSet={'Ionicons'}
                         maxStars={5}
-                        rating={this.state.starCount}
-                        selectedStar={(rating) => this.onStarRatingPress(rating)} />
+                        rating={this.state.starCount} />
                     </View>
 
                     <View style={styles.touchableopacity_4}>
