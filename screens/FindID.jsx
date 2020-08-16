@@ -54,8 +54,11 @@ class FindID extends Component {
       <View style={styles.container}>
         <View style={styles.TopBar}>
 
-        <View style={{flex: 2}}>
-        </View>
+          <View style={{flex: 2}}>
+            <TouchableOpacity style={styles.TopButton} onPress={this.test}>
+              <AntDesign name="left" size={25} color="white" />
+            </TouchableOpacity>
+          </View>
 
           <View style={{flex: 3, alignItems: 'center'}}>
             <Text style={styles.TopBarText}>
@@ -63,27 +66,33 @@ class FindID extends Component {
             </Text>
           </View>
 
-          <View style={{flex: 2}}>
-            <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-              <AntDesign name="back" size={25} color="white" />
-            </TouchableOpacity>
-          </View>
+        <View style={{flex: 2}}>
+        </View>
+        
         </View>
         
         <View style={styles.MainSpace}>
           <View>
-          <Text style={{textAlign : 'center', marginVertical: '5%', fontSize: 20,}}>
+
+          <View style={styles.touchableopacity_2}>
+          <Text style={{textAlign : 'center', marginVertical: '5%', fontSize: 20, color: 'white'}}>
               이름을 입력하세요
           </Text>
+          </View>
+
           <TextInput
             placeholder="ex): 홍길동"
             style={styles.input}
             onChangeText={this.updateName}
             value={this.state.Name}
           />
-          <Text style={{textAlign : 'center', marginVertical: '5%', fontSize: 20,}}>
+
+          <View style={styles.touchableopacity_2}>
+          <Text style={{textAlign : 'center', marginVertical: '5%', fontSize: 20, color: 'white'}}>
               전화번호를 입력하세요
           </Text>
+          </View>
+
           <TextInput
             placeholder="ex): 010-0000-0000"
             style={styles.input}
@@ -91,8 +100,8 @@ class FindID extends Component {
             value={this.state.Phone}
           />
           </View>
-          <Button style={{width: '30%', alignContents:'center', marginTop : '10%', marginHorizontal: '35%', marginBottom:'10%'}} titleStyle={{color: "white",fontSize: 15, padding :'5%'}} 
-          buttonStyle={{backgroundColor: "#7E64CC", height: '46%'}} title={`아이디 찾기`} onPress=
+          <Button style={{width: '30%', alignContents:'center', marginTop : '10%', marginHorizontal: '35%', marginBottom:'10%'}} titleStyle={{color: "white", fontSize: 18, padding :'5%'}} 
+          buttonStyle={{backgroundColor: "#DB9A96", height: '46%'}} title={`아이디 찾기`} onPress=
           {
             async () => 
             {

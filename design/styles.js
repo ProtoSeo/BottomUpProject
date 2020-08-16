@@ -3,7 +3,6 @@ import {StyleSheet} from "react-native";
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#E8EAEB',
         flex: 1,
         flexDirection: 'column',
       },
@@ -12,7 +11,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#7E64CC',
+        backgroundColor: '#799FA7',
         flexDirection: 'row'
       },
     
@@ -34,7 +33,7 @@ const styles = StyleSheet.create({
         height: 50,
         padding: '2%',
         borderWidth: 2,
-        borderColor: '#5F82D9',
+        borderColor: '#799FA7',
         marginVertical: '5%',
         marginHorizontal: '10%',
       },
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
         height: 50,
         padding: '2%',
         borderWidth: 2,
-        borderColor: '#5F82D9',
+        borderColor: '#799FA7',
         marginVertical: '5%',
         marginLeft: '10%',
         marginRight: '30%'
@@ -55,7 +54,7 @@ const styles = StyleSheet.create({
         height: 50,
         padding: '2%',
         borderWidth: 2,
-        borderColor: '#5F82D9',
+        borderColor: '#799FA7',
         marginVertical: '5%',
         marginLeft: '10%',
       },
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
 
       submit: {
         width: "80%",
-        backgroundColor: "#fc5185",
+        backgroundColor: "#DB9A96",
         borderRadius: 20,
         padding: 10,
         alignItems: "center",
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
         height: '14%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#7E64CC',
+        backgroundColor: '#799FA7',
         flexDirection: 'row'
       },
     
@@ -101,8 +100,8 @@ const styles = StyleSheet.create({
     
       TopButton: {
         alignItems: 'center',
-        backgroundColor: '#7E64CC',
         marginHorizontal: '32%',
+        flexDirection: 'row'
       },
 
       item: {
@@ -121,13 +120,11 @@ const styles = StyleSheet.create({
     
       MainSpace: {
         flex: 4,
-        backgroundColor: '#E8EAEB',
         paddingTop: 30,
       },
     
       StatusButton: {
         alignItems: 'center',
-        backgroundColor: '#DDDDDD',
         padding: 20,
         width: 30,
         marginLeft: 10,
@@ -137,7 +134,6 @@ const styles = StyleSheet.create({
       },
     
       item_view: {
-        backgroundColor: '#DDDDDD',
         padding: 20,
         marginVertical: 8,
         marginLeft: 12,
@@ -210,7 +206,6 @@ const styles = StyleSheet.create({
       },
 
       SlideSpace: {
-        backgroundColor: '#E8EAEB',
         height: 160,
         justifyContent: 'center',
       },
@@ -262,16 +257,32 @@ const styles = StyleSheet.create({
       },
 
       small_text: {
-        fontSize: 12,
-        marginTop: '4%'
+        fontSize: 14,
+        marginTop: '4%',
+        color: '#799FA7'
       },
 
       list_like_view: {
         height: '100%',
         alignItems: 'center',
         marginTop: '30%',
-
       },
+
+      touchableopacity_1: {
+        alignItems: 'center',
+        borderRadius: 10,
+        backgroundColor: '#DB9A96',
+        marginHorizontal: '15%',
+        marginVertical: '5%'
+      },
+
+      touchableopacity_2: {
+        alignItems: 'center',
+        borderRadius: 10,
+        backgroundColor: '#799FA7',
+        marginHorizontal: '15%',
+        marginVertical: '5%'
+      }
 });
 
 export default styles;

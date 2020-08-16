@@ -42,36 +42,38 @@ class SelectFind extends Component {
       <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.TopBar}>
-        <View style={{flex: 2}}>
-            </View>
-          <View style={{flex: 3, alignItems: 'center'}}>
-            <Text style={styles.TopBarText}>
-              우리시소
-            </Text>
-            
-          </View>
+
           <View style={{flex: 2}}>
             <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-              <AntDesign name="back" size={25} color="white" />
+              <AntDesign name="left" size={25} color="white" />
             </TouchableOpacity>
           </View>
+
+          <View style={{flex: 3, alignItems: 'center'}}>
+            <Text style={styles.TopBarText}>
+              Find ID/PW
+            </Text>
+          </View>
+
+          <View style={{flex: 2}}>
+          </View>
+
         </View>
         
         <View style={styles.MainSpace}>
       
-        <View style={{flex:1,flexDirection:'row',marginTop:'25%'}}>
-            <View style={{flex:1,alignItems : 'center',marginTop : 
-            '25%',}}>
-              <TouchableOpacity onPress={() => {this.props.navigation.navigate('FindID')}} >
-              <Text style={{fontSize:25}}>
+        <View style={{flexDirection: 'row' ,flex: 1, marginTop: '40%'}}>
+            <View style={{flex:1, alignItems : 'center'}}>
+              <TouchableOpacity onPress={() => {this.props.navigation.navigate('FindID')}} style={styles.touchableopacity_1} >
+              <Text style={{fontSize:25, margin: '10%', color: 'white'}}>
               아이디 찾기
               </Text>
               </TouchableOpacity>
             </View>
-            <View style={{flex:1,alignItems : 'center',marginTop : 
-            '25%',}}>
-            <TouchableOpacity onPress={() => {this.props.navigation.navigate('FindPass')}}>
-              <Text style={{alignContent : 'center',fontSize:25}} onChange={this.notequal2}>
+
+            <View style={{flex:1, alignItems : 'center'}}>
+            <TouchableOpacity onPress={() => {this.props.navigation.navigate('FindPass')}} style={styles.touchableopacity_1} >
+              <Text style={{fontSize:25, margin: '10%', color: 'white'}} onChange={this.notequal2}>
               비밀번호 찾기
               </Text>
               </TouchableOpacity>
