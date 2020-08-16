@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
 
       item: {
         width: "80%",
-        backgroundColor: "#fff",
         borderRadius: 20,
         padding: 10,
         marginBottom: 10,
@@ -136,9 +135,12 @@ const styles = StyleSheet.create({
       item_view: {
         padding: 20,
         marginVertical: 8,
-        marginLeft: 12,
+        marginHorizontal: '10%',
+        borderRadius: 10,
         height: 120,
-        flex: 9
+        flex: 9, 
+        borderWidth: 3,
+        borderColor: '#DB9A96'
       },
     
       item_title: {
@@ -193,7 +195,7 @@ const styles = StyleSheet.create({
       },
     
       view: {
-        height: '77%',
+        flex: 4,
         textAlign: 'center',
         marginTop: '5%',
         marginHorizontal: '5%',
@@ -201,7 +203,7 @@ const styles = StyleSheet.create({
       },
     
       SearchSpace: {
-        height: 115,
+        backgroundColor: 'transparent',
         justifyContent: 'center',
       },
 
@@ -238,7 +240,6 @@ const styles = StyleSheet.create({
       },
 
       item_heart: {
-        backgroundColor: '#E8EAEB',
         marginVertical: '12%',
         marginHorizontal: 20,
         height: 50,
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
       list_like_view: {
         height: '100%',
         alignItems: 'center',
-        marginTop: '30%',
+        marginVertical: '30%',
       },
 
       touchableopacity_1: {
@@ -282,7 +283,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#799FA7',
         marginHorizontal: '15%',
         marginVertical: '5%'
-      }
+      },
+
+      touchableopacity_3: {
+        borderRadius: 10,
+        marginHorizontal: '15%',
+        marginVertical: '5%'
+      },
+
 });
 
 export default styles;

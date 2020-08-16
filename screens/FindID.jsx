@@ -107,7 +107,7 @@ class FindID extends Component {
             value={this.state.Phone}
           />
           </View>
-          <Button style={{width: '30%', alignContents:'center', marginTop : '10%', marginHorizontal: '35%', marginBottom:'10%'}} titleStyle={{color: "white", fontSize: 18, padding :'5%'}} 
+          <Button style={{width: '30%', alignContents:'center', marginTop : '15%', marginHorizontal: '35%', marginBottom:'10%'}} titleStyle={{color: "white", fontSize: 18, padding :'5%'}} 
           buttonStyle={{backgroundColor: "#DB9A96", height: '46%'}} title={`아이디 찾기`} onPress=
           {
             async () => 

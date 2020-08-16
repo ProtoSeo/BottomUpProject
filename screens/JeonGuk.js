@@ -95,6 +95,7 @@ class JeonGuk extends React.Component {
     const uid = this.props.navigation.getParam("uid");
 
     return (
+      <KeyboardAvoidingView style={{flex: 1}} behavior={'padding'}>
       <SafeAreaView style={{flex : 1}}>
       <View style={styles.container}>
         <View style={styles.TopBar}>
@@ -181,7 +182,6 @@ class JeonGuk extends React.Component {
         </View>
 
 
-        <KeyboardAvoidingView behavior={'padding'}>
           <View style={styles.view}>
             <ScrollView>
               {!List.includes(this.state.searchString) ? List.map((region, i) => 
@@ -191,7 +191,6 @@ class JeonGuk extends React.Component {
                 text={`${region}`}
                 gradientBegin="#DB9A96"
                 gradientEnd="#DB9A96"
-                gradient
                 onPressAction={()=> this.gotoNextView(region)}
                 width='80%' 
                 />)
@@ -212,10 +211,10 @@ class JeonGuk extends React.Component {
               value={searchString}
               />
           </View>
-        </KeyboardAvoidingView>
         </View>
 
       </SafeAreaView>
+      </KeyboardAvoidingView>
 
     )
   }
