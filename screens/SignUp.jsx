@@ -320,18 +320,22 @@ class SignUp extends Component {
       <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.TopBar}>
+
           <View style={{ flex: 2 }}>
+            <TouchableOpacity style={styles.TopButton} onPress={this.test}>
+              <AntDesign name="left" size={25} color="white" />
+            </TouchableOpacity>
           </View>
+
           <View style={{ flex: 3, alignItems: 'center' }}>
             <Text style={styles.TopBarText}>
               회원가입
             </Text>
           </View>
+
           <View style={{ flex: 2 }}>
-            <TouchableOpacity style={styles.TopButton} onPress={this.test}>
-              <AntDesign name="back" size={25} color="white" />
-            </TouchableOpacity>
           </View>
+
         </View>
 
         <View style={styles.MainSpace}>
@@ -347,9 +351,9 @@ class SignUp extends Component {
                 <TouchableOpacity
                   title={'중복확인'}
                   onPress={this.overlap}
-                  style={{ flex: 1 }}
+                  style={{ alignItems: 'center', flex: 1, color: '#DB9A96', backgroundColor: '#DB9A96', marginHorizontal: "3%", paddingVertical: '3%', borderRadius: '5' }}
                 >
-                  <Text style={{ alignItems: 'center', marginLeft: '20%' }}>
+                  <Text style={{ color:'white' }}>
                     중복확인
               </Text>
 
@@ -377,37 +381,41 @@ class SignUp extends Component {
               />
 
             </View>
-            <Text style={{ flex: 1, textAlign: 'center', marginTop: 35, fontSize: 25 }}>
-              음식 이상형월드컵
-          </Text>
+            <View style={styles.touchableopacity_2}>
+            <Text style={{ flex: 1, textAlign: 'center', fontSize: 25, marginVertical: '3%', color: 'white' }}>
+              음식 이상형 월드컵
+            </Text>
+            </View>
+
             <View style={{ flex: 1, flexDirection: 'row' }}>
-              <View style={{
-                flex: 1, alignItems: 'center', marginTop:
-                  '25%',
-              }}>
-                <TouchableOpacity onPress={this.ChooseFood1} >
+              <View style={{flex: 1, alignItems: 'center', marginTop: '5%',}}>
+                <TouchableOpacity onPress={this.ChooseFood1} style={{alignItems: 'center', justifyContent: 'center'}} >
                   <Image source={{ uri: Fooduri[this.state.selectedchooseFood1] }}
-                    style={{ width: 100, height: 100 }} />
-                  <Text style={{ fontSize: 25 }}>
+                    style={{ width: 130, height: 130, resizeMode: 'cover', borderRadius: 10 }} />
+                  <View style={styles.touchableopacity_2}>
+                  <Text style={{ color: 'white', fontSize: 20, padding: '8%' }}>
                     {this.state.selectedchooseFood1}
                   </Text>
+                  </View>
                 </TouchableOpacity>
               </View>
-              <View style={{
-                flex: 1, alignItems: 'center', marginTop:
-                  '25%',
-              }}>
-                <TouchableOpacity onPress={this.ChooseFood2}>
+
+              <View style={{flex: 1, alignItems: 'center', marginTop:'5%',}}>
+                <TouchableOpacity onPress={this.ChooseFood1} style={{alignItems: 'center', justifyContent: 'center'}}>
                   <Image source={{ uri: Fooduri[this.state.selectedchooseFood2] }}
-                    style={{ width: 100, height: 100 }} />
-                  <Text style={{ alignContent: 'center', fontSize: 25 }} onChange={this.notequal2}>
-                    {this.state.selectedchooseFood2}
-                  </Text>
+                    style={{ width: 130, height: 130, resizeMode: 'cover', borderRadius: 10 }} />
+                    <View style={styles.touchableopacity_2}>
+                      <Text style={{ color: 'white', fontSize: 20, padding: '8%' }} onChange={this.notequal2}>
+                        {this.state.selectedchooseFood2}
+                      </Text>
+                    </View>
                 </TouchableOpacity>
               </View>
             </View>
-            <Button style={{ width: '30%', alignContents: 'center', marginTop: '25%', marginLeft: '35%', marginBottom: '10%' }} titleStyle={{ color: "white", fontSize: 15, padding: '5%' }}
-              buttonStyle={{ backgroundColor: "#7E64CC", height: '45%' }} title={`가입하기`} onPress={
+
+
+            <Button style={{ width: '30%', alignContents: 'center', marginTop: '10%', marginLeft: '35%', marginBottom: '10%', borderRadius: 10 }} titleStyle={{ color: "white", fontSize: 24, }}
+              buttonStyle={{ backgroundColor: "#DB9A96", height: '45%' }} title={`가입하기`} onPress={
                 async () => {
                   const snapshot = await database.ref('Users/UserCount').once('value')
                   var userCount = snapshot.val()

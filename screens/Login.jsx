@@ -84,7 +84,7 @@ class Login extends Component {
         </View>
      
         <View style={styles.MainSpace}>
-        <Text style={{textAlign : 'center', marginBottom : '10%', fontSize:25, color:'#6466E3', fontWeight:'bold'}}>
+        <Text style={{textAlign : 'center', marginBottom : '10%', fontSize:25, color:'#799FA7', fontWeight:'bold'}}>
               Log In
         </Text>
 
@@ -107,7 +107,7 @@ class Login extends Component {
           <View style={{flexDirection : 'row',marginLeft:'8%',marginTop:'10%'}}>
           <Button style={styles.login_buttons} 
             titleStyle={{color: "white",fontSize: 15,}} 
-            buttonStyle={{backgroundColor: "#7E64CC",height: '50%',}} title='로그인' onPress = {
+            buttonStyle={{backgroundColor: "#DB9A96",height: '50%',}} title='로그인' onPress = {
             async () =>{ 
               console.log("login")
               console.log(ID,Password)
@@ -135,7 +135,7 @@ class Login extends Component {
             }
           } />
           <Button style={styles.login_buttons} titleStyle={{color: "white",fontSize: 15,}} 
-          buttonStyle={{backgroundColor: "#7E64CC",height: '50%'}} title='회원가입'
+          buttonStyle={{backgroundColor: "#DB9A96",height: '50%'}} title='회원가입'
           onPress = {() => {
             this.setState({
               search: '',
@@ -146,7 +146,7 @@ class Login extends Component {
             this.props.navigation.navigate('SignUp')}
           } />
           <Button style={styles.login_buttons} titleStyle={{color: "white",fontSize: 15,}} 
-          buttonStyle={{width : '100%',backgroundColor: "#7E64CC",height: '50%'}} title={`아이디/${'\n'}비밀번호찾기`} 
+          buttonStyle={{width : '100%',backgroundColor: "#DB9A96",height: '50%'}} title={`아이디/${'\n'}비밀번호찾기`} 
           onPress = {() =>{
             
             this.setState({
