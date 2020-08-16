@@ -1,9 +1,0 @@
-Installing 1 SDK 38.0.0 compatible native module and 1 other package using Yarn.
-> yarn add add react-native-gesture-handler@~1.6.0
-yarn add v1.21.1
-[1/4] Resolving packages...
-[2/4] Fetching packages...
-info fsevents@1.2.13: The platform "win32" is incompatible with this module.
-info "fsevents@1.2.13" is an optional dependency and failed compatibility check. Excluding it from installation.
-[3/4] Linking dependencies...
-일괄 작업을 끝내시겠습니까 (Y/N)? 
