@@ -3,6 +3,9 @@
 <p>
     <img src="./img/BottomUp.jpg" width="820px" height="1080px">
 
+## 프로젝트 이름
+우리시소는 우리나라 전통시장을 소개한다는 의미를 가지고 있습니다.
+
 ## 개발목적
 
 1.   지역 전통시장 상권 활성화
@@ -30,8 +33,8 @@ npm start
 <p>
 ReactNative 0.63
 <p>
-Firebase
-<p>
 Expo SDK 38
+<p>
+Firebase
 <p>
 Python 3.7.4
