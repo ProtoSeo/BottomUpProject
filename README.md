@@ -27,7 +27,11 @@ npm start
 
 ## 개발환경
 
-ReactNative 
-Expo
-Python
+<p>
+ReactNative 0.63
+<p>
 Firebase
+<p>
+Expo SDK 38
+<p>
+Python 3.7.4
