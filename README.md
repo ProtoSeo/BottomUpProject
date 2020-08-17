@@ -1,7 +1,11 @@
 # 제 2회 BOTTOM-UP 프로젝트 경진대회
 
 <p>
+<<<<<<< HEAD
     <img src="img/BottomUp.jpg" width="1240px" height="1754px">
+=======
+    <img src="./img/BottomUp.jpg" width="120px" height="120px">
+>>>>>>> 567bcc3e075eecc6d85a26be8cbdb11551ec99d3
 
 ## 개발목적
 
