@@ -154,7 +154,7 @@ class SignUp extends Component {
         selectedchooseFood2: this.state.initialFood[1]
       })
       if (this.state.SecondFood.length == 8) {
-        alert('8강을 시작합니다.');
+        Alert.alert('8강을 시작합니다.');
         this.state.i = 1;
         this.setState({
           selectedchooseFood1: this.state.SecondFood[0],
@@ -173,7 +173,7 @@ class SignUp extends Component {
         selectedchooseFood2: this.state.SecondFood[1]
       })
       if (this.state.SemiFinalFood.length == 4) {
-        alert('4강을 시작합니다.');
+        Alert.alert('4강을 시작합니다.');
         this.state.i = 2;
         this.setState({
           selectedchooseFood1: this.state.SemiFinalFood[0],
@@ -192,7 +192,7 @@ class SignUp extends Component {
         selectedchooseFood2: this.state.SemiFinalFood[1]
       })
       if (this.state.FinalFood.length == 2) {
-        alert('결승입니다!!');
+        Alert.alert('결승입니다!!');
         this.state.i = 3;
         this.setState({
           selectedchooseFood1: this.state.FinalFood[0],
@@ -228,7 +228,7 @@ class SignUp extends Component {
         selectedchooseFood2: this.state.initialFood[1]
       })
       if (this.state.SecondFood.length == 8) {
-        alert('8강을 시작합니다.');
+        Alert.alert('8강을 시작합니다.');
         this.state.i = 1;
         this.setState({
           selectedchooseFood1: this.state.SecondFood[0],
@@ -240,7 +240,6 @@ class SignUp extends Component {
     else if (this.state.i == 1) {
       this.state.SemiFinalFood.push(this.state.SecondFood[1]);
       this.state.notSelected.push(this.state.SecondFood[0]);
-      this.state.notSelected.push(this.state.FinalFood[1]);
       this.state.SecondFood.splice(0, 2)
       console.log(this.state.SemiFinalFood.length);
       this.setState({
@@ -248,7 +247,7 @@ class SignUp extends Component {
         selectedchooseFood2: this.state.SecondFood[1]
       })
       if (this.state.SemiFinalFood.length == 4) {
-        alert('4강을 시작합니다.');
+        Alert.alert('4강을 시작합니다.');
         this.state.i = 2;
         this.setState({
           selectedchooseFood1: this.state.SemiFinalFood[0],
@@ -267,7 +266,7 @@ class SignUp extends Component {
         selectedchooseFood2: this.state.SemiFinalFood[1]
       })
       if (this.state.FinalFood.length == 2) {
-        alert('결승입니다!!');
+        Alert.alert('결승입니다!!');
         this.state.i = 3;
         this.setState({
           selectedchooseFood1: this.state.FinalFood[0],
@@ -286,7 +285,7 @@ class SignUp extends Component {
         selectedchooseFood1: this.state.FinalFood[0],
         selectedchooseFood2: this.state.FinalFood[1]
       })
-      alert(`당신의 입맛이 정해졌습니다 당신의 입맛은 ${this.state.RealFinalFood}!!!`);
+      Alert.alert(`당신의 입맛이 정해졌습니다 당신의 입맛은 ${this.state.RealFinalFood}!!!`);
       const deepCopy = JSON.parse(JSON.stringify(FoodCopy))
       Food = deepCopy;
     }
@@ -314,7 +313,7 @@ class SignUp extends Component {
   }
 
   render() {
-    // console.log(Food)
+    console.log(Food)
     const { search, idCheck, ID, Name, Phone, Password, notSelected } = this.state;
     return (
       <SafeAreaView style={{flex: 1}}>
@@ -401,7 +400,7 @@ class SignUp extends Component {
               </View>
 
               <View style={{flex: 1, alignItems: 'center', marginTop:'5%',}}>
-                <TouchableOpacity onPress={this.ChooseFood1} style={{alignItems: 'center', justifyContent: 'center'}}>
+                <TouchableOpacity onPress={this.ChooseFood2} style={{alignItems: 'center', justifyContent: 'center'}}>
                   <Image source={{ uri: Fooduri[this.state.selectedchooseFood2] }}
                     style={{ width: 130, height: 130, resizeMode: 'cover', borderRadius: 10 }} />
                     <View style={styles.touchableopacity_2}>
