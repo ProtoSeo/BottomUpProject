@@ -1,8 +1,8 @@
 # 제 2회 BOTTOM-UP 프로젝트 경진대회
 
 <p>
-    <img src="img/bottomUp.jpg" width="120px" height="120px">
-<p>
+    <img src="img/BottomUp.jpg" width="1240px" height="1754px">
+
 ## 개발목적
 
 1.   지역 전통시장 상권 활성화
@@ -26,3 +26,8 @@ npm start
 ```
 
 ## 개발환경
+
+ReactNative 
+Expo
+Python
+Firebase
